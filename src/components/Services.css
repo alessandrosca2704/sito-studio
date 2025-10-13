@@ -1,0 +1,20 @@
+/* Services grid styled as large icon tiles */
+.services-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background:#fff; border:1px solid var(--border); border-radius: 12px; overflow:hidden; }
+.service-tile { padding: 32px 18px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; min-height: 160px; border-bottom:1px solid var(--border); border-right:1px solid var(--border); }
+.service-tile:nth-child(3n) { border-right: none; }
+.service-tile:nth-last-child(-n+3) { border-bottom:none; }
+.service-icon { color: var(--brand); }
+.service-title { text-align:center; color: var(--text); font-weight: 500; white-space: pre-line; }
+.services-more { display:flex; justify-content:center; margin-top: 18px; }
+
+@media (max-width: 900px){
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .service-tile:nth-child(3n){ border-right:1px solid var(--border); }
+  .service-tile:nth-child(2n){ border-right:none; }
+  .service-tile:nth-last-child(-n+2){ border-bottom:none; }
+}
+@media (max-width: 640px){
+  .services-grid { grid-template-columns: 1fr; }
+  .service-tile { border-right:none; }
+  .service-tile:not(:last-child){ border-bottom:1px solid var(--border); }
+}

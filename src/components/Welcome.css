@@ -1,0 +1,8 @@
+.welcome { background:#fff; }
+.welcome__grid { display:grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items:start; }
+.welcome__media { border: 1px solid var(--border); border-radius: 12px; overflow:hidden; background:#fff; }
+.welcome__content { padding: 8px 0; }
+.welcome__icon { color: var(--brand); margin-bottom: 8px; }
+.welcome__more { color: var(--text); text-transform: uppercase; font-size: 12px; letter-spacing: .1em; }
+@media (max-width: 900px) { .welcome__grid { grid-template-columns: 1fr; } }
+

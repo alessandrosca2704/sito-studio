@@ -1,0 +1,5 @@
+.detail { max-width: 900px; }
+.detail__header { margin-bottom: 16px; }
+.detail__summary { color: var(--muted); }
+.detail__content p { margin-bottom: 12px; }
+

@@ -1,0 +1,7 @@
+.news-page-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.news-page-card { background:#fff; border:1px solid var(--border); border-radius: 12px; overflow: hidden; display:flex; flex-direction: column; }
+.news-page-media { display:block; aspect-ratio: 16/9; background-size: cover; background-position: center; }
+.news-page-body { padding: 16px; display:flex; flex-direction: column; gap:10px; }
+@media (max-width: 900px){ .news-page-grid { grid-template-columns: repeat(2,1fr);} }
+@media (max-width: 640px){ .news-page-grid { grid-template-columns: 1fr;} }
+

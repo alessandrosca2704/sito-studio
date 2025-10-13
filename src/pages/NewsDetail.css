@@ -1,0 +1,5 @@
+.news-detail { max-width: 900px; margin: 0 auto; }
+.news-detail__media { aspect-ratio: 16/9; background-size: cover; background-position:center; border-radius: 12px; margin-bottom: 16px; }
+.lead { color: var(--muted); }
+.news-detail__content p { margin-bottom: 12px; }
+

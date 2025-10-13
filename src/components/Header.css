@@ -1,0 +1,13 @@
+/* Header */
+.site-header { position: sticky; top: 0; backdrop-filter: saturate(180%) blur(10px); background: rgba(255,255,255,.8); border-bottom: 1px solid var(--border); z-index: 50; }
+.site-header__inner { height: 68px; display: flex; align-items: center; justify-content: space-between; }
+.brand { font-weight: 700; letter-spacing: 0.02em; }
+.nav { display: flex; gap: 22px; align-items: center; }
+.nav a { color: var(--muted); font-size: 14px; }
+.nav a:hover, .nav a.active { color: var(--border); }
+.brand { display:flex; align-items:center; gap:8px; }
+/*.brand::before { content:""; width:18px; height:18px; border:2px solid var(--text); border-radius:50%; display:inline-block; }*/
+.lang-switch { display: inline-flex; gap: 6px; margin-left: 6px; align-items: center; }
+.lang-switch .sep { color: var(--border); }
+.lang-switch button { background: transparent; border: none; cursor: pointer; color: var(--muted); font-size: 12px; padding: 6px 6px; border-radius: 6px; }
+.lang-switch button.active, .lang-switch button:hover { color: var(--text); background: #f3f4f6; }

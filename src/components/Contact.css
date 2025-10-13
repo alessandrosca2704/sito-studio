@@ -1,0 +1,5 @@
+.form-grid { display: grid; gap: 12px; }
+.form-grid input, .form-grid textarea {
+  padding: 12px; border: 1px solid var(--border); border-radius: 8px; font: inherit;
+}
+

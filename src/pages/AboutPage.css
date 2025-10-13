@@ -1,0 +1,25 @@
+.about-hero { position: relative; padding: 90px 0 60px; color:#fff; }
+.about-hero__bg { position:absolute; inset:0; z-index:-1; background-size:cover; background-position:center; background-repeat:no-repeat; }
+.about-hero h1 { font-size: clamp(32px, 5vw, 56px); }
+
+.intro { max-width: 900px; }
+.intro p { color: var(--muted); }
+
+.about-band { background:#fff; }
+.about-band__inner { display:grid; grid-template-columns: 1fr 2fr; gap: 0; align-items: stretch; }
+.about-band__tile { background: var(--brand);display:flex; align-items:center; justify-content:center; max-height: 371px;  }
+.about-band__image img { width:100%; height:auto; display:block; }
+
+.strengths { display:grid; grid-template-columns: 1.1fr .9fr; gap: 24px; align-items:center; }
+.strengths__card {width: 350%; background:#fff; padding: 24px; border:1px solid var(--border); border-radius:12px; box-shadow: 0 10px 24px rgba(0,0,0,.04); position: relative; }
+.strengths__photo img { width:100%; height:auto; display:block; border-radius:12px; }
+
+.pro { display:grid; grid-template-columns: .9fr 1.1fr; gap: 24px; align-items:start; }
+.pro__photo img { width:100%; height:auto; display:block; border-radius:12px; }
+.pro__bio .role { color: var(--muted); margin-bottom: 12px; }
+
+@media (max-width: 900px){
+  .about-band__inner { grid-template-columns: 1fr; }
+  .strengths { grid-template-columns: 1fr; }
+  .pro { grid-template-columns: 1fr; }
+}

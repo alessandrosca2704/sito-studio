@@ -1,0 +1,5 @@
+/* Footer */
+.site-footer { padding: 48px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
+.site-footer__inner { display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+.site-footer a { color: inherit; }
+
