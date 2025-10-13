@@ -20,7 +20,8 @@ export default function Header(){
           </div>
         <nav className="nav">
           <Link to="/servizi">{dict.nav.servizi}</Link>
-          <Link to="/news"><a href="#news">{dict.nav.lavori}</a></Link>
+          <Link to="/aree-di-attivita">{dict.nav.aree || 'Aree di Attività'}</Link>
+          <Link to="/news">{dict.nav.lavori || 'News'}</Link>
           <Link to="/chi-siamo">{dict.nav.chi}</Link>
           <a href="#contatti" className="btn" onClick={(e)=>{e.preventDefault();scrollTo('contatti');}}>{dict.nav.contatti}</a>
           <div className="lang-switch">

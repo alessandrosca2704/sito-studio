@@ -2,7 +2,7 @@ import React from 'react';
 
 const translations = {
   it: {
-    nav: { servizi: 'Servizi', lavori: 'News e Scadenze', chi: 'Chi siamo', contatti: 'Contatti' },
+    nav: { servizi: 'Servizi', lavori: 'News e Scadenze', aree: 'Aree di Attività', chi: 'Chi siamo', contatti: 'Contatti' },
     hero: {
       eyebrow: 'Studio professionale',
       title: 'Soluzioni per la tua azienda',
@@ -73,7 +73,7 @@ const translations = {
     footer: { privacy: 'Privacy', cookie: 'Cookie', copyPrefix: '©', copySuffix: 'Via Brigata Bari n° 5/A - 70123 Bari - Studio Scarimbolo P.IVA 00000000000' },
   },
   en: {
-    nav: { servizi: 'Services', lavori: 'Works', chi: 'About', contatti: 'Contact' },
+    nav: { servizi: 'Services', lavori: 'News & Deadlines', aree: 'Areas of Activity', chi: 'About', contatti: 'Contact' },
     hero: {
       eyebrow: 'Professional firm',
       title: 'Solutions for your company',

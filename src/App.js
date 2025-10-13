@@ -19,6 +19,7 @@ import AboutPage from './pages/AboutPage';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Privacy from './pages/Privacy';
+import ActivitiesPage from './pages/ActivitiesPage';
 import AdminPage from './pages/AdminPage';
 import ScrollToTop from './components/script/ScrollToTop';
 
@@ -44,6 +45,7 @@ export default function App(){
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
           <Route path="/chi-siamo" element={<AboutPage />} />
+          <Route path="/aree-di-attivita" element={<ActivitiesPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
           <Route path="/privacy" element={<Privacy />} />

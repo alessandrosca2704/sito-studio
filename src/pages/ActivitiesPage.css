@@ -1,0 +1,27 @@
+.act-hero { position: relative; padding: 90px 0 60px; color:#fff; }
+.act-hero__bg { position:absolute; inset:0; background:
+  linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.45)),
+  url('/public/assets/attività_bg.jpg') center/cover no-repeat; z-index:-1; }
+.act-hero h1 { font-size: clamp(32px, 5vw, 56px); }
+
+.act__grid { display:grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items:center; }
+.act--rev .act__grid { grid-template-columns: .8fr 1.2fr; }
+.act--rev .act__text { order: 2; }
+.act--rev .act__image { order: 1; }
+
+.act__content p, .act__content li { color: var(--muted); }
+.act__content ul { margin: 0 0 1rem 1rem; }
+
+.act__imgwrap { position: relative;text-align: center; width: 100%; max-width: 340px; margin-left:auto; margin-right:auto; }
+.act__imgwrap img { width:100%; height:auto; position: relative;; border-radius: 4px; border: 1px solid var(--border); }
+.act__label { position:absolute; left: 50%; bottom:50%;transform: translate(-50%, -50%);z-index: 2;font-size: larger; color:#fff; font-weight:700; letter-spacing:.04em; text-shadow: 0 2px 6px rgba(0,0,0,.5); }
+.act--tint { background: var(--section); }
+.act__text { background:#fff; border:1px solid var(--border); border-left:4px solid var(--brand); border-radius:12px; padding: 18px; box-shadow: 0 10px 24px rgba(0,0,0,.04); }
+.act--tint .act__text { background:#f9fbff; }
+.act__image .act__imgwrap::after { content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.35)); border-radius:4px; pointer-events:none; }
+
+
+@media (max-width: 900px){
+  .act__grid, .act--rev .act__grid { grid-template-columns: 1fr; }
+  .act--rev .act__text, .act--rev .act__image { order: initial; }
+}
