@@ -1,3 +1,4 @@
+.news-header{background-image: url("/public/assets/hero_news_bg.gif"); align-items: center; background-repeat: no-repeat; background-size: cover; padding: 8%; font-size:350%; }
 .news-page-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
 .news-page-card { background:#fff; border:1px solid var(--border); border-radius: 12px; overflow: hidden; display:flex; flex-direction: column; }
 .news-page-media { display:block; aspect-ratio: 16/9; background-size: cover; background-position: center; }

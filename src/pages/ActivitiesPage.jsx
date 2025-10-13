@@ -1,6 +1,7 @@
 import React from 'react';
 import './ActivitiesPage.css';
 import { useI18n } from '../i18n';
+import useReveal from '../hooks/useReveal';
 
 const itBlocks = [
   {
@@ -127,6 +128,8 @@ export default function ActivitiesPage(){
   const { lang } = useI18n();
   const blocks = lang === 'en' ? enBlocks : itBlocks;
   const heroTitle = lang === 'en' ? 'Areas of Activity' : 'Aree di Attività';
+  const { ref, visible } = useReveal();
+  
   return (
     <>
       <section className="act-hero">
@@ -135,6 +138,7 @@ export default function ActivitiesPage(){
           <h1>{heroTitle}</h1>
         </div>
       </section>
+      <div className={`reveal ${visible?'is-visible':''}`}ref={ref}>
 
       {blocks.map((b, i) => {
         const reversed = i % 2 === 1;
@@ -159,6 +163,7 @@ export default function ActivitiesPage(){
           </section>
         );
       })}
+      </div>
     </>
   );
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 200 200">
+  <defs>
+    <!-- Colors -->
+    <style>
+      .dark { stroke: #123C6A; }
+      .light { stroke: #C2D8EA; }
+    </style>
+
+    <!-- Diagonal masks to alternate over/under weaving -->
+    <!-- Region where y < x (below the y=x diagonal) -->
+    <mask id="mask-below-diag">
+      <rect x="0" y="0" width="200" height="200" fill="black"/>
+      <polygon points="0,0 200,0 200,200" fill="white"/>
+    </mask>
+    <!-- Region where y > x (above the y=x diagonal) -->
+    <mask id="mask-above-diag">
+      <rect x="0" y="0" width="200" height="200" fill="black"/>
+      <polygon points="0,0 0,200 200,200" fill="white"/>
+    </mask>
+  </defs>
+
+  <!-- Background transparent -->
+  <rect x="0" y="0" width="200" height="200" fill="none"/>
+
+  <!-- Base rings -->
+  <!-- Light ring base -->
+  <circle cx="80" cy="120" r="64"
+          fill="none" class="light"
+          stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Dark ring segments that go over (y < x) -->
+  <circle cx="120" cy="80" r="64"
+          fill="none" class="dark"
+          stroke-width="28" stroke-linecap="round" stroke-linejoin="round"
+          mask="url(#mask-below-diag)"/>
+
+  <!-- Dark ring base underneath to complete the shape -->
+  <circle cx="120" cy="80" r="64"
+          fill="none" class="dark"
+          stroke-width="28" stroke-linecap="round" stroke-linejoin="round" opacity="0.999"/>
+
+  <!-- Light ring segments that go over (y > x) -->
+  <circle cx="80" cy="120" r="64"
+          fill="none" class="light"
+          stroke-width="28" stroke-linecap="round" stroke-linejoin="round"
+          mask="url(#mask-above-diag)"/>
+</svg>

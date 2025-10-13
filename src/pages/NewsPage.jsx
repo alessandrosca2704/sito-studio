@@ -17,10 +17,12 @@ export default function NewsPage(){
   const canLoadMore = visibleCount < posts.length;
   const loadMore = () => setVisibleCount(v => Math.min(v + 3, posts.length));
   return (
+    <>
+    <h1 className="text-brand news-header" style={{textAlign:'center',color:"white"}}>{dict.news.title}</h1>
+
     <section className="section">
       <div className={`container reveal ${visible?'is-visible':''}`}ref={ref}>
-        <h1 className="text-brand" style={{textAlign:'center'}}>{dict.news.title}</h1>
-        <p style={{textAlign:'center', marginBottom: 24}}>{dict.news.subtitle}</p>
+        <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.news.subtitle}</h2>
         <div className="news-page-grid">
           {posts.slice(0, visibleCount).map(p=> (
             <article className="news-page-card" key={p.slug}>
@@ -43,5 +45,7 @@ export default function NewsPage(){
       </div>
       <Sole24hPanel query="scadenzario" />
     </section>
+    </>
   );
+
 }
