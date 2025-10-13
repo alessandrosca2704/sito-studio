@@ -1,6 +1,13 @@
 {
   "it": [
     {
+      "slug": "test",
+      "title": "test",
+      "excerpt": "test",
+      "image": "",
+      "content": "<p>test</p>"
+    },
+    {
       "slug": "viaggi-trasferte-tracciabilita",
       "title": "Viaggi, trasferte e rappresentanza: tracciabilità pagamenti obbligatoria.",
       "excerpt": "Nuovi criteri sulla tracciabilità dei pagamenti ai fini della deducibilità...",
@@ -46,4 +53,3 @@
     }
   ]
 }
-
