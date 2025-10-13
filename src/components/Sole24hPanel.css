@@ -1,0 +1,6 @@
+.sole24__head { display:flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.sole24__framewrap { border:1px solid var(--border); border-radius: 12px; overflow:hidden; background:#fff; }
+.sole24__frame { width:100%; height: 70vh; border:0; display:block; }
+.sole24__fallback { padding: 20px; }
+.sole24__note { color: var(--muted); font-size: 12px; padding: 8px 12px; border-top:1px solid var(--border); background:#fafafa; }
+

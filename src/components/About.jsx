@@ -2,7 +2,6 @@ import './About.css';
 import { useI18n } from '../i18n';
 import useReveal from '../hooks/useReveal';
 import { Link } from 'react-router-dom';
-import Contact from './Contact';
 
 export default function About(){
   const { dict } = useI18n();
@@ -21,7 +20,6 @@ export default function About(){
           <img alt="Studio" src="/assets/home_about.jpg" />
         </div>
       </div>
-
       
     </section>
 

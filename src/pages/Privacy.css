@@ -1,0 +1,5 @@
+.privacy__head {background-image: url("/public/assets/privacy-bg.jpg"); align-items: center; background-repeat: no-repeat; background-size: cover; padding: 8%; margin-bottom: 5%; }
+.privacy__frame { width:100%; height: 80vh; border: 1px solid var(--border); border-radius: 12px; }
+.privacy__fallback { padding: 16px; border:1px solid var(--border); border-radius:12px; background:#fff; }
+.privacy__note { margin-top: 8px; color: var(--muted); font-size: 12px; }
+

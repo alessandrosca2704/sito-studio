@@ -5,3 +5,6 @@
 @media (max-width: 900px){ .news-page-grid { grid-template-columns: repeat(2,1fr);} }
 @media (max-width: 640px){ .news-page-grid { grid-template-columns: 1fr;} }
 
+.news-loadmore { display:flex; justify-content:center; margin-top: 18px; }
+.loadmore-btn { width:48px; height:48px; border-radius:50%; border:1px solid var(--border); background:#fff; cursor:pointer; font-size: 22px; line-height: 1; display:flex; align-items:center; justify-content:center; }
+.loadmore-btn:hover { background:#f5f7fb; }

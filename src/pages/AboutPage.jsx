@@ -20,7 +20,7 @@ export default function AboutPage(){
           <h1>Lo Studio</h1>
         </div>
       </section>
-    <div className={`reveal ${visible?'is-visible':''}`}ref={ref}>      
+    <div className={`reveal ${visible?'is-visible':''}`}ref={ref}>
       <section className="section">
         <div className="container intro">
           <h2 className="text-brand">Dal 1995 competenza e serietà<br/>nella gestione della tua azienda</h2>

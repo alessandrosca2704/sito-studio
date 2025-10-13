@@ -1,6 +1,21 @@
 import React from 'react';
 import './AdminPage.css';
 import { getNews, saveNews, resetNews } from '../data';
+import { logout } from '../auth';
+import RichEditor from '../components/admin/RichEditor';
+
+// Static GitHub config (edit here once)
+// Set these values to your repo and Netlify hook
+const COMMIT_CFG = {
+  owner: 'alessandrosca2704',
+  repo: 'sito-studio',
+  branch: 'main',
+  path: 'public/assets/news.json',
+  message: 'chore: update news.json via /admin',
+  userName: 'Site Admin',
+  userEmail: 'admin@example.com',
+  deployHook: '' // optional Netlify build hook URL
+};
 
 function emptyPost(){
   return { slug:'', title:'', excerpt:'', image:'', content:'' };
@@ -11,9 +26,7 @@ export default function AdminPage(){
   const [items, setItems] = React.useState(()=>getNews(lang));
   const [current, setCurrent] = React.useState(emptyPost());
   const [editingIndex, setEditingIndex] = React.useState(-1);
-  const [gitCfg, setGitCfg] = React.useState(()=>{
-    try { return JSON.parse(localStorage.getItem('admin_github_cfg')||'{}'); } catch { return {}; }
-  });
+  const [token, setToken] = React.useState(()=>localStorage.getItem('admin_github_token')||'');
   const [rememberToken, setRememberToken] = React.useState(()=>{
     try { return JSON.parse(localStorage.getItem('admin_github_remember')||'false'); } catch { return false; }
   });
@@ -26,22 +39,21 @@ export default function AdminPage(){
   const updateField = (k,v) => setCurrent(prev => ({...prev, [k]: v}));
 
   const save = () => {
-    if (!current.title || !current.slug) { alert('Titolo e slug sono obbligatori'); return; }
+    if (!current.title || !current.slug) { alert('Title and slug are required'); return; }
     const arr = [...items];
     const existsIdx = arr.findIndex(p => p.slug === current.slug);
     if (editingIndex === -1) {
-      if (existsIdx !== -1) { alert('Slug già esistente'); return; }
+      if (existsIdx !== -1) { alert('Slug already exists'); return; }
       arr.unshift(current);
     } else {
-      // keep position or ensure uniqueness
-      if (existsIdx !== -1 && existsIdx !== editingIndex) { alert('Slug già esistente'); return; }
+      if (existsIdx !== -1 && existsIdx !== editingIndex) { alert('Slug already exists'); return; }
       arr[editingIndex] = current;
     }
     setItems(arr); saveNews(lang, arr); startNew();
   };
 
   const remove = (i) => {
-    if (!window.confirm('Eliminare questa news?')) return;
+    if (!window.confirm('Delete this news?')) return;
     const arr = items.filter((_,idx)=> idx!==i);
     setItems(arr); saveNews(lang, arr); startNew();
   };
@@ -60,32 +72,74 @@ export default function AdminPage(){
     reader.onload = () => {
       try {
         const arr = JSON.parse(reader.result);
-        if (!Array.isArray(arr)) throw new Error('Formato non valido');
+        if (!Array.isArray(arr)) throw new Error('Invalid JSON array');
         setItems(arr); saveNews(lang, arr); startNew();
-      } catch(err){ alert('JSON non valido'); }
+      } catch(err){ alert('Invalid JSON file'); }
     };
     reader.readAsText(file);
   };
 
   const reset = () => {
-    if (!window.confirm('Ripristinare le news predefinite?')) return;
+    if (!window.confirm('Reset to defaults?')) return;
     resetNews(lang); setItems(getNews(lang)); startNew();
+  };
+
+  const testConnection = async () => {
+    if (!token) { setCommitStatus('Token missing'); return; }
+    setCommitStatus('Testing GitHub connection...');
+    try {
+      const baseUrl = `https://api.github.com/repos/${COMMIT_CFG.owner}/${COMMIT_CFG.repo}/contents/${COMMIT_CFG.path}?ref=${encodeURIComponent(COMMIT_CFG.branch)}`;
+      const res = await fetch(baseUrl, { headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}` }});
+      if (res.status === 404) { setCommitStatus('Repo/branch OK. File not found (will be created)'); return; }
+      if (!res.ok) { const t = await res.text(); throw new Error(`${res.status}: ${t}`); }
+      const j = await res.json();
+      setCommitStatus(`OK. File exists (sha: ${j.sha ? j.sha.slice(0,7) : 'n/a'})`);
+    } catch(err){ setCommitStatus('Test error: ' + (err.message || String(err))); }
+  };
+
+  const commitNews = async () => {
+    if (!token) { setCommitStatus('Token missing'); return; }
+    saveNews(lang, items); // ensure latest in current lang
+    setCommitStatus('Preparing commit...');
+    try {
+      const payload = { it: getNews('it'), en: getNews('en') };
+      const json = JSON.stringify(payload, null, 2);
+      const b64 = btoa(unescape(encodeURIComponent(json)));
+      const baseUrl = `https://api.github.com/repos/${COMMIT_CFG.owner}/${COMMIT_CFG.repo}/contents/${COMMIT_CFG.path}`;
+      let sha = undefined;
+      const getRes = await fetch(`${baseUrl}?ref=${encodeURIComponent(COMMIT_CFG.branch)}`, { headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}` }});
+      if (getRes.ok){ const j = await getRes.json(); sha = j.sha; }
+      const body = { message: COMMIT_CFG.message, content: b64, branch: COMMIT_CFG.branch, committer: { name: COMMIT_CFG.userName, email: COMMIT_CFG.userEmail } };
+      if (sha) body.sha = sha;
+      const putRes = await fetch(baseUrl, { method:'PUT', headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(body) });
+      if (!putRes.ok) { const t = await putRes.text(); throw new Error(`Commit failed: ${t}`); }
+      setCommitStatus('Commit done.');
+      if (COMMIT_CFG.deployHook){
+        setCommitStatus('Commit OK. Triggering Netlify...');
+        try { await fetch(COMMIT_CFG.deployHook, { method:'POST', mode:'no-cors' }); setCommitStatus('Deploy hook sent.'); }
+        catch { setCommitStatus('Commit OK. Deploy hook unreachable.'); }
+      }
+    } catch(err){ setCommitStatus(String(err.message||err)); }
   };
 
   return (
     <section className="section admin">
+      <div className="container" style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: 10}}>
+        <h2 style={{margin:0}}>Admin</h2>
+        <button className="btn" onClick={()=>{ logout(); window.location.href = '/login'; }}>Logout</button>
+      </div>
       <div className="container admin__layout">
         <div className="admin__list">
           <div className="admin__listhead">
             <h2>News ({lang.toUpperCase()})</h2>
             <div className="admin__actions">
-              <button className="btn" onClick={startNew}>Nuovo</button>
-              <button className="btn" onClick={exportJson}>Esporta</button>
+              <button className="btn" onClick={startNew}>New</button>
+              <button className="btn" onClick={exportJson}>Export</button>
               <label className="btn" style={{cursor:'pointer'}}>
-                Importa
+                Import
                 <input type="file" accept="application/json" onChange={importJson} style={{display:'none'}}/>
               </label>
-              <button className="btn" onClick={reset}>Ripristina</button>
+              <button className="btn" onClick={reset}>Reset</button>
             </div>
           </div>
           <ul className="admin__items">
@@ -93,13 +147,13 @@ export default function AdminPage(){
               <li key={p.slug} className={i===editingIndex? 'active':''}>
                 <div className="title" onClick={()=>editItem(i)}>{p.title}</div>
                 <div className="slug">/{p.slug}</div>
-                <button className="link danger" onClick={()=>remove(i)}>Elimina</button>
+                <button className="link danger" onClick={()=>remove(i)}>Delete</button>
               </li>
             ))}
           </ul>
         </div>
         <div className="admin__form">
-          <h3>{editingIndex===-1? 'Nuova news' : 'Modifica news'}</h3>
+          <h3>{editingIndex===-1? 'Nuovo Articolo' : "Modifica un'articolo"}</h3>
           <div className="form-admin">
             <label>
               <span>Titolo</span>
@@ -117,91 +171,36 @@ export default function AdminPage(){
               <span>Estratto</span>
               <textarea rows={3} value={current.excerpt} onChange={e=>updateField('excerpt', e.target.value)} />
             </label>
-            <label className="full">
-              <span>Contenuto (HTML)</span>
-              <textarea rows={8} value={current.content} onChange={e=>updateField('content', e.target.value)} />
+            <label className="full editor">
+              <span>Contenuto</span>
+              <RichEditor value={current.content} onChange={(val)=>updateField('content', val)} />
             </label>
           </div>
           <div className="admin__formactions">
-            <button className="btn btn-brand" onClick={save}>Salva</button>
+            <button className="btn btn-brand" onClick={save}>Save</button>
           </div>
         </div>
       </div>
-      <p className="admin__note container">Nota: questa pagina salva le news in <strong>localStorage</strong> per lingua (IT/EN). Puoi eseguire un commit su GitHub per innescare il deploy Netlify.</p>
 
       <div className="container panel">
         <div className="panel__head">
-          <h3>GitHub Commit (deploy Netlify)</h3>
+          <h3>GitHub Commit (Netlify deploy)</h3>
         </div>
         <div className="cfg-grid">
-          <label>
-            <span>Owner</span>
-            <input value={gitCfg.owner||''} onChange={e=>setGitCfg({...gitCfg, owner:e.target.value})} placeholder="org o username" />
-          </label>
-          <label>
-            <span>Repo</span>
-            <input value={gitCfg.repo||''} onChange={e=>setGitCfg({...gitCfg, repo:e.target.value})} placeholder="nome-repo" />
-          </label>
-          <label>
-            <span>Branch</span>
-            <input value={gitCfg.branch||'main'} onChange={e=>setGitCfg({...gitCfg, branch:e.target.value||'main'})} />
-          </label>
-          <label>
-            <span>Path file</span>
-            <input value={gitCfg.path||'public/assets/news.json'} onChange={e=>setGitCfg({...gitCfg, path:e.target.value})} />
-          </label>
-          <label>
-            <span>Commit message</span>
-            <input value={gitCfg.message||'chore: update news.json via /admin'} onChange={e=>setGitCfg({...gitCfg, message:e.target.value})} />
-          </label>
-          <label>
-            <span>Committer name</span>
-            <input value={gitCfg.userName||'Site Admin'} onChange={e=>setGitCfg({...gitCfg, userName:e.target.value})} />
-          </label>
-          <label>
-            <span>Committer email</span>
-            <input value={gitCfg.userEmail||'admin@example.com'} onChange={e=>setGitCfg({...gitCfg, userEmail:e.target.value})} />
-          </label>
+          <div className="cfg-readonly">
+            <div><strong>Repo:</strong> {COMMIT_CFG.owner}/{COMMIT_CFG.repo}</div>
+            <div><strong>Branch:</strong> {COMMIT_CFG.branch}</div>
+            <div><strong>Path:</strong> {COMMIT_CFG.path}</div>
+          </div>
           <label className="full">
             <span>GitHub Token (PAT)</span>
-            <input type="password" value={gitCfg.token||''} onChange={e=>setGitCfg({...gitCfg, token:e.target.value})} placeholder="Fine-grained PAT con Contents: Read/Write" />
-            <div className="hint">Il token può essere memorizzato localmente, ma è sconsigliato in produzione.</div>
-            <label className="remember"><input type="checkbox" checked={rememberToken} onChange={e=>{ setRememberToken(e.target.checked); localStorage.setItem('admin_github_remember', JSON.stringify(e.target.checked)); }} /> Ricorda token nel browser</label>
-          </label>
-          <label className="full">
-            <span>Netlify Deploy Hook URL (opzionale)</span>
-            <input value={gitCfg.deployHook||''} onChange={e=>setGitCfg({...gitCfg, deployHook:e.target.value})} placeholder="https://api.netlify.com/build_hooks/xxx" />
+            <input type="password" value={token} onChange={e=>setToken(e.target.value)} placeholder="Fine-grained PAT with Contents: Read/Write" />
           </label>
         </div>
         <div className="panel__actions">
-          <button className="btn" onClick={()=>{
-            const toSave = {...gitCfg}; if(!rememberToken) delete toSave.token; localStorage.setItem('admin_github_cfg', JSON.stringify(toSave)); setCommitStatus('Configurazione salvata');
-          }}>Salva config</button>
-          <button className="btn btn-brand" onClick={async()=>{
-            // Assicurati che le modifiche correnti siano salvate per la lingua in uso
-            saveNews(lang, items);
-            setCommitStatus('Preparazione commit...');
-            try {
-              const cfg = {...gitCfg}; if(!cfg.owner||!cfg.repo||!cfg.branch||!cfg.path||!cfg.token){ setCommitStatus('Config incompleta'); return; }
-              const payload = { it: getNews('it'), en: getNews('en') };
-              const json = JSON.stringify(payload, null, 2);
-              const b64 = btoa(unescape(encodeURIComponent(json)));
-              const baseUrl = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-              let sha = undefined;
-              const getRes = await fetch(`${baseUrl}?ref=${encodeURIComponent(cfg.branch)}`, { headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${cfg.token}` }});
-              if (getRes.ok){ const j = await getRes.json(); sha = j.sha; }
-              const body = { message: cfg.message || 'chore: update news.json via /admin', content: b64, branch: cfg.branch, committer: { name: cfg.userName || 'Site Admin', email: cfg.userEmail || 'admin@example.com' } };
-              if (sha) body.sha = sha;
-              const putRes = await fetch(baseUrl, { method:'PUT', headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${cfg.token}` }, body: JSON.stringify(body) });
-              if (!putRes.ok) { const t = await putRes.text(); throw new Error(`Commit fallito: ${t}`); }
-              setCommitStatus('Commit eseguito con successo');
-              if (cfg.deployHook){
-                setCommitStatus('Commit OK. Avvio deploy Netlify...');
-                try { await fetch(cfg.deployHook, { method:'POST', mode:'no-cors' }); setCommitStatus('Deploy trigger inviato.'); }
-                catch{ setCommitStatus('Commit OK. Deploy hook non raggiungibile.'); }
-              }
-            } catch(err){ setCommitStatus(String(err.message||err)); }
-          }}>Commit news.json</button>
+          
+          <button className="btn" onClick={testConnection}>Test connection</button>
+          <button className="btn btn-brand" onClick={commitNews}>Commit news.json</button>
           <div className="status">{commitStatus}</div>
         </div>
       </div>

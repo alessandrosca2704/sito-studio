@@ -16,6 +16,9 @@ import ServiceDetail from './pages/ServiceDetail';
 import NewsPage from './pages/NewsPage';
 import NewsDetail from './pages/NewsDetail';
 import AboutPage from './pages/AboutPage';
+import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import Privacy from './pages/Privacy';
 import AdminPage from './pages/AdminPage';
 import ScrollToTop from './components/script/ScrollToTop';
 
@@ -41,7 +44,9 @@ export default function App(){
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
           <Route path="/chi-siamo" element={<AboutPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+          <Route path="/privacy" element={<Privacy />} />
         </Routes>
       </main>
       <Contact/>
