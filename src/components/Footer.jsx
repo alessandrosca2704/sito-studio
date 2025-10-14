@@ -10,7 +10,7 @@ export default function Footer(){
       <div className="container site-footer__inner">
         <div>
           {dict.footer.copyPrefix} {year} {dict.footer.copySuffix}
-          <a href='https://alessandroscarimbolo.it' target='blank'><strong> - Sito realizzato da Alessandro Scarimbolo</strong></a>
+          <a href='https://www.alessandroscarimbolo.it' target='blank'><strong> - Sito realizzato da Alessandro Scarimbolo</strong></a>
         </div>
         <div style={{display:'flex', gap:16}}>
           <Link to="/privacy">{dict.footer.privacy}</Link>
