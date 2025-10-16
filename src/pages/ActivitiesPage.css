@@ -1,7 +1,7 @@
 .act-hero { position: relative; padding: 90px 0 60px; color:#fff; }
 .act-hero__bg { position:absolute; inset:0; background:
   linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.45)),
-  url('/public/assets/attività_bg.jpg') center/cover no-repeat; z-index:-1; }
+  url('/public/assets/attivita_bg.jpg') center/cover no-repeat; z-index:-1; }
 .act-hero h1 { font-size: clamp(32px, 5vw, 56px); }
 
 .act__grid { display:grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items:center; }
@@ -25,3 +25,4 @@
   .act__grid, .act--rev .act__grid { grid-template-columns: 1fr; }
   .act--rev .act__text, .act--rev .act__image { order: initial; }
 }
+

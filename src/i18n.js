@@ -2,7 +2,7 @@ import React from 'react';
 
 const translations = {
   it: {
-    nav: { servizi: 'Servizi', lavori: 'News e Scadenze', aree: 'Aree di Attività', chi: 'Chi siamo', contatti: 'Contatti' },
+    nav: { servizi: 'Servizi', lavori: 'News e Scadenze', aree: 'Aree di Attivit�', chi: 'Chi siamo', contatti: 'Contatti' },
     hero: {
       eyebrow: 'Studio professionale',
       title: 'Soluzioni per la tua azienda',
@@ -19,6 +19,7 @@ const translations = {
         { title: 'Servizi\nSocietari' },
         { title: 'Servizi\nAusiliari' },
         { title: 'Assistenza e Ricerca\nGare Appalto' },
+        {title:'Realizzazione Siti Web'},
         { title: 'Altri\nservizi' },
       ],
       more: 'Scopri tutti i nostri servizi',
@@ -70,7 +71,7 @@ const translations = {
         { title: 'Costi e termini decadenziali per il Ravvedimento speciale.', excerpt: 'Sintesi delle tempistiche e delle modalità di adesione al ravvedimento...', image: 'https://images.unsplash.com/photo-1518544801976-3f3c6c4f1a1a?q=80&w=1600&auto=format&fit=crop' },
       ]
     },
-    footer: { privacy: 'Privacy', cookie: 'Cookie', copyPrefix: '©', copySuffix: 'Via Brigata Bari n° 5/A - 70123 Bari - Studio Scarimbolo P.IVA 00000000000' },
+    footer: { privacy: 'Privacy', cookie: 'Cookie', copyPrefix: '©', copySuffix: 'Via Brigata Bari n° 5/A - 70123 Bari - Studio Scarimbolo P.IVA IT07742460723 ' },
   },
   en: {
     nav: { servizi: 'Services', lavori: 'News & Deadlines', aree: 'Areas of Activity', chi: 'About', contatti: 'Contact' },
@@ -157,3 +158,5 @@ export function I18nProvider({ children }) {
 export function useI18n() {
   return React.useContext(I18nContext);
 }
+
+

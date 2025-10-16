@@ -1,14 +1,13 @@
 import { useI18n } from '../i18n';
 import './ServicesPage.css';
-import { IconChart, IconTarget, IconBars, IconScale } from '../components/icons/Icons';
+import { IconChart, IconTarget, IconBars, IconScale, IconLaptop } from '../components/icons/Icons';
 import { getServices } from '../data';
 import useReveal from '../hooks/useReveal';
 
-const iconByIndex = [IconTarget, IconChart, IconBars, IconScale];
+const iconByIndex = [IconTarget, IconChart, IconBars, IconScale, IconScale, IconLaptop];
 
 export default function ServicesPage(){
-  const { dict } = useI18n();
-  const lang = (typeof window!=='undefined' && document.documentElement.lang) || 'it';
+  const { lang ,dict } = useI18n();
   const list = getServices(lang);
   const { ref, visible } = useReveal();
   
@@ -16,7 +15,7 @@ export default function ServicesPage(){
     <>
       <section className="section section-bg">
         <div className="container">
-          <h1 className="text-brand" style={{textAlign:'center',color:"white", fontSize:"350%",  whiteSpace:"nowrap"}}>{dict.services.title}</h1>
+          <h1 className="text-brand" style={{textAlign:'center',color:"white", fontSize:"350%",}}>{dict.services.title}</h1>
         </div>
       </section>
      <div className={`reveal ${visible?'is-visible':''}`}ref={ref}>

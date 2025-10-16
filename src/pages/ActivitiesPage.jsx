@@ -65,6 +65,73 @@ const itBlocks = [
       </>
     ),
   },
+    {
+    id: 'realizzazione-siti-web',
+    title: 'Realizzazione siti web',
+    highlight: 'Consulenza',
+    image: `${process.env.PUBLIC_URL}/assets/siti.png`,
+    content: (
+      <>
+        <section id="realizzazione-siti-web"
+         class="servizio"
+         aria-labelledby="titolo-servizio"
+         itemscope
+         itemtype="https://schema.org/Service">
+          <header class="servizio__header">
+            <h2 id="titolo-servizio" itemprop="name">Realizzazione siti web professionali</h2>
+            <p class="servizio__sottotitolo" itemprop="description">
+              Sviluppiamo siti veloci, responsive e ottimizzati per la SEO, pensati per convertire visitatori in clienti e raccontare al meglio il tuo brand.
+            </p>
+          </header>
+
+  <div class="servizio__contenuto">
+    <ul class="servizio__benefici" role="list">
+      <li>
+        <strong>Design su misura</strong>
+        <p>Interfacce moderne e accessibili, progettate sui tuoi obiettivi e sulla tua identità visiva.</p>
+      </li>
+      <li>
+        <strong>Prestazioni & SEO</strong>
+        <p>Codice leggero, caricamento rapido, struttura semantica e best practice SEO on-page.</p>
+      </li>
+      <li>
+        <strong>Mobile-first</strong>
+        <p>Layout adattivi che funzionano perfettamente su smartphone, tablet e desktop.</p>
+      </li>
+      <li>
+        <strong>Gestione autonoma</strong>
+        <p>CMS intuitivo per aggiornare testi, immagini e pagine in autonomia.</p>
+      </li>
+      <li>
+        <strong>Sicurezza & GDPR</strong>
+        <p>HTTPS, backup automatici, cookie banner e moduli conformi al GDPR.</p>
+      </li>
+    </ul>
+
+    <div class="servizio__cosa-includiamo">
+      <h3>Cosa include</h3>
+      <dl>
+        <dt><strong>Analisi & strategia</strong></dt>
+        <dd>Mappatura obiettivi, architettura informativa e wireframe.</dd>
+
+        <dt><strong>Sviluppo</strong></dt>
+        <dd>Front-end semantico (HTML5, CSS, JS).</dd>
+
+        <dt><strong>Contenuti</strong></dt>
+        <dd>Setup pagine principali, blog/news, moduli contatto e tracciamenti (GA4/Tag Manager).</dd>
+
+        <dt><strong>Formazione</strong></dt>
+        <dd>Sessione di training per l’uso del pannello di gestione.</dd>
+
+        <dt><strong>Assistenza</strong></dt>
+        <dd>Supporto post-go-live e piani di manutenzione opzionali.</dd>
+      </dl>
+    </div> 
+  </div>
+  </section>
+    </>
+    ),
+  },
 ];
 
 const enBlocks = [
@@ -122,6 +189,72 @@ const enBlocks = [
       </>
     ),
   },
+      {
+    id: 'realizzazione-siti-web',
+    title: 'Web-Site Developing',
+    highlight: 'Web Developing',
+    image: `${process.env.PUBLIC_URL}/assets/siti.png`,
+    content: (
+      <section id="website-development"
+         class="service"
+         aria-labelledby="service-title"
+         itemscope
+         itemtype="https://schema.org/Service">
+  <header class="service__header">
+    <h2 id="service-title" itemprop="name">Professional Website Development</h2>
+    <p class="service__subtitle" itemprop="description">
+      We build fast, responsive, and SEO-optimized websites designed to convert visitors into customers and effectively showcase your brand.
+    </p>
+  </header>
+
+  <div class="service__content">
+    <ul class="service__benefits" role="list">
+      <li>
+        <strong>Custom Design</strong>
+        <p>Modern, accessible interfaces tailored to your goals and brand identity.</p>
+      </li>
+      <li>
+        <strong>Performance & SEO</strong>
+        <p>Lightweight code, fast loading times, semantic structure, and on-page SEO best practices.</p>
+      </li>
+      <li>
+        <strong>Mobile-first</strong>
+        <p>Responsive layouts that work flawlessly on smartphones, tablets, and desktops.</p>
+      </li>
+      <li>
+        <strong>Self-management</strong>
+        <p>Intuitive CMS to update text, images, and pages independently.</p>
+      </li>
+      <li>
+        <strong>Security & GDPR</strong>
+        <p>HTTPS, automatic backups, cookie banner, and GDPR-compliant forms.</p>
+      </li>
+    </ul>
+
+    <div class="service__inclusions">
+      <h3>What’s Included</h3>
+      <dl>
+        <dt><strong>Strategy & Planning</strong></dt>
+        <dd>Goal mapping, information architecture, and wireframes.</dd>
+
+        <dt><strong>Development</strong></dt>
+        <dd>Semantic front-end (HTML5, CSS, JS).</dd>
+
+        <dt><strong>Content Setup</strong></dt>
+        <dd>Main pages, blog/news, contact forms, and tracking (GA4/Tag Manager).</dd>
+
+        <dt><strong>Training</strong></dt>
+        <dd>Training session on how to use the admin panel.</dd>
+
+        <dt><strong>Support</strong></dt>
+        <dd>Post-launch support and optional maintenance plans.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+    ),
+  }
 ];
 
 export default function ActivitiesPage(){
@@ -138,7 +271,7 @@ export default function ActivitiesPage(){
           <h1>{heroTitle}</h1>
         </div>
       </section>
-      <div className={`reveal ${visible?'is-visible':''}`}ref={ref}>
+      <div className={`container reveal ${visible?'is-visible':''}`}ref={ref}>
 
       {blocks.map((b, i) => {
         const reversed = i % 2 === 1;

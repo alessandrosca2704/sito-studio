@@ -1,7 +1,7 @@
 import './Services.css';
 import { useI18n } from '../i18n';
 import useReveal from '../hooks/useReveal';
-import { IconChart, IconTarget, IconBars, IconScale, IconMore } from './icons/Icons';
+import { IconChart, IconTarget, IconBars, IconScale, IconMore, IconLaptop } from './icons/Icons';
 import { Link } from 'react-router-dom';
 import { getServices } from '../data';
 export default function Services(){
@@ -17,7 +17,7 @@ export default function Services(){
           </div>
         </div>
         <div ref={ref} className={`services-grid reveal ${visible?'is-visible':''}`}>
-          {getServices((typeof window!=='undefined' && document.documentElement.lang)||'it').slice(0,6).map((tile, i) => (
+          {getServices((typeof window!=='undefined' && document.documentElement.lang)||'it').slice(0,7).map((tile, i) => (
             <Link to={`/servizi#${tile.slug}`} className="service-tile" key={tile.slug}>
               <div className="service-icon">
                 {i===0 && <IconChart size={56} />}
@@ -25,7 +25,9 @@ export default function Services(){
                 {i===2 && <IconBars size={56} />}
                 {i===3 && <IconScale size={56} />}
                 {i===4 && <IconScale size={56} />}
-                {i===5 && <IconMore size={56} />}
+                {i===5 && <IconLaptop size={56} />}
+                {i===6 && <IconMore size={56} />}
+
               </div>
               <div className="service-title">{tile.title}</div>
             </Link>
