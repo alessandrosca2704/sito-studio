@@ -8,30 +8,51 @@ export default function Login(){
   const loc = useLocation();
   const [pw, setPw] = React.useState('');
   const [error, setError] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(()=>{
+React.useEffect(()=>{
     if (isAuthed()) nav('/admin', { replace: true });
   }, [nav]);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    if (loginWithPassword(pw)) {
-      const dest = (loc.state && loc.state.from) || '/admin';
-      nav(dest, { replace: true });
-    } else {
-      setError('Password non corretta');
+    setError('');
+    setLoading(true);
+    try {
+      const ok = await loginWithPassword(pw);   //await qui
+      if (ok) {
+        const dest = (loc.state && loc.state.from) || '/admin';
+        nav(dest, { replace: true });
+      } else {
+        setError('Password non corretta');
+      }
+    } catch {
+      setError('Errore di rete, riprova');
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
+ return (
     <section className="login">
       <form className="login__card" onSubmit={submit}>
         <h1>Area Riservata</h1>
         <p className="login__hint">Inserisci la password amministratore per accedere.</p>
-        <input type="password" value={pw} onChange={e=>setPw(e.target.value)} placeholder="Password" />
+        <input
+          type="password"
+          value={pw}
+          onChange={e=>setPw(e.target.value)}
+          placeholder="Password"
+          disabled={loading}
+        />
         {error && <div className="login__error">{error}</div>}
-        <button className="btn btn-brand" type="submit">Entra</button>
-        <div className="login__note">Suggerimento: imposta la password tramite variabile env <code>REACT_APP_ADMIN_PASSWORD</code> o modifica in codice.</div>
+        <button className="btn btn-brand" type="submit" disabled={loading}>
+          {loading ? 'Verifica…' : 'Entra'}
+        </button>
+        {/* Nota aggiornata: niente REACT_APP_ADMIN_PASSWORD nel client */}
+        <div className="login__note">
+          La password è verificata lato server (Netlify Function).
+        </div>
       </form>
     </section>
   );
