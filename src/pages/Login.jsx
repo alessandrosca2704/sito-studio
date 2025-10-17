@@ -19,7 +19,7 @@ React.useEffect(()=>{
     setError('');
     setLoading(true);
     try {
-      const ok = await loginWithPassword(pw);   //await qui
+      const ok = await loginWithPassword(pw.trim());   //await qui
       if (ok) {
         const dest = (loc.state && loc.state.from) || '/admin';
         nav(dest, { replace: true });
