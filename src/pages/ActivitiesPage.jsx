@@ -4,19 +4,7 @@ import { useI18n } from '../i18n';
 import useReveal from '../hooks/useReveal';
 
 const itBlocks = [
-  {
-    id: 'finanza-aziendale',
-    title: 'Finanza Aziendale',
-    highlight: 'Finanza',
-    image: `${process.env.PUBLIC_URL}/assets/aziendale.jpg`,
-    content: (
-      <>
-        <p>Lo studio si occuperà di studiare le migliori decisioni in ambito aziendale atte a garantire, all’azienda stessa, un bilancio attivo.</p>
-        <p>Occupandosi quindi della cosiddetta corporate finance mettendo in pratica tutte le tecniche e gli strumenti che mirano a migliorare il valore dell’impresa e ad assicurare un rendimento del capitale superiore al costo del capitale, il tutto evitando i rischi finanziari.</p>
-        <p><strong>Le decisioni in analisi verranno prese sulla base dei fondi disponibili e delle attività sulle quali investire;</strong> l’obiettivo finale è stabilire un buon equilibrio tra i due aspetti, possibilmente aumentando il rendimento, abbassando i costi e riducendo i rischi.</p>
-      </>
-    ),
-  },
+
   {
     id: 'ristrutturazioni-aziendali',
     title: 'Ristrutturazioni Aziendali',
@@ -46,25 +34,6 @@ const itBlocks = [
       </>
     ),
   },
-  {
-    id: 'consulenza-fiscale-tributaria',
-    title: 'Consulenza Fiscale e Tributaria',
-    highlight: 'Consulenza',
-    image: `${process.env.PUBLIC_URL}/assets/fiscale_tributaria.jpg`,
-    content: (
-      <>
-        <p>Un&rsquo;attivit&agrave; fondamentale, il management dello studio con l&rsquo;ausilio dei suoi collaboratori e professionisti qualificati, rivolto sia alle aziende sia ai privati cittadini.</p>
-        <p>&nbsp;</p>
-        <p>Affianchiamo i clienti nella gestione dei rapporti con l&rsquo;Amministrazione Finanziaria dello Stato, degli Enti locali offrendo una consulenza guidata per gli obblighi tributari a enti, societ&agrave;, imprese, privati, con un occhio attent su tutti gli aspetti della tassazione, sia per imposte dirette che per imposte indirette.</p>
-        <p>&nbsp;</p>
-        <p><strong>Nello specifico, le imposte dirette di cui si occupa uno studio con servizi di consulenza fiscale sono:</strong><br />&bull; Dichiarazione dei Redditi per persone fisiche, giuridiche, societ&agrave;, ONLUS, enti non commerciali, per Mod. UNICO, IVA e IRAP.<br />&bull; Dichiarazione sostituti d&rsquo;imposta, con modello 770.<br />&bull; Dichiarazioni di TASI e IMU, con anche i vari versamenti.<br />&bull; Liquidazioni IVA periodiche.<br />&bull; Valutazioni delle rimanenze finali nei magazzini.<br />&bull; Apertura di una Partita IVA in base al migliore e pi&ugrave; appropriato regime fiscale.<br />&bull; Calcolo di saldi e acconti IRPEF, IVA, IRES e IRAP.</p>
-        <p>&nbsp;</p>
-        <p><strong>Per quanto riguarda le imposte indirette, i servizi di consulenza fiscale riguardano il bollo, la successione e il registro.</strong><br />Per questi motivi, la consulenza tributaria non &egrave; limitata solamente alle dichiarazioni fiscali, ma fornisce anche servizi di assistenza per problematiche pi&ugrave; difficili.</p>
-        <p>&nbsp;</p>
-        <p><strong>Ecco perch&eacute; &egrave; assolutamente fondamentale rivolgersi ad un professionista in grado di assicurare la migliore e pi&ugrave; completa gestione di ogni aspetto fiscale al fine di capire come orientarsi nell&rsquo;intricato e difficile mondo delle normative su tributi e imposte che, tra le altre cose, vanno sempre correttamente calcolate e versate su base del fatturato e rispettando le scadenze.</strong></p>
-      </>
-    ),
-  },
     {
     id: 'realizzazione-siti-web',
     title: 'Realizzazione siti web',
@@ -78,7 +47,7 @@ const itBlocks = [
          itemscope
          itemtype="https://schema.org/Service">
           <header class="servizio__header">
-            <h2 id="titolo-servizio" itemprop="name">Realizzazione siti web professionali</h2>
+            <h2 id="titolo-servizio" itemprop="name"></h2>
             <p class="servizio__sottotitolo" itemprop="description">
               Sviluppiamo siti veloci, responsive e ottimizzati per la SEO, pensati per convertire visitatori in clienti e raccontare al meglio il tuo brand.
             </p>
@@ -132,22 +101,39 @@ const itBlocks = [
     </>
     ),
   },
-];
-
-const enBlocks = [
   {
-    id: 'finanza-aziendale',
-    title: 'Corporate Finance',
-    highlight: 'Finance',
-    image: `${process.env.PUBLIC_URL}/assets/aziendale.jpg`,
+    id: 'consulenza-fiscale-tributaria',
+    title: 'Consulenza Fiscale e Tributaria',
+    highlight: 'Consulenza',
+    image: `${process.env.PUBLIC_URL}/assets/fiscale_tributaria.jpg`,
     content: (
       <>
-        <p>We study corporate decisions to secure a healthy, profitable balance sheet.</p>
-        <p>We apply corporate finance techniques and tools to improve company value and achieve returns above the cost of capital while managing risks.</p>
-        <p><strong>Decisions balance available funds and investable assets</strong> to raise returns while reducing costs and risks.</p>
+        <p>Un&rsquo;attivit&agrave; fondamentale, il management dello studio con l&rsquo;ausilio dei suoi collaboratori e professionisti qualificati, rivolto sia alle aziende sia ai privati cittadini.</p>
+        <p>Affianchiamo i clienti nella gestione dei rapporti con l&rsquo;Amministrazione Finanziaria dello Stato, degli Enti locali offrendo una consulenza guidata per gli obblighi tributari a enti, societ&agrave;, imprese, privati, con un occhio attent su tutti gli aspetti della tassazione, sia per imposte dirette che per imposte indirette.</p>
+        <p><strong>Nello specifico, le imposte dirette di cui si occupa uno studio con servizi di consulenza fiscale sono:</strong><br />&bull; Dichiarazione dei Redditi per persone fisiche, giuridiche, societ&agrave;, ONLUS, enti non commerciali, per Mod. UNICO, IVA e IRAP.<br />&bull; Dichiarazione sostituti d&rsquo;imposta, con modello 770.<br />&bull; Dichiarazioni di TASI e IMU, con anche i vari versamenti.<br />&bull; Liquidazioni IVA periodiche.<br />&bull; Valutazioni delle rimanenze finali nei magazzini.<br />&bull; Apertura di una Partita IVA in base al migliore e pi&ugrave; appropriato regime fiscale.<br />&bull; Calcolo di saldi e acconti IRPEF, IVA, IRES e IRAP.</p>
+        <p><strong>Per quanto riguarda le imposte indirette, i servizi di consulenza fiscale riguardano il bollo, la successione e il registro.</strong><br />Per questi motivi, la consulenza tributaria non &egrave; limitata solamente alle dichiarazioni fiscali, ma fornisce anche servizi di assistenza per problematiche pi&ugrave; difficili.</p>
+        <p><strong>Ecco perch&eacute; &egrave; assolutamente fondamentale rivolgersi ad un professionista in grado di assicurare la migliore e pi&ugrave; completa gestione di ogni aspetto fiscale al fine di capire come orientarsi nell&rsquo;intricato e difficile mondo delle normative su tributi e imposte che, tra le altre cose, vanno sempre correttamente calcolate e versate su base del fatturato e rispettando le scadenze.</strong></p>
       </>
     ),
   },
+    {
+    id: 'finanza-aziendale',
+    title: 'Finanza Aziendale',
+    highlight: 'Finanza',
+    image: `${process.env.PUBLIC_URL}/assets/aziendale.jpg`,
+    content: (
+      <>
+        <p>Lo studio si occuperà di studiare le migliori decisioni in ambito aziendale atte a garantire, all’azienda stessa, un bilancio attivo.</p>
+        <p>Occupandosi quindi della cosiddetta corporate finance mettendo in pratica tutte le tecniche e gli strumenti che mirano a migliorare il valore dell’impresa e ad assicurare un rendimento del capitale superiore al costo del capitale, il tutto evitando i rischi finanziari.</p>
+        <p><strong>Le decisioni in analisi verranno prese sulla base dei fondi disponibili e delle attività sulle quali investire;</strong> l’obiettivo finale è stabilire un buon equilibrio tra i due aspetti, possibilmente aumentando il rendimento, abbassando i costi e riducendo i rischi.</p>
+      </>
+    ),
+  },
+  
+];
+
+const enBlocks = [
+
   {
     id: 'ristrutturazioni-aziendali',
     title: 'Corporate Restructuring',
@@ -177,19 +163,7 @@ const enBlocks = [
       </>
     ),
   },
-  {
-    id: 'consulenza-fiscale-tributaria',
-    title: 'Tax Advisory',
-    highlight: 'Advisory',
-    image: `${process.env.PUBLIC_URL}/assets/fiscale_tributaria.jpg`,
-    content: (
-      <>
-        <p>Support for companies and individuals in dealing with the Tax Administration and ensuring compliance.</p>
-        <p>Direct and indirect taxes, returns, VAT settlements, VAT number opening, tax calculations.</p>
-      </>
-    ),
-  },
-      {
+        {
     id: 'realizzazione-siti-web',
     title: 'Web-Site Developing',
     highlight: 'Web Developing',
@@ -254,14 +228,40 @@ const enBlocks = [
 </section>
 
     ),
-  }
+  },
+  {
+    id: 'consulenza-fiscale-tributaria',
+    title: 'Tax Advisory',
+    highlight: 'Advisory',
+    image: `${process.env.PUBLIC_URL}/assets/fiscale_tributaria.jpg`,
+    content: (
+      <>
+        <p>Support for companies and individuals in dealing with the Tax Administration and ensuring compliance.</p>
+        <p>Direct and indirect taxes, returns, VAT settlements, VAT number opening, tax calculations.</p>
+      </>
+    ),
+  },
+
+    {
+    id: 'finanza-aziendale',
+    title: 'Corporate Finance',
+    highlight: 'Finance',
+    image: `${process.env.PUBLIC_URL}/assets/aziendale.jpg`,
+    content: (
+      <>
+        <p>We study corporate decisions to secure a healthy, profitable balance sheet.</p>
+        <p>We apply corporate finance techniques and tools to improve company value and achieve returns above the cost of capital while managing risks.</p>
+        <p><strong>Decisions balance available funds and investable assets</strong> to raise returns while reducing costs and risks.</p>
+      </>
+    ),
+  },
 ];
 
 export default function ActivitiesPage(){
   const { lang } = useI18n();
   const blocks = lang === 'en' ? enBlocks : itBlocks;
   const heroTitle = lang === 'en' ? 'Areas of Activity' : 'Aree di Attività';
-  const { ref, visible } = useReveal();
+  const { ref, visible } = useReveal({threshold:0});
   
   return (
     <>

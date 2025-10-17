@@ -5,7 +5,7 @@
 .svc__icon { color: var(--brand); margin-bottom: 12px; }
 .svc__content p { color: var(--muted); margin: 0 0 10px 0; }
 .svc__image { display:flex; justify-content:center; }
-.svc__image img { width: 100%; max-width: 440px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,.08); }
+.svc__image img { width: 60%; max-width: 440px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,.08); }
 
 @media (max-width: 1024px){
   .section-bg { padding: 72px 0; font-size: 100%; overflow-wrap: break-word;}

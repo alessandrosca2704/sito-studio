@@ -2,7 +2,7 @@ import React from 'react';
 import './Sole24hPanel.css';
 
 export default function Sole24hPanel({ query = 'scadenzario' }) {
-  const url = `https://www.ricerca24.ilsole24ore.com/?cmd=static&chId=30&path=/search/search_engine.jsp&field=Titolo|Testo&orderBy=score+desc&chId=30&keyWords=${encodeURIComponent(query)}&button=&pageNumber=1&pageSize=10&fromDate=&toDate=&filter=all`;
+  const url = `https://www.ricerca24.ilsole24ore.com/?cmd=static&chId=30&path=/search/search_engine.jsp&field=Titolo|Testo&orderBy=data+desc&chId=30&keyWords=${encodeURIComponent(query)}&button=&pageNumber=1&pageSize=10&fromDate=&toDate=&filter=all`;
   const [failed, setFailed] = React.useState(false);
 
   return (

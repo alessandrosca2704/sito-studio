@@ -43,7 +43,7 @@ export default function NewsPage(){
           </div>
         )}
       </div>
-      <Sole24hPanel query="scadenzario" />
+      <Sole24hPanel query="news" />
     </section>
     </>
   );

@@ -3,6 +3,7 @@ import './ServicesPage.css';
 import { IconChart, IconTarget, IconBars, IconScale, IconLaptop } from '../components/icons/Icons';
 import { getServices } from '../data';
 import useReveal from '../hooks/useReveal';
+import { Link } from 'react-router-dom';
 
 const iconByIndex = [IconTarget, IconChart, IconBars, IconScale, IconScale, IconLaptop];
 
@@ -38,9 +39,13 @@ export default function ServicesPage(){
                 </div>
               </div>
             </div>
+
           </section>
+          
         );
       })}
+      <Link to="/aree-di-attivita" style={{display:'flex',justifyContent:"center"}}><button className='btn btn-brand' style={{ fontSize:'18px'}}>Scopri di più sulle nostre Aree di Attività</button></Link>
+
       </div>
     </>
   );
