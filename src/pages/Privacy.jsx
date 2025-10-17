@@ -1,6 +1,6 @@
 import React from 'react';
 import './Privacy.css';
-import { color } from 'motion';
+import { color } from 'framer-motion';
 
 export default function Privacy(){
   const [failed, setFailed] = React.useState(false);
