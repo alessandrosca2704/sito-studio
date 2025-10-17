@@ -21,7 +21,7 @@ export function isAuthed() {
 }
 
 export function loginWithPassword(pw) {
-  const expected = process.env.REACT_APP_ADMIN_PASSWORD || 'changeme';
+  const expected = process.env.REACT_APP_ADMIN_PASSWORD;
   if (pw === expected) {
     try {
       localStorage.setItem('admin_authed', '1');
