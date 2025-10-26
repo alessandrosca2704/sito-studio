@@ -21,7 +21,15 @@ export default function NewsDetail(){
   const shareUrl = `${BASE_URL}/news/${post.slug}`;
   const raw = String(post.excerpt || post.content || post.title || '')
     .replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-  const excerpt = raw.length > 200 ? raw.slice(0, 197) + '…' : raw;
+  const excerpt = raw.length > 200 ? raw.slice(0, 197) + '...' : raw;
+
+  const ensureAbsolute = (url = '') => {
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url)) return url;
+  return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+};
+const imageAbs = ensureAbsolute(post.image);
+
   return (
     <>
         <Helmet>
@@ -34,31 +42,35 @@ export default function NewsDetail(){
       <meta property="og:site_name" content="Studio Scarimbolo" />
       <meta property="og:locale" content={lang === 'it' ? 'it_IT' : 'en_US'} />
       <meta property="og:title" content={post.title} />
-      <meta property="og:description" content={post.excerpt} />
-      <meta property="og:image" content={post.image} />
+      <meta property="og:description" content={excerpt} />
+      <meta property="og:image" content={imageAbs} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={post.title} />
-      <meta name="twitter:description" content={post.excerpt} />
-      <meta name="twitter:image" content={post.image} />
+      <meta name="twitter:description" content={excerpt} />
+      <meta name="twitter:image" content={imageAbs} />
     </Helmet>
     
     <section className="section">
       <div className="container">
         <div className="news-detail">
-          <div className="news-detail__media" style={{backgroundImage:`url(${post.image})`}} />
+          {post.image && (
+            <div className="news-detail__media">
+              <img src={imageAbs} alt={post.title} loading="lazy" />
+            </div>
+          )}
           <h1 className="text-brand">{post.title}</h1>
           <p className="lead">{post.excerpt}</p>
           <div className="news-detail__content" dangerouslySetInnerHTML={{__html: post.content || post.excerpt}} />
           <div className='share-grid'>
           <span>Condividi la news sui Social!</span>
-          <FacebookShareButton className='share-button'  hashtag="#news" resetButtonStyle={false} url={`https://www.studioscarimbolo.it/news/${post.slug}`}><IconFacebook /></FacebookShareButton>
-          <WhatsappShareButton className='share-button'  hashtag="#news" resetButtonStyle={false} url={`https://www.studioscarimbolo.it/news/${post.slug}`}><IconWhatsapp/></WhatsappShareButton>
-          <LinkedinShareButton className='share-button'  hashtag="#news" resetButtonStyle={false} url={`https://www.studioscarimbolo.it/news/${post.slug}`}><IconLinkedIn/></LinkedinShareButton>
+          <FacebookShareButton className='share-button' hashtag="#news" resetButtonStyle={false} url={shareUrl}><IconFacebook /></FacebookShareButton>
+          <WhatsappShareButton className='share-button' title={`${post.title}\n\n${excerpt}`} resetButtonStyle={false} url={shareUrl}><IconWhatsapp/></WhatsappShareButton>
+          <LinkedinShareButton className='share-button' title={`${post.title}\n\n${excerpt}`} resetButtonStyle={false} url={shareUrl}><IconLinkedIn/></LinkedinShareButton>
           </div>
-          <div style={{marginTop:16}}><Link to="/news" className="btn">← {dict.news.archive}</Link></div>
+          <div style={{marginTop:16}}><Link to="/news" className="btn">&larr; {dict.news.archive}</Link></div>
         </div>
       </div>
     </section>

@@ -64,7 +64,7 @@ const translations = {
       title: 'Scadenze e News',
       subtitle: 'Novità e appuntamenti dal mondo della finanza, contabilità, normativa e molto altro.',
       readMore: 'Leggi tutto',
-      archive: 'Archivio news >',
+      archive: 'Archivio news',
       items: [
         { title: 'Viaggi, trasferte e rappresentanza: tracciabilità pagamenti obbligatoria.', excerpt: 'Nuovi criteri sulla tracciabilità dei pagamenti ai fini della deducibilità...', image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1600&auto=format&fit=crop' },
         { title: 'Scadenza al 1° gennaio prossimo, del ravvedimento per aderenti al CPB 2025-2026', excerpt: 'Le regole dell’Agenzia delle Entrate per il Provvedimento 350617...', image: 'https://images.unsplash.com/photo-1588702547919-26089e690ecc?q=80&w=1600&auto=format&fit=crop' },
@@ -135,7 +135,7 @@ const translations = {
       title: 'Events & News',
       subtitle: 'Updates from finance, accounting, regulations and more.',
       readMore: 'Read more',
-      archive: 'News archive >',
+      archive: 'News archive',
       items: [
         { title: 'Travel and representation expenses: mandatory traceability.', excerpt: 'New criteria for payment traceability for deductibility...', image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1600&auto=format&fit=crop' },
         { title: 'Deadline January 1st for special regularization 2025–2026', excerpt: 'Revenue Agency rules and timelines summarized...', image: 'https://images.unsplash.com/photo-1588702547919-26089e690ecc?q=80&w=1600&auto=format&fit=crop' },
