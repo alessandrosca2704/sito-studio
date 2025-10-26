@@ -2,4 +2,6 @@
 .news-detail__media { aspect-ratio: 16/9; background-size: cover; background-position:center; border-radius: 12px; margin-bottom: 16px; }
 .lead { color: var(--muted); }
 .news-detail__content p { margin-bottom: 12px; }
+.share-grid{display:flex;align-items: center; justify-content:flex-end;}
+.share-button{ align-items: center;margin-left: 15px; height: 36px; background: #143153; color: white; border: none; border-radius: 5px;}
 

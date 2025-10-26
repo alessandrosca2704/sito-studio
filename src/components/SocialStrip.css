@@ -4,11 +4,16 @@
 .social-strip__caption { display:flex; justify-content: center; }
 
 .cta-band { display:grid; grid-template-columns: 1fr 1fr; }
-.cta-band__left { background: #0f2038; color: #cfd6e5; padding: 32px; display:flex; align-items:center; justify-content: space-between; }
+.cta-band__left { background: #0f2038; color: #cfd6e5; padding: 32px; display:flex; align-items:center; justify-content: flex-end; }
 .cta-band__right { background: var(--brand); color: #fff; padding: 32px; display:flex; align-items:center; justify-content:center; }
-.cta-link { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:6px; background:#143153; color:#fff; }
+.cta-text{margin-right: 150px;}
+.cta-link { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:6px; background:#143153; color:#fff; margin-left: 25px;}
 .cta-phone { display:flex; gap:12px; align-items:center; }
 .cta-number { font-size: 22px; font-weight: 700; letter-spacing: .02em; }
 
-@media (max-width: 900px){ .cta-band { grid-template-columns: 1fr; } }
+@media (max-width: 900px){
+     .cta-band { grid-template-columns: 1fr; justify-content: space-between; } 
+     .cta-text{margin: auto;}
+     .cta-link{ margin: 15px; width:50px;}
+    }
 

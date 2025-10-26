@@ -7,8 +7,9 @@ export default function SocialStrip(){
       
       <div className="cta-band">
         <div className="cta-band__left">
-          <span>Vai al nostro profilo Linkedin</span>
-          <a className="cta-link" href="https://linkedin.com/in/studio-v-scarimbolo-commercialista-in-bari-a9380529" target="_blank"><IconLinkedIn /> </a>
+          <span className='cta-text'>Dai uno sguardo ai nostri profili social</span>
+          <a className='cta-link' href='https://www.facebook.com/studioscarimbolo/' target='_blank'><IconFacebook/></a>
+          <a className="cta-link" href="https://www.linkedin.com/in/studio-scarimbolo-a60947276/" target="_blank"><IconLinkedIn /> </a>
         </div>
         <div className="cta-band__right">
           <div className="cta-phone">
