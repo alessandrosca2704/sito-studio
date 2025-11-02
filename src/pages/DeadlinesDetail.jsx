@@ -6,12 +6,13 @@ import {LinkedinShareButton, WhatsappShareButton } from 'react-share';
 import { IconFacebook, IconLinkedIn, IconMore, IconShare, IconWhatsapp } from '../components/icons/Icons';
 import { Helmet } from 'react-helmet-async';
 import { shareOnMobile } from 'react-mobile-share';
+import useScadenze from '../hooks/useScadenze';
 
-export default function NewsDetail(){
+export default function DeadlinesDetail(){
   const { slug } = useParams();
   const { dict } = useI18n();
   const lang = (typeof window!=='undefined' && document.documentElement.lang)||'it';
-  const { items } = useNews(lang);
+  const { items } = useScadenze(lang);
   const post = items.find(p => p.slug === slug);
   if(!post){
     return (
@@ -19,7 +20,7 @@ export default function NewsDetail(){
     );
   }
   const BASE_URL = 'https://www.studioscarimbolo.it';
-  const shareUrl = `${BASE_URL}/news/${post.slug}`;
+  const shareUrl = `${BASE_URL}/scadenze/${post.slug}`;
   const raw = String(post.excerpt || post.content || post.title || '')
     .replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
   const excerpt = raw.length > 200 ? raw.slice(0, 197) + '...' : raw;

@@ -4,4 +4,6 @@
 .news-detail__content p { margin-bottom: 12px; }
 .share-grid{display:flex;align-items: center; justify-content:flex-end;}
 .share-button{ align-items: center;margin-left: 15px; height: 36px; background: #143153; color: white; border: none; border-radius: 5px;}
+.share-button--mobile{background: transparent; color: #143153; height: auto; padding: 0;}
+.share-button--mobile svg{display:block;}
 

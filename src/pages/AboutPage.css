@@ -55,3 +55,14 @@
   .about-focus__grid { gap: 20px; }
   .about-team__grid { gap: 20px; }
 }
+
+@media (max-width: 380px) {
+  .about-focus__grid { gap: 20px; }
+  .about-team__grid { gap: 20px; }
+  .about-focus{min-height: 800px;}
+}
+@media (max-width: 308px) {
+  .about-focus__grid { gap: 20px; }
+  .about-team__grid { gap: 20px; }
+  .about-focus{min-height: 900px;}
+}

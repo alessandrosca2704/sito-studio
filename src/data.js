@@ -18,11 +18,31 @@ export function getServices(lang= 'it'){
   return lang==='en' ? en : it;
 }
 
-// Local override helpers for News
-function loadOverride(lang){
+const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
+
+const DATASETS = {
+  news: {
+    override: (lang) => `news_${lang}`,
+    remote: (lang) => `news_remote_${lang}`,
+    last: 'news_remote_last',
+    event: 'news-updated',
+    file: 'news.json'
+  },
+  deadlines: {
+    override: (lang) => `scadenze_${lang}`,
+    remote: (lang) => `scadenze_remote_${lang}`,
+    last: 'scadenze_remote_last',
+    event: 'deadlines-updated',
+    file: 'scadenze.json'
+  }
+};
+
+function loadOverride(kind, lang){
   if (typeof window === 'undefined') return null;
+  const cfg = DATASETS[kind];
+  if (!cfg) return null;
   try {
-    const raw = localStorage.getItem(`news_${lang}`);
+    const raw = localStorage.getItem(cfg.override(lang));
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed)) return parsed;
@@ -30,45 +50,63 @@ function loadOverride(lang){
   return null;
 }
 
-export function saveNews(lang, items){
+function saveItems(kind, lang, items){
   if (typeof window === 'undefined') return;
-  localStorage.setItem(`news_${lang}` , JSON.stringify(items||[]));
-  try { window.dispatchEvent(new Event('news-updated')); } catch {}
+  const cfg = DATASETS[kind];
+  if (!cfg) return;
+  localStorage.setItem(cfg.override(lang), JSON.stringify(items || []));
+  try { window.dispatchEvent(new Event(cfg.event)); } catch {}
 }
 
-export function resetNews(lang){
+function resetItems(kind, lang){
   if (typeof window === 'undefined') return;
-  localStorage.removeItem(`news_${lang}`);
-  try { window.dispatchEvent(new Event('news-updated')); } catch {}
+  const cfg = DATASETS[kind];
+  if (!cfg) return;
+  localStorage.removeItem(cfg.override(lang));
+  try { window.dispatchEvent(new Event(cfg.event)); } catch {}
 }
 
-export function getNews(lang='it'){
-  const override = loadOverride(lang);
+function getItems(kind, lang='it'){
+  const override = loadOverride(kind, lang);
   if (override) return override;
-  // Try cached remote copy first
   if (typeof window !== 'undefined') {
-    const cached = localStorage.getItem(`news_remote_${lang}`);
-    if (cached) {
-      try { return JSON.parse(cached); } catch {}
+    const cfg = DATASETS[kind];
+    if (cfg) {
+      const cached = localStorage.getItem(cfg.remote(lang));
+      if (cached) {
+        try { return JSON.parse(cached); } catch {}
+      }
     }
   }
   return [];
 }
 
-export async function ensureNewsLoaded(){
+async function ensureDatasetLoaded(kind){
   if (typeof window === 'undefined') return;
-  const last = Number(localStorage.getItem('news_remote_last')||0);
+  const cfg = DATASETS[kind];
+  if (!cfg) return;
+  const last = Number(localStorage.getItem(cfg.last) || 0);
   const now = Date.now();
-  if (now - last < 1000*60*10) return; // cache 10m
+  if (now - last < CACHE_DURATION) return;
   try {
-    const res = await fetch(`${process.env.PUBLIC_URL}/assets/news.json`, { cache: 'no-cache' });
+    const res = await fetch(`${process.env.PUBLIC_URL}/assets/${cfg.file}`, { cache: 'no-cache' });
     if (!res.ok) throw new Error('fetch failed');
     const json = await res.json();
-    if (json?.it) localStorage.setItem('news_remote_it', JSON.stringify(json.it));
-    if (json?.en) localStorage.setItem('news_remote_en', JSON.stringify(json.en));
-    localStorage.setItem('news_remote_last', String(now));
-    try { window.dispatchEvent(new Event('news-updated')); } catch {}
+    if (json?.it) localStorage.setItem(cfg.remote('it'), JSON.stringify(json.it));
+    if (json?.en) localStorage.setItem(cfg.remote('en'), JSON.stringify(json.en));
+    localStorage.setItem(cfg.last, String(now));
+    try { window.dispatchEvent(new Event(cfg.event)); } catch {}
   } catch (e) {
     // ignore; will rely on existing cache/overrides
   }
 }
+
+export function saveNews(lang, items){ saveItems('news', lang, items); }
+export function resetNews(lang){ resetItems('news', lang); }
+export function getNews(lang='it'){ return getItems('news', lang); }
+export async function ensureNewsLoaded(){ await ensureDatasetLoaded('news'); }
+
+export function saveScadenze(lang, items){ saveItems('deadlines', lang, items); }
+export function resetScadenze(lang){ resetItems('deadlines', lang); }
+export function getScadenze(lang='it'){ return getItems('deadlines', lang); }
+export async function ensureScadenzeLoaded(){ await ensureDatasetLoaded('deadlines'); }

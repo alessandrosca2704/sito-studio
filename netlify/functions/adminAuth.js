@@ -3,7 +3,10 @@ export async function handler(event) {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const expectedRaw = process.env.ADMIN_PASSWORD;
+  const expectedRaw =
+    process.env.ADMIN_PASSWORD ||
+    process.env.VITE_ADMIN_PASSWORD ||
+    process.env.REACT_APP_ADMIN_PASSWORD;
   const expected = (expectedRaw || "").trim();
 
   // Log utili (visibili nei Logs delle Functions su Netlify)
@@ -11,7 +14,7 @@ export async function handler(event) {
 
   if (!expected) {
     return {
-      statusCode: 500,
+      statusCode: 401,
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ ok: false, reason: "server_not_configured" })
     };

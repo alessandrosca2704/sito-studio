@@ -22,6 +22,7 @@ import Privacy from './pages/Privacy';
 import ActivitiesPage from './pages/ActivitiesPage';
 import AdminPage from './pages/AdminPage';
 import ScrollToTop from './components/script/ScrollToTop';
+import DeadlinesDetail from './pages/DeadlinesDetail';
 
 export default function App(){
   return (
@@ -44,6 +45,7 @@ export default function App(){
           <Route path="/servizi/:slug" element={<ServiceDetail />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
+          <Route path="/scadenze/:slug" element={<DeadlinesDetail />} />
           <Route path="/chi-siamo" element={<AboutPage />} />
           <Route path="/aree-di-attivita" element={<ActivitiesPage />} />
           <Route path="/login" element={<Login />} />

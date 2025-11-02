@@ -60,6 +60,11 @@ const translations = {
       intro1: 'Lo studio Scarimbolo, grazie alla pluriennale esperienza nel campo della consulenza aziendale, è in grado di offrire a qualunque business le soluzioni più adatte alle peculiari esigenze del mercato, accompagnando, senza indugio e proattivamente, la crescita di ciascuna azienda con l’ausilio di un completo network di seri professionisti altamente qualificati.',
       intro2: 'Il nostro obiettivo primario è di fornire la migliore e la più attenta assistenza.',
     },
+    scadenze: {
+      subtitle: 'Un colpo d’occhio sugli obblighi fiscali del mese.',
+      readMore: 'Leggi tutto',
+      archive: 'Archivio scadenze',
+    },
     news: {
       title: 'Scadenze e News',
       subtitle: 'Novità e appuntamenti dal mondo della finanza, contabilità, normativa e molto altro.',
@@ -131,6 +136,12 @@ const translations = {
       intro1: 'Thanks to long-standing experience in business advisory, our firm provides solutions tailored to each market’s needs, proactively supporting growth through a network of qualified professionals.',
       intro2: 'Our primary goal is to deliver the best and most attentive assistance.',
     },
+    scadenze: {
+      subtitle: "A quick overview of this month’s tax obligations.",
+      readMore: "Read more",
+      archive: "Deadlines archive",
+    },
+
     news: {
       title: 'Events & News',
       subtitle: 'Updates from finance, accounting, regulations and more.',

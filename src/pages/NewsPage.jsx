@@ -6,21 +6,47 @@ import Sole24hPanel from '../components/Sole24hPanel';
 import useReveal from '../hooks/useReveal';
 import React from 'react';
 import { IconMore } from '../components/icons/Icons';
+import useScadenze from '../hooks/useScadenze';
 
 export default function NewsPage(){
   const { dict } = useI18n();
   const lang = (typeof window!=='undefined' && document.documentElement.lang)||'it';
   const { ref, visible } = useReveal();
   const { items: posts } = useNews(lang);
+  const { items: deadlines } = useScadenze(lang);
   const [visibleCount, setVisibleCount] = React.useState(3);
   React.useEffect(()=>{ setVisibleCount(3); }, [lang]);
   const canLoadMore = visibleCount < posts.length;
   const loadMore = () => setVisibleCount(v => Math.min(v + 3, posts.length));
+  const loadMoreDead = () => setVisibleCount(v => Math.min(v + 3, deadlines.length));
+
   return (
     <>
     <h1 className="text-brand news-header" style={{textAlign:'center',color:"white"}}>{dict.news.title}</h1>
 
     <section className="section">
+       <div className={`container reveal ${visible?'is-visible':''}`}ref={ref}>
+        <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.scadenze.subtitle}</h2>
+        <div className=" deadline news-page-grid">
+          {deadlines.slice(0, visibleCount).map(p=> (
+            <article className="news-page-card" key={p.slug}>
+              <Link to={`/scadenze/${p.slug}`} className="news-page-media" style={{backgroundImage:`url(${p.image})`}} />
+              <div className="news-page-body">
+                <h3><Link to={`/scadenze/${p.slug}`}>{p.title}</Link></h3>
+                <p>{p.excerpt}</p>
+                <Link to={`/scadenze/${p.slug}`} className="btn btn-brand">{dict.scadenze.readMore}</Link>
+              </div>
+            </article>
+          ))}
+        </div>
+        {canLoadMore && (
+          <div className="news-loadmore">
+            <button className="loadmore-btn" onClick={loadMoreDead} aria-label="Carica altri">
+              <IconMore/>
+            </button>
+          </div>
+        )}
+      </div>
       <div className={`container reveal ${visible?'is-visible':''}`}ref={ref}>
         <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.news.subtitle}</h2>
         <div className="news-page-grid">

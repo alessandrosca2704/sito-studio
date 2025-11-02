@@ -1,21 +1,53 @@
 import React from 'react';
 import './AdminPage.css';
-import { getNews, saveNews, resetNews } from '../data';
+import { getNews, saveNews, resetNews, getScadenze, saveScadenze, resetScadenze, ensureNewsLoaded, ensureScadenzeLoaded } from '../data';
 import { logout } from '../auth';
 import RichEditor from '../components/admin/RichEditor';
 
 // Static GitHub config (edit here once)
 // Set these values to your repo and Netlify hook
-const COMMIT_CFG = {
+const GIT_CFG = {
   owner: 'alessandrosca2704',
   repo: 'sito-studio',
   branch: 'main',
-  path: 'public/assets/news.json',
-  message: 'chore: update news.json via /admin',
   userName: 'Site Admin',
   userEmail: 'admin@example.com',
   deployHook: '' // optional Netlify build hook URL
 };
+
+const DATASETS = {
+  news: {
+    label: 'News',
+    singular: 'news',
+    basePath: '/news',
+    get: getNews,
+    save: saveNews,
+    reset: resetNews,
+    exportName: (lang) => `news_${lang}.json`,
+    commitPath: 'public/assets/news.json',
+    commitMessage: 'chore: update news.json via /admin',
+    buildPayload: () => ({ it: getNews('it'), en: getNews('en') })
+  },
+  deadlines: {
+    label: 'Scadenze',
+    singular: 'scadenza',
+    basePath: '/scadenze',
+    get: getScadenze,
+    save: saveScadenze,
+    reset: resetScadenze,
+    exportName: (lang) => `scadenze_${lang}.json`,
+    commitPath: 'public/assets/scadenze.json',
+    commitMessage: 'chore: update scadenze.json via /admin',
+    buildPayload: () => ({ it: getScadenze('it'), en: getScadenze('en') })
+  }
+};
+
+const DATASET_OPTIONS = [
+  { value: 'news', label: DATASETS.news.label },
+  { value: 'deadlines', label: DATASETS.deadlines.label }
+];
+
+const MULTI_COMMIT_MESSAGE = 'chore: update news & scadenze via /admin';
 
 function emptyPost(){
   return { slug:'', title:'', excerpt:'', image:'', content:'' };
@@ -23,16 +55,32 @@ function emptyPost(){
 
 export default function AdminPage(){
   const lang = (typeof window!=='undefined' && document.documentElement.lang) || 'it';
-  const [items, setItems] = React.useState(()=>getNews(lang));
+  const [dataset, setDataset] = React.useState('news');
+  const [items, setItems] = React.useState(()=>DATASETS.news.get(lang));
   const [current, setCurrent] = React.useState(emptyPost());
   const [editingIndex, setEditingIndex] = React.useState(-1);
   const [token, setToken] = React.useState(()=>localStorage.getItem('admin_github_token')||'');
-  const [rememberToken, setRememberToken] = React.useState(()=>{
-    try { return JSON.parse(localStorage.getItem('admin_github_remember')||'false'); } catch { return false; }
-  });
   const [commitStatus, setCommitStatus] = React.useState('');
+  const datasetCfg = DATASETS[dataset];
+  const isNews = dataset === 'news';
+  const formTitle = editingIndex === -1 ? (isNews ? 'Nuovo Articolo' : 'Nuova Scadenza') : (isNews ? "Modifica un'articolo" : 'Modifica una scadenza');
+  const imageFolder = isNews ? 'news' : 'scadenze';
 
-  React.useEffect(()=>{ setItems(getNews(lang)); setEditingIndex(-1); setCurrent(emptyPost()); }, [lang]);
+  React.useEffect(()=>{
+    let mounted = true;
+    const cfg = DATASETS[dataset];
+    const ensureFn = dataset === 'news' ? ensureNewsLoaded : ensureScadenzeLoaded;
+    const ensurePromise = ensureFn ? ensureFn() : Promise.resolve();
+    Promise.resolve(ensurePromise)
+      .catch(()=>{})
+      .finally(()=>{
+        if (!mounted) return;
+        setItems(cfg.get(lang));
+        setEditingIndex(-1);
+        setCurrent(emptyPost());
+      });
+    return () => { mounted = false; };
+  }, [lang, dataset]);
 
   const startNew = () => { setCurrent(emptyPost()); setEditingIndex(-1); };
   const editItem = (i) => { setEditingIndex(i); setCurrent(items[i]); };
@@ -49,20 +97,24 @@ export default function AdminPage(){
       if (existsIdx !== -1 && existsIdx !== editingIndex) { alert('Slug already exists'); return; }
       arr[editingIndex] = current;
     }
-    setItems(arr); saveNews(lang, arr); startNew();
+    setItems(arr);
+    datasetCfg.save(lang, arr);
+    startNew();
   };
 
   const remove = (i) => {
-    if (!window.confirm('Delete this news?')) return;
+    if (!window.confirm(`Delete this ${datasetCfg.singular}?`)) return;
     const arr = items.filter((_,idx)=> idx!==i);
-    setItems(arr); saveNews(lang, arr); startNew();
+    setItems(arr);
+    datasetCfg.save(lang, arr);
+    startNew();
   };
 
   const exportJson = () => {
     const blob = new Blob([JSON.stringify(items, null, 2)], {type: 'application/json'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `news_${lang}.json`;
+    a.download = datasetCfg.exportName(lang);
     a.click();
   };
 
@@ -73,65 +125,145 @@ export default function AdminPage(){
       try {
         const arr = JSON.parse(reader.result);
         if (!Array.isArray(arr)) throw new Error('Invalid JSON array');
-        setItems(arr); saveNews(lang, arr); startNew();
+        setItems(arr);
+        datasetCfg.save(lang, arr);
+        startNew();
       } catch(err){ alert('Invalid JSON file'); }
     };
     reader.readAsText(file);
   };
 
   const reset = () => {
-    if (!window.confirm('Reset to defaults?')) return;
-    resetNews(lang); setItems(getNews(lang)); startNew();
+    if (!window.confirm(`Reset ${datasetCfg.label.toLowerCase()} to defaults?`)) return;
+    datasetCfg.reset(lang);
+    setItems(datasetCfg.get(lang));
+    startNew();
   };
 
-  const testConnection = async () => {
+  const describeTargets = (keys) => {
+    if (keys.length === 1) return DATASETS[keys[0]].label;
+    return 'News + Scadenze';
+  };
+
+  const testConnection = async (target = dataset) => {
     if (!token) { setCommitStatus('Token missing'); return; }
-    setCommitStatus('Testing GitHub connection...');
+    const cfg = DATASETS[target];
+    if (!cfg) { setCommitStatus('Unknown dataset'); return; }
+    setCommitStatus(`Testing GitHub connection for ${cfg.commitPath}...`);
     try {
-      const baseUrl = `https://api.github.com/repos/${COMMIT_CFG.owner}/${COMMIT_CFG.repo}/contents/${COMMIT_CFG.path}?ref=${encodeURIComponent(COMMIT_CFG.branch)}`;
+      const baseUrl = `https://api.github.com/repos/${GIT_CFG.owner}/${GIT_CFG.repo}/contents/${cfg.commitPath}?ref=${encodeURIComponent(GIT_CFG.branch)}`;
       const res = await fetch(baseUrl, { headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}` }});
-      if (res.status === 404) { setCommitStatus('Repo/branch OK. File not found (will be created)'); return; }
+      if (res.status === 404) { setCommitStatus(`Repo/branch OK. ${cfg.commitPath} will be created.`); return; }
       if (!res.ok) { const t = await res.text(); throw new Error(`${res.status}: ${t}`); }
       const j = await res.json();
-      setCommitStatus(`OK. File exists (sha: ${j.sha ? j.sha.slice(0,7) : 'n/a'})`);
+      setCommitStatus(`OK. ${cfg.commitPath} exists (sha: ${j.sha ? j.sha.slice(0,7) : 'n/a'})`);
     } catch(err){ setCommitStatus('Test error: ' + (err.message || String(err))); }
   };
 
-  const commitNews = async () => {
+  const performCommit = async (files, message) => {
+    if (!files.length) throw new Error('No files to commit');
+    const baseApi = `https://api.github.com/repos/${GIT_CFG.owner}/${GIT_CFG.repo}`;
+    const authHeaders = {
+      'Accept': 'application/vnd.github+json',
+      'Authorization': `Bearer ${token}`
+    };
+    const jsonHeaders = {
+      ...authHeaders,
+      'Content-Type': 'application/json'
+    };
+    const refUrl = `${baseApi}/git/ref/heads/${GIT_CFG.branch}`;
+    const refRes = await fetch(refUrl, { headers: authHeaders });
+    if (!refRes.ok) { const t = await refRes.text(); throw new Error(`Unable to read branch ref: ${refRes.status} ${t}`); }
+    const refData = await refRes.json();
+    const baseCommitSha = refData?.object?.sha;
+    if (!baseCommitSha) throw new Error('Invalid branch reference received from GitHub');
+
+    const headCommitRes = await fetch(`${baseApi}/git/commits/${baseCommitSha}`, { headers: authHeaders });
+    if (!headCommitRes.ok) { const t = await headCommitRes.text(); throw new Error(`Unable to read head commit: ${headCommitRes.status} ${t}`); }
+    const headCommit = await headCommitRes.json();
+    const baseTreeSha = headCommit?.tree?.sha;
+    if (!baseTreeSha) throw new Error('Missing base tree information');
+
+    const treeEntries = [];
+    for (const file of files) {
+      const blobRes = await fetch(`${baseApi}/git/blobs`, { method: 'POST', headers: jsonHeaders, body: JSON.stringify({ content: file.content, encoding: 'utf-8' }) });
+      if (!blobRes.ok) { const t = await blobRes.text(); throw new Error(`Blob create failed for ${file.path}: ${blobRes.status} ${t}`); }
+      const blobData = await blobRes.json();
+      treeEntries.push({ path: file.path, mode: '100644', type: 'blob', sha: blobData.sha });
+    }
+
+    const treeRes = await fetch(`${baseApi}/git/trees`, { method: 'POST', headers: jsonHeaders, body: JSON.stringify({ base_tree: baseTreeSha, tree: treeEntries }) });
+    if (!treeRes.ok) { const t = await treeRes.text(); throw new Error(`Tree create failed: ${treeRes.status} ${t}`); }
+    const treeData = await treeRes.json();
+
+    const commitRes = await fetch(`${baseApi}/git/commits`, { method: 'POST', headers: jsonHeaders, body: JSON.stringify({
+      message,
+      tree: treeData.sha,
+      parents: [baseCommitSha],
+      committer: { name: GIT_CFG.userName, email: GIT_CFG.userEmail }
+    })});
+    if (!commitRes.ok) { const t = await commitRes.text(); throw new Error(`Commit create failed: ${commitRes.status} ${t}`); }
+    const commitData = await commitRes.json();
+
+    const updateRes = await fetch(refUrl, { method: 'PATCH', headers: jsonHeaders, body: JSON.stringify({ sha: commitData.sha }) });
+    if (!updateRes.ok) { const t = await updateRes.text(); throw new Error(`Ref update failed: ${updateRes.status} ${t}`); }
+  };
+
+  const commitDatasets = async (targetKeys) => {
     if (!token) { setCommitStatus('Token missing'); return; }
-    saveNews(lang, items); // ensure latest in current lang
-    setCommitStatus('Preparing commit...');
+    const keys = Array.from(new Set((targetKeys || []).filter(Boolean)));
+    if (!keys.length) { setCommitStatus('No datasets selected'); return; }
+    if (keys.includes(dataset)) {
+      datasetCfg.save(lang, items);
+    }
+
+    const label = describeTargets(keys);
+    setCommitStatus(`Preparing commit (${label})...`);
+
     try {
-      const payload = { it: getNews('it'), en: getNews('en') };
-      const json = JSON.stringify(payload, null, 2);
-      const b64 = btoa(unescape(encodeURIComponent(json)));
-      const baseUrl = `https://api.github.com/repos/${COMMIT_CFG.owner}/${COMMIT_CFG.repo}/contents/${COMMIT_CFG.path}`;
-      let sha = undefined;
-      const getRes = await fetch(`${baseUrl}?ref=${encodeURIComponent(COMMIT_CFG.branch)}`, { headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}` }});
-      if (getRes.ok){ const j = await getRes.json(); sha = j.sha; }
-      const body = { message: COMMIT_CFG.message, content: b64, branch: COMMIT_CFG.branch, committer: { name: COMMIT_CFG.userName, email: COMMIT_CFG.userEmail } };
-      if (sha) body.sha = sha;
-      const putRes = await fetch(baseUrl, { method:'PUT', headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(body) });
-      if (!putRes.ok) { const t = await putRes.text(); throw new Error(`Commit failed: ${t}`); }
-      setCommitStatus('Commit done.');
-      if (COMMIT_CFG.deployHook){
-        setCommitStatus('Commit OK. Triggering Netlify...');
-        try { await fetch(COMMIT_CFG.deployHook, { method:'POST', mode:'no-cors' }); setCommitStatus('Deploy hook sent.'); }
-        catch { setCommitStatus('Commit OK. Deploy hook unreachable.'); }
+      const files = keys.map((key) => {
+        const cfg = DATASETS[key];
+        if (!cfg) throw new Error(`Unknown dataset ${key}`);
+        const content = JSON.stringify(cfg.buildPayload(), null, 2);
+        return { path: cfg.commitPath, content };
+      });
+
+      const message = keys.length === 1 ? DATASETS[keys[0]].commitMessage : MULTI_COMMIT_MESSAGE;
+      await performCommit(files, message);
+      setCommitStatus(`Commit done (${label}).`);
+
+      if (GIT_CFG.deployHook){
+        setCommitStatus(`Commit OK (${label}). Triggering Netlify...`);
+        try {
+          await fetch(GIT_CFG.deployHook, { method:'POST', mode:'no-cors' });
+          setCommitStatus(`Deploy hook sent (${label}).`);
+        } catch {
+          setCommitStatus(`Commit OK (${label}). Deploy hook unreachable.`);
+        }
       }
-    } catch(err){ setCommitStatus(String(err.message||err)); }
+    } catch(err){
+      setCommitStatus(`Commit error: ${err.message || String(err)}`);
+    }
   };
 
   return (
     <section className="section admin">
       <div className="container" style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: 10}}>
-        <h2 style={{margin:0}}>Admin</h2>
+            <div style={{display:'flex', alignItems:'center', gap:12}}>
+              <h2 style={{margin:0}}>Admin</h2>
+              <select value={dataset} onChange={e=>setDataset(e.target.value)} className="admin__dataset-select">
+                {DATASET_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
         <button className="btn" onClick={()=>{ logout(); window.location.href = '/login'; }}>Logout</button>
       </div>
       <div className="container admin__layout">
         <div className="admin__list">
           <div className="admin__listhead">
-            <h2>News ({lang.toUpperCase()})</h2>
+              <h2 style={{margin:0}}>{datasetCfg.label} ({lang.toUpperCase()})</h2>
+
             <div className="admin__actions">
               <button className="btn" onClick={startNew}>New</button>
               <button className="btn" onClick={exportJson}>Export</button>
@@ -146,14 +278,14 @@ export default function AdminPage(){
             {items.map((p,i)=> (
               <li key={p.slug} className={i===editingIndex? 'active':''}>
                 <div className="title" onClick={()=>editItem(i)}>{p.title}</div>
-                <div className="slug">/{p.slug}</div>
+                <div className="slug">{`${datasetCfg.basePath}/${p.slug}`}</div>
                 <button className="link danger" onClick={()=>remove(i)}>Delete</button>
               </li>
             ))}
           </ul>
         </div>
         <div className="admin__form">
-          <h3>{editingIndex===-1? 'Nuovo Articolo' : "Modifica un'articolo"}</h3>
+          <h3>{formTitle}</h3>
           <div className="form-admin">
             <label>
               <span>Titolo</span>
@@ -165,7 +297,7 @@ export default function AdminPage(){
             </label>
             <label className="full">
               <span>Immagine (URL)</span>
-              <input value={current.image} onChange={e=>updateField('image', e.target.value)} placeholder={`${window.location.origin}/assets/news/example.jpg`} />
+              <input value={current.image} onChange={e=>updateField('image', e.target.value)} placeholder={`${window.location.origin}/assets/${imageFolder}/example.jpg`} />
             </label>
             <label className="full">
               <span>Estratto</span>
@@ -188,9 +320,10 @@ export default function AdminPage(){
         </div>
         <div className="cfg-grid">
           <div className="cfg-readonly">
-            <div><strong>Repo:</strong> {COMMIT_CFG.owner}/{COMMIT_CFG.repo}</div>
-            <div><strong>Branch:</strong> {COMMIT_CFG.branch}</div>
-            <div><strong>Path:</strong> {COMMIT_CFG.path}</div>
+            <div><strong>Repo:</strong> {GIT_CFG.owner}/{GIT_CFG.repo}</div>
+            <div><strong>Branch:</strong> {GIT_CFG.branch}</div>
+            <div><strong>File news:</strong> {DATASETS.news.commitPath}</div>
+            <div><strong>File scadenze:</strong> {DATASETS.deadlines.commitPath}</div>
           </div>
           <label className="full">
             <span>GitHub Token (PAT)</span>
@@ -199,8 +332,10 @@ export default function AdminPage(){
         </div>
         <div className="panel__actions">
           
-          <button className="btn" onClick={testConnection}>Test connection</button>
-          <button className="btn btn-brand" onClick={commitNews}>Commit news.json</button>
+          <button className="btn" onClick={()=>testConnection(dataset)}>Test {datasetCfg.label}</button>
+          <button className="btn" onClick={()=>commitDatasets(['news'])}>Commit news.json</button>
+          <button className="btn" onClick={()=>commitDatasets(['deadlines'])}>Commit scadenze.json</button>
+          <button className="btn btn-brand" onClick={()=>commitDatasets(['news','deadlines'])}>Commit news + scadenze</button>
           <div className="status">{commitStatus}</div>
         </div>
       </div>

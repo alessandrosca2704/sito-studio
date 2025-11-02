@@ -50,7 +50,7 @@ export function IconBars({ size=48, color='var(--brand)' }){
 export function IconMore({ size=48, color='var(--brand)' }){
   return (
    <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <g fill="#2563EB">
+    <g fill={color}>
     <circle cx="16" cy="24" r="3"/>
     <circle cx="24" cy="24" r="3"/>
     <circle cx="32" cy="24" r="3"/>
@@ -152,4 +152,15 @@ export function IconWhatsapp({ size=24, color='currentColor' }){
     </svg>
 
   );
+}
+
+export function IconShare({size=42 , color='currentColor'}){
+  return(
+  <svg fill={color} width={size} height={size} viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/>
+    <path d="M24 7h2v21h-2z"/>
+    <path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/>
+  </svg>
+
+  )
 }
