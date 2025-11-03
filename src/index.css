@@ -8,6 +8,7 @@
   --section: #f3f6ff; /* light section */
   --border: #e5e7eb;
   --container: 1200px;
+  --share:#143153;
 }
 
 * { box-sizing: border-box; }

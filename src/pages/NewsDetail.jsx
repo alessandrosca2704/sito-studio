@@ -81,19 +81,29 @@ export default function NewsDetail(){
           <div className='share-grid'>
           <span>Condividi la news sui Social!</span>
           {isMobile ? (
+            <div className='share-grid'>
             <button
               className="share-button share-button--mobile"
               type="button"
               onClick={() =>
                 shareOnMobile({
-                  text: 'Scopri questa nuova news!',
+                  text: `${post.title}\n${shareUrl}`,
                   url: shareUrl,
-                  title: post.title + excerpt,
+                  title: post.title,
                 })
               }
             >
               <IconShare color="#143153" />
             </button>
+                <WhatsappShareButton
+                  className="share-button share-button--mobile"
+                  title={`${post.title}\n${excerpt}`}
+                  url={shareUrl}
+                  resetButtonStyle={false}
+                >
+                  <IconWhatsapp  />
+                </WhatsappShareButton>
+            </div>
           ) : (
             <>
               <button
