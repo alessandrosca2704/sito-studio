@@ -29,7 +29,7 @@ export default function NewsDetail(){
   if (/^https?:\/\//i.test(url)) return url;
   return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
 };
-  const fallback = `${BASE_URL}/assets/logo-facebook.png`;
+  const fallback = ensureAbsolute('/assets/logo-facebook.png');
   const imageAbs = ensureAbsolute(post.image) || fallback;
   const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
   const fbDeepLink = `\fb://faceweb/f?href=${encodeURIComponent(shareUrl)}`;
@@ -82,6 +82,14 @@ export default function NewsDetail(){
           <span>Condividi la news sui Social!</span>
           {isMobile ? (
             <div className='share-grid'>
+                <WhatsappShareButton
+                  className="share-button share-button--mobile"
+                  title={`${post.title}\n${excerpt}`}
+                  url={shareUrl}
+                  resetButtonStyle={false}
+                >
+                  <IconWhatsapp  />
+                </WhatsappShareButton>
             <button
               className="share-button share-button--mobile"
               type="button"
@@ -95,14 +103,7 @@ export default function NewsDetail(){
             >
               <IconShare color="#143153" />
             </button>
-                <WhatsappShareButton
-                  className="share-button share-button--mobile"
-                  title={`${post.title}\n${excerpt}`}
-                  url={shareUrl}
-                  resetButtonStyle={false}
-                >
-                  <IconWhatsapp  />
-                </WhatsappShareButton>
+
             </div>
           ) : (
             <>
