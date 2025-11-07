@@ -82,6 +82,7 @@ export default function DeadlinesDetail(){
           <div className='share-grid'>
           <span>Condividi la news sui Social!</span>
           {isMobile ? (
+            <div className='share-grid'>
             <button
               className="share-button share-button--mobile"
               type="button"
@@ -95,6 +96,15 @@ export default function DeadlinesDetail(){
             >
               <IconShare color="#143153" />
             </button>
+            <WhatsappShareButton
+                  className="share-button share-button--mobile"
+                  title={`${post.title}\n${excerpt}`}
+                  url={shareUrl}
+                  resetButtonStyle={false}
+                >
+                  <IconWhatsapp  />
+                </WhatsappShareButton>
+            </div>           
           ) : (
             <>
               <button
