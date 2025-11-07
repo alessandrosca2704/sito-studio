@@ -15,10 +15,11 @@ export default function NewsPage(){
   const { items: posts } = useNews(lang);
   const { items: deadlines } = useScadenze(lang);
   const [visibleCount, setVisibleCount] = React.useState(3);
+  const [visibleDeadCount, setVisibleDeadCount] = React.useState(3);
   React.useEffect(()=>{ setVisibleCount(3); }, [lang]);
   const canLoadMore = visibleCount < posts.length;
   const loadMore = () => setVisibleCount(v => Math.min(v + 3, posts.length));
-  const loadMoreDead = () => setVisibleCount(v => Math.min(v + 3, deadlines.length));
+  const loadMoreDead = () => setVisibleDeadCount(d => Math.min(d + 3, deadlines.length));
 
   return (
     <>
@@ -28,13 +29,13 @@ export default function NewsPage(){
        <div className={`container reveal ${visible?'is-visible':''}`}ref={ref}>
         <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.scadenze.subtitle}</h2>
         <div className=" deadline news-page-grid">
-          {deadlines.slice(0, visibleCount).map(p=> (
-            <article className="news-page-card" key={p.slug}>
-              <Link to={`/scadenze/${p.slug}`} className="news-page-media" style={{backgroundImage:`url(${p.image})`}} />
+          {deadlines.slice(0, visibleDeadCount).map(d=> (
+            <article className="news-page-card" key={d.slug}>
+              <Link to={`/scadenze/${d.slug}`} className="news-page-media" style={{backgroundImage:`url(${d.image})`}} />
               <div className="news-page-body">
-                <h3><Link to={`/scadenze/${p.slug}`}>{p.title}</Link></h3>
-                <p>{p.excerpt}</p>
-                <Link to={`/scadenze/${p.slug}`} className="btn btn-brand">{dict.scadenze.readMore}</Link>
+                <h3><Link to={`/scadenze/${d.slug}`}>{d.title}</Link></h3>
+                <p>{d.excerpt}</p>
+                <Link to={`/scadenze/${d.slug}`} className="btn btn-brand">{dict.scadenze.readMore}</Link>
               </div>
             </article>
           ))}

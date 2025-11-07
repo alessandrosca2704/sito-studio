@@ -71,7 +71,7 @@ export default function DeadlinesDetail(){
     <section className="section">
       <div className="container">
         <div className="news-detail">
-          {post.image && (
+          {imageAbs && (
             <div className="news-detail__media">
               <img src={imageAbs} alt={post.title} loading="lazy" />
             </div>
