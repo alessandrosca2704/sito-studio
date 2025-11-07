@@ -29,7 +29,7 @@ export default function NewsDetail(){
   if (/^https?:\/\//i.test(url)) return url;
   return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
 };
-  const fallback = `${BASE_URL}/assets/logo-facebook.png`;  //da aggiustare non punta a un cazzo
+  const fallback = `${BASE_URL}/assets/logo-facebook.png`;
   const imageAbs = ensureAbsolute(post.image) || fallback;
   const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
   const fbDeepLink = `\fb://faceweb/f?href=${encodeURIComponent(shareUrl)}`;

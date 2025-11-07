@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import './NewsPage.css';
 import useNews from '../hooks/useNews';
@@ -20,6 +20,14 @@ export default function NewsPage(){
   const canLoadMore = visibleCount < posts.length;
   const loadMore = () => setVisibleCount(v => Math.min(v + 3, posts.length));
   const loadMoreDead = () => setVisibleDeadCount(d => Math.min(d + 3, deadlines.length));
+  const BASE_URL = 'https://www.studioscarimbolo.it';
+  const ensureAbsolute = (url = '') => {
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url)) return url;
+  return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+};
+  const fallback = `${BASE_URL}/assets/logo-facebook.png`;
+  const resolveImage = (img = '') => ensureAbsolute(img) || fallback;
 
   return (
     <>
@@ -29,13 +37,13 @@ export default function NewsPage(){
        <div className={`container reveal ${visible?'is-visible':''}`}ref={ref}>
         <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.scadenze.subtitle}</h2>
         <div className=" deadline news-page-grid">
-          {deadlines.slice(0, visibleDeadCount).map(d=> (
-            <article className="news-page-card" key={d.slug}>
-              <Link to={`/scadenze/${d.slug}`} className="news-page-media" style={{backgroundImage:`url(${d.image})`}} />
+          {deadlines.slice(0, visibleDeadCount).map(p=> (
+            <article className="news-page-card" key={p.slug}>
+              <Link to={`/scadenze/${p.slug}`} className="news-page-media" style={{backgroundImage:`url(${resolveImage(p.image)})`}} />
               <div className="news-page-body">
-                <h3><Link to={`/scadenze/${d.slug}`}>{d.title}</Link></h3>
-                <p>{d.excerpt}</p>
-                <Link to={`/scadenze/${d.slug}`} className="btn btn-brand">{dict.scadenze.readMore}</Link>
+                <h3><Link to={`/scadenze/${p.slug}`}>{p.title}</Link></h3>
+                <p>{p.excerpt}</p>
+                <Link to={`/scadenze/${p.slug}`} className="btn btn-brand">{dict.scadenze.readMore}</Link>
               </div>
             </article>
           ))}
@@ -53,7 +61,7 @@ export default function NewsPage(){
         <div className="news-page-grid">
           {posts.slice(0, visibleCount).map(p=> (
             <article className="news-page-card" key={p.slug}>
-              <Link to={`/news/${p.slug}`} className="news-page-media" style={{backgroundImage:`url(${p.image})`}} />
+              <Link to={`/news/${p.slug}`} className="news-page-media" style={{backgroundImage:`url(${resolveImage(p.image)})`}} />
               <div className="news-page-body">
                 <h3><Link to={`/news/${p.slug}`}>{p.title}</Link></h3>
                 <p>{p.excerpt}</p>
