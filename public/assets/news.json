@@ -29,7 +29,7 @@
       "content": "<p>Riepilogo delle scadenze e degli adempimenti necessari per il corretto ravvedimento speciale.</p>"
     },
     {
-      "slug": "ravvedimento-speciale-termini",
+      "slug": "ravvedimento-specialetermini",
       "title": "Costi e termini decadenziali per il Ravvedimento speciale.",
       "excerpt": "Sintesi delle tempistiche e delle modalità di adesione al ravvedimento...",
       "content": "<p>Analisi dei termini e dei costi previsti, con note operative e riferimenti normativi.</p>"
@@ -58,7 +58,7 @@
       "content": "<p>Summary of deadlines and required steps for the special regularization.</p>"
     },
     {
-      "slug": "ravvedimento-speciale-termini",
+      "slug": "ravvedimento-specialetermini",
       "title": "Costs and terms for the special regularization.",
       "excerpt": "Overview of timing and how to join the program...",
       "content": "<p>Analysis of deadlines and costs with operational notes and legal references.</p>"
