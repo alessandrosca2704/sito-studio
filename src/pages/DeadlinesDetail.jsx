@@ -44,28 +44,36 @@ export default function DeadlinesDetail(){
     }, 800);
   };
   const isMobile = typeof navigator !== 'undefined' && /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+  const defaultMeta = {
+    title: 'Scadenze | Studio Scarimbolo',
+    description: 'Un colpo d’occhio sugli obblighi fiscali del mese.',
+    image: fallback,
+  };
 
+  const meta = post
+    ? { title: post.title, description: excerpt, image: imageAbs, url: shareUrl }
+    : defaultMeta;
   return (
     <>
         <Helmet>
-      <title>{post.title}</title>
-      <meta name="description" content={excerpt} />
+      <title>{meta.title}</title>
+      <meta name="description" content={meta.description} />
       <link rel="canonical" href={shareUrl} />
 
       <meta property="og:type" content="article" />
       <meta property="og:url" content={shareUrl} />
       <meta property="og:site_name" content="Studio Scarimbolo" />
       <meta property="og:locale" content={lang === 'it' ? 'it_IT' : 'en_US'} />
-      <meta property="og:title" content={post.title} />
+      <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={excerpt} />
-      <meta property="og:image" content={imageAbs} />
+      <meta property="og:image" content={meta.image} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
 
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={post.title} />
-      <meta name="twitter:description" content={excerpt} />
-      <meta name="twitter:image" content={imageAbs} />
+      <meta name="twitter:title" content={meta.title} />
+      <meta name="twitter:description" content={meta.description} />
+      <meta name="twitter:image" content={meta.image} />
     </Helmet>
     
     <section className="section">
@@ -83,14 +91,6 @@ export default function DeadlinesDetail(){
           <span>Condividi la news sui Social!</span>
           {isMobile ? (
             <div className='share-grid'>
-            <WhatsappShareButton
-                  className="share-button share-button--mobile"
-                  title={`${post.title}\n${excerpt}`}
-                  url={shareUrl}
-                  resetButtonStyle={false}
-                >
-                  <IconWhatsapp  />
-                </WhatsappShareButton>
             <button
               className="share-button share-button--mobile"
               type="button"
