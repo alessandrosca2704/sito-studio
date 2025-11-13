@@ -9,6 +9,7 @@ import Works from './components/Works';
 import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import ChatAssistant from './components/ChatAssistant';
 import SocialStrip from './components/SocialStrip';
 import { Routes, Route } from 'react-router-dom';
 import ServicesPage from './pages/ServicesPage';
@@ -55,6 +56,7 @@ export default function App(){
       </main>
       <Contact/>
       <SocialStrip />
+      <ChatAssistant />
 
       <Footer />
     </I18nProvider>
