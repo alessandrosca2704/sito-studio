@@ -171,7 +171,7 @@ export default function AdminPage(){
       ...authHeaders,
       'Content-Type': 'application/json'
     };
-    const refUrl = `${baseApi}/git/ref/heads/${GIT_CFG.branch}`;
+    const refUrl = `${baseApi}/git/refs/heads/${GIT_CFG.branch}`;
     const refRes = await fetch(refUrl, { headers: authHeaders });
     if (!refRes.ok) { const t = await refRes.text(); throw new Error(`Unable to read branch ref: ${refRes.status} ${t}`); }
     const refData = await refRes.json();

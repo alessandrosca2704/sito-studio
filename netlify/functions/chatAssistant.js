@@ -52,7 +52,7 @@ export async function handler(event) {
         Authorization: `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "gpt-5.1",
         temperature: 0.6,
         messages
       })
