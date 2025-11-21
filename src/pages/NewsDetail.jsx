@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import './NewsDetail.css';
@@ -51,11 +51,13 @@ export default function NewsDetail(){
     ? { title: post.title, description: excerpt || defaultMeta.description, image: imageAbs, url: shareUrl }
     : defaultMeta;
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.prerenderReady = !!post;
-    }
-  }, [post]);
+React.useEffect(() => {
+  if (typeof window === 'undefined') return;
+  const timer = setTimeout(() => { window.prerenderReady = true; }, 3000); // fallback per non far fallire il prerender
+  if (post) window.prerenderReady = true;
+  return () => clearTimeout(timer);
+}, [post]);
+
 
   return (
     <>
