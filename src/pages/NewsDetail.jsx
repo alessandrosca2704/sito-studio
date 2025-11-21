@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import './NewsDetail.css';
@@ -15,7 +16,8 @@ export default function NewsDetail(){
   const post = items.find(p => p.slug === slug);
 
   const BASE_URL = 'https://www.studioscarimbolo.it';
-  const shareUrl = `${BASE_URL}/news/${slug}`;
+  const encodedSlug = encodeURIComponent(slug || '');
+  const shareUrl = `${BASE_URL}/news/${encodedSlug}`;
   const ensureAbsolute = (url = '') => {
     if (!url) return '';
     if (/^https?:\/\//i.test(url)) return url;
@@ -49,6 +51,12 @@ export default function NewsDetail(){
     ? { title: post.title, description: excerpt || defaultMeta.description, image: imageAbs, url: shareUrl }
     : defaultMeta;
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.prerenderReady = !!post;
+    }
+  }, [post]);
+
   return (
     <>
       <Helmet>
@@ -63,6 +71,7 @@ export default function NewsDetail(){
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description} />
         <meta property="og:image" content={meta.image} />
+        <meta property="og:image:secure_url" content={meta.image} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
 
