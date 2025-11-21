@@ -59,6 +59,8 @@ export default function AdminPage(){
   const [items, setItems] = React.useState(()=>DATASETS.news.get(lang));
   const [current, setCurrent] = React.useState(emptyPost());
   const [editingIndex, setEditingIndex] = React.useState(-1);
+  const [uploadInfo, setUploadInfo] = React.useState(null); // { base64, ext }
+  const [pendingUploads, setPendingUploads] = React.useState({ news: {}, deadlines: {} });
   const [token, setToken] = React.useState(()=>localStorage.getItem('admin_github_token')||'');
   const [commitStatus, setCommitStatus] = React.useState('');
   const datasetCfg = DATASETS[dataset];
@@ -78,24 +80,70 @@ export default function AdminPage(){
         setItems(cfg.get(lang));
         setEditingIndex(-1);
         setCurrent(emptyPost());
+        setUploadInfo(null);
       });
     return () => { mounted = false; };
   }, [lang, dataset]);
 
-  const startNew = () => { setCurrent(emptyPost()); setEditingIndex(-1); };
-  const editItem = (i) => { setEditingIndex(i); setCurrent(items[i]); };
+  const startNew = () => { setCurrent(emptyPost()); setEditingIndex(-1); setUploadInfo(null); };
+  const editItem = (i) => { setEditingIndex(i); setCurrent(items[i]); setUploadInfo(null); };
   const updateField = (k,v) => setCurrent(prev => ({...prev, [k]: v}));
+  const getImagePath = (slugValue, ext) => `/assets/${imageFolder}/${slugValue}${ext}`;
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const slugValue = (current.slug || '').trim();
+    if (!slugValue) { alert('Per caricare un immagine inserisci prima lo slug'); e.target.value = ''; return; }
+    const matchExt = file.name.match(/\.[a-zA-Z0-9]+$/);
+    const ext = matchExt ? matchExt[0].toLowerCase() : '.jpg';
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const result = reader.result || '';
+        const base64 = typeof result === 'string' ? result.split(',').pop() : '';
+        if (!base64) throw new Error('File non valido');
+        const imgPath = getImagePath(slugValue, ext);
+        setCurrent(prev => ({ ...prev, image: imgPath }));
+        setUploadInfo({ base64, ext });
+      } catch (err){
+        alert('Errore durante la lettura del file immagine');
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const pushPendingUpload = (slugValue, ext) => {
+    if (!uploadInfo) return null;
+    const imgPath = getImagePath(slugValue, ext);
+    const repoPath = imgPath.startsWith('/') ? `public${imgPath}` : `public/${imgPath}`;
+    setPendingUploads(prev => ({
+      ...prev,
+      [dataset]: {
+        ...(prev[dataset] || {}),
+        [repoPath]: { content: uploadInfo.base64, encoding: 'base64' }
+      }
+    }));
+    setUploadInfo(null);
+    return imgPath;
+  };
 
   const save = () => {
     if (!current.title || !current.slug) { alert('Title and slug are required'); return; }
+    const slugValue = current.slug;
+    let next = { ...current };
+    if (uploadInfo) {
+      const imgPath = pushPendingUpload(slugValue, uploadInfo.ext);
+      if (imgPath) { next.image = imgPath; }
+    }
     const arr = [...items];
-    const existsIdx = arr.findIndex(p => p.slug === current.slug);
+    const existsIdx = arr.findIndex(p => p.slug === slugValue);
     if (editingIndex === -1) {
       if (existsIdx !== -1) { alert('Slug already exists'); return; }
-      arr.unshift(current);
+      arr.unshift(next);
     } else {
       if (existsIdx !== -1 && existsIdx !== editingIndex) { alert('Slug already exists'); return; }
-      arr[editingIndex] = current;
+      arr[editingIndex] = next;
     }
     setItems(arr);
     datasetCfg.save(lang, arr);
@@ -186,7 +234,7 @@ export default function AdminPage(){
 
     const treeEntries = [];
     for (const file of files) {
-      const blobRes = await fetch(`${baseApi}/git/blobs`, { method: 'POST', headers: jsonHeaders, body: JSON.stringify({ content: file.content, encoding: 'utf-8' }) });
+      const blobRes = await fetch(`${baseApi}/git/blobs`, { method: 'POST', headers: jsonHeaders, body: JSON.stringify({ content: file.content, encoding: file.encoding || 'utf-8' }) });
       if (!blobRes.ok) { const t = await blobRes.text(); throw new Error(`Blob create failed for ${file.path}: ${blobRes.status} ${t}`); }
       const blobData = await blobRes.json();
       treeEntries.push({ path: file.path, mode: '100644', type: 'blob', sha: blobData.sha });
@@ -221,16 +269,27 @@ export default function AdminPage(){
     setCommitStatus(`Preparing commit (${label})...`);
 
     try {
-      const files = keys.map((key) => {
+      const files = [];
+      keys.forEach((key) => {
         const cfg = DATASETS[key];
         if (!cfg) throw new Error(`Unknown dataset ${key}`);
         const content = JSON.stringify(cfg.buildPayload(), null, 2);
-        return { path: cfg.commitPath, content };
+        files.push({ path: cfg.commitPath, content });
+        const pending = pendingUploads[key] || {};
+        Object.entries(pending).forEach(([path, data]) => {
+          files.push({ path, content: data.content, encoding: data.encoding || 'base64' });
+        });
       });
 
       const message = keys.length === 1 ? DATASETS[keys[0]].commitMessage : MULTI_COMMIT_MESSAGE;
       await performCommit(files, message);
       setCommitStatus(`Commit done (${label}).`);
+      // clear pending uploads for committed datasets
+      setPendingUploads(prev => {
+        const next = { ...prev };
+        keys.forEach(k => { next[k] = {}; });
+        return next;
+      });
 
       if (GIT_CFG.deployHook){
         setCommitStatus(`Commit OK (${label}). Triggering Netlify...`);
@@ -296,8 +355,9 @@ export default function AdminPage(){
               <input value={current.slug} onChange={e=>updateField('slug', e.target.value.replace(/\s+/g,'-').toLowerCase())} />
             </label>
             <label className="full">
-              <span>Immagine (URL)</span>
-              <input value={current.image} onChange={e=>updateField('image', e.target.value)} placeholder={`${window.location.origin}/assets/${imageFolder}/example.jpg`} />
+              <span>Immagine (upload)</span>
+              <input type="file" accept="image/*" onChange={handleImageUpload} />
+              {current.image && <div className="help">File: {current.image}</div>}
             </label>
             <label className="full">
               <span>Estratto</span>

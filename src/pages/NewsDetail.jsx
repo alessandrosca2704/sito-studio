@@ -53,8 +53,12 @@ export default function NewsDetail(){
 
 React.useEffect(() => {
   if (typeof window === 'undefined') return;
+  window.prerenderReady = false;
   const timer = setTimeout(() => { window.prerenderReady = true; }, 3000); // fallback per non far fallire il prerender
-  if (post) window.prerenderReady = true;
+  if (post) {
+    window.prerenderReady = true;
+    clearTimeout(timer);
+  }
   return () => clearTimeout(timer);
 }, [post]);
 
