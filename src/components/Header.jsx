@@ -67,11 +67,11 @@ export default function Header() {
       <div className="container site-header__inner">
         <Link to="/" className="brand" onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })}>
           <img src="/assets/logo.png" alt="Studio Scarimbolo" />
-          <span>Studio Scarimbolo</span>
+          <h1  className="h-h1" style={{}}>Studio Scarimbolo</h1>
         </Link>
         <nav className="nav-desktop" aria-label="Main navigation">
           {links.map((item) => (
-            <Link key={item.key} to={item.to}>{item.label}</Link>
+            <Link key={item.key} to={item.to}><h2 className='h-h2'>{item.label}</h2></Link>
           ))}
           <button type="button" className="btn" onClick={goToContact}>{contactLabel}</button>
           {renderLangSwitch('lang-switch--desktop')}
