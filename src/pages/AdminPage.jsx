@@ -86,7 +86,20 @@ export default function AdminPage(){
   }, [lang, dataset]);
 
   const startNew = () => { setCurrent(emptyPost()); setEditingIndex(-1); setUploadInfo(null); };
-  const editItem = (i) => { setEditingIndex(i); setCurrent(items[i]); setUploadInfo(null); };
+  const confirmImageBeforeChange = () => {
+    if (!uploadInfo) return true;
+    const ok = window.confirm("Hai caricato un'immagine non salvata. Vuoi salvare il post prima di cambiare?");
+    if (ok) {
+      save();
+    }
+    return false;
+  };
+  const editItem = (i) => {
+    if (!confirmImageBeforeChange()) return;
+    setEditingIndex(i);
+    setCurrent(items[i]);
+    setUploadInfo(null);
+  };
   const updateField = (k,v) => setCurrent(prev => ({...prev, [k]: v}));
   const sanitizeSlug = (value) => (
     (value || '')
@@ -94,6 +107,16 @@ export default function AdminPage(){
       .replace(/\s+/g, '')
       .replace(/[^a-z0-9]/g, '')
   );
+  const handleTitleChange = (e) => {
+    const title = e.target.value;
+    setCurrent(prev => {
+      const next = { ...prev, title };
+      if (editingIndex === -1 || !prev.slug) {
+        next.slug = sanitizeSlug(title);
+      }
+      return next;
+    });
+  };
   const getImagePath = (slugValue, ext) => `/assets/${imageFolder}/${slugValue}${ext}`;
 
   const handleImageUpload = (e) => {
@@ -330,7 +353,7 @@ export default function AdminPage(){
               <h2 style={{margin:0}}>{datasetCfg.label} ({lang.toUpperCase()})</h2>
 
             <div className="admin__actions">
-              <button className="btn" onClick={startNew}>New</button>
+              <button className="btn" onClick={() => { if (confirmImageBeforeChange()) startNew(); }}>New</button>
               <button className="btn" onClick={exportJson}>Export</button>
               <label className="btn" style={{cursor:'pointer'}}>
                 Import
@@ -354,11 +377,11 @@ export default function AdminPage(){
           <div className="form-admin">
             <label>
               <span>Titolo</span>
-              <input value={current.title} onChange={e=>updateField('title', e.target.value)} />
+              <input value={current.title} onChange={handleTitleChange} />
             </label>
             <label>
               <span>Slug (url)</span>
-              <input value={current.slug} onChange={e=>updateField('slug', sanitizeSlug(e.target.value))} />
+              <input value={current.slug} readOnly />
             </label>
             <label className="full">
               <span>Immagine (upload)</span>
