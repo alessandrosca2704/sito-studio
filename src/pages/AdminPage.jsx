@@ -88,6 +88,12 @@ export default function AdminPage(){
   const startNew = () => { setCurrent(emptyPost()); setEditingIndex(-1); setUploadInfo(null); };
   const editItem = (i) => { setEditingIndex(i); setCurrent(items[i]); setUploadInfo(null); };
   const updateField = (k,v) => setCurrent(prev => ({...prev, [k]: v}));
+  const sanitizeSlug = (value) => (
+    (value || '')
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .replace(/[^a-z0-9]/g, '')
+  );
   const getImagePath = (slugValue, ext) => `/assets/${imageFolder}/${slugValue}${ext}`;
 
   const handleImageUpload = (e) => {
@@ -352,7 +358,7 @@ export default function AdminPage(){
             </label>
             <label>
               <span>Slug (url)</span>
-              <input value={current.slug} onChange={e=>updateField('slug', e.target.value.replace(/\s+/g,'-').toLowerCase())} />
+              <input value={current.slug} onChange={e=>updateField('slug', sanitizeSlug(e.target.value))} />
             </label>
             <label className="full">
               <span>Immagine (upload)</span>
