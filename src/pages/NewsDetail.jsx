@@ -5,14 +5,14 @@ import './NewsDetail.css';
 import useNews from '../hooks/useNews';
 import { LinkedinShareButton, WhatsappShareButton } from 'react-share';
 import { IconFacebook, IconLinkedIn, IconShare, IconWhatsapp } from '../components/icons/Icons';
-import { Helmet } from 'react-helmet-async';
+import Seo from '../components/Seo';
 import { shareOnMobile } from 'react-mobile-share';
 
 export default function NewsDetail(){
   const { slug } = useParams();
   const { dict } = useI18n();
   const lang = (typeof window!=='undefined' && document.documentElement.lang)||'it';
-  const { items } = useNews(lang);
+  const { items, loading } = useNews(lang);
   const post = items.find(p => p.slug === slug);
 
   const BASE_URL = 'https://www.studioscarimbolo.it';
@@ -41,51 +41,42 @@ export default function NewsDetail(){
     }, 800);
   };
   const isMobile = typeof navigator !== 'undefined' && /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-  const defaultMeta = {
-    title: 'News | Studio Scarimbolo',
-    description: 'Novita e appuntamenti dal mondo della finanza, contabilita, normativa e molto altro.',
+  const notFoundMeta = {
+    title: 'Articolo non trovato | Studio Scarimbolo',
+    description: "L'articolo richiesto non e' disponibile.",
     image: fallback,
-    url: shareUrl
+    url: shareUrl,
+    type: 'website'
   };
   const meta = post
-    ? { title: post.title, description: excerpt || defaultMeta.description, image: imageAbs, url: shareUrl }
-    : defaultMeta;
+    ? { title: post.title, description: excerpt, image: imageAbs, url: shareUrl, type: 'article' }
+    : notFoundMeta;
 
-React.useEffect(() => {
-  if (typeof window === 'undefined') return;
-  window.prerenderReady = false;
-  const timer = setTimeout(() => { window.prerenderReady = true; }, 3000); // fallback per non far fallire il prerender
-  if (post) {
-    window.prerenderReady = true;
-    clearTimeout(timer);
-  }
-  return () => clearTimeout(timer);
-}, [post]);
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    // Attende il caricamento delle news: solo allora sappiamo se il post esiste e i meta sono definitivi.
+    window.prerenderReady = false;
+    const safetyTimer = setTimeout(() => {
+      window.prerenderReady = true;
+    }, 8000); // fallback di sicurezza: evita stalli del prerender
+    if (!loading) {
+      window.prerenderReady = true;
+      clearTimeout(safetyTimer);
+    }
+    return () => clearTimeout(safetyTimer);
+  }, [loading, slug]);
 
 
   return (
     <>
-      <Helmet>
-        <title>{meta.title}</title>
-        <meta name="description" content={meta.description} />
-        <link rel="canonical" href={meta.url} />
-
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={meta.url} />
-        <meta property="og:site_name" content="Studio Scarimbolo" />
-        <meta property="og:locale" content={lang === 'it' ? 'it_IT' : 'en_US'} />
-        <meta property="og:title" content={meta.title} />
-        <meta property="og:description" content={meta.description} />
-        <meta property="og:image" content={meta.image} />
-        <meta property="og:image:secure_url" content={meta.image} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={meta.title} />
-        <meta name="twitter:description" content={meta.description} />
-        <meta name="twitter:image" content={meta.image} />
-      </Helmet>
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        url={meta.url}
+        image={meta.image}
+        type={meta.type}
+        locale={lang === 'it' ? 'it_IT' : 'en_US'}
+      />
 
       {!post ? (
         <section className="section">

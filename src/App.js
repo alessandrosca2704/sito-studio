@@ -10,6 +10,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ChatAssistant from './components/ChatAssistant';
 import SocialStrip from './components/SocialStrip';
+import Seo from './components/Seo';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import ServicesPage from './pages/ServicesPage';
 import ServiceDetail from './pages/ServiceDetail';
@@ -47,6 +48,13 @@ export default function App(){
   const popupShownRef = useRef(false);
   const isHolidayWindow = isHolidayPopupWindow(new Date());
   const [showTree, setShowTree] = useState(false);
+  const homeSeo = {
+    title: 'Studio Scarimbolo | Consulenza fiscale e aziendale a Bari',
+    description: 'Studio professionale di consulenza fiscale, societaria e aziendale a Bari. Assistenza a imprese e professionisti.',
+    url: 'https://www.studioscarimbolo.it/',
+    image: 'https://www.studioscarimbolo.it/assets/home_about.jpg',
+    type: 'website'
+  };
 
   useEffect(() => {
     if (location.pathname !== '/') {
@@ -94,6 +102,7 @@ export default function App(){
         <Routes>
           <Route path="/" element={
             <>
+              <Seo {...homeSeo} />
               <Hero />
               <Welcome />
               <Services />
