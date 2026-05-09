@@ -7,7 +7,10 @@ export default function Seo({
   url,
   image,
   type = 'website',
-  locale = 'it_IT'
+  locale = 'it_IT',
+  imageWidth = 1200,
+  imageHeight = 630,
+  imageType = 'image/jpeg'
 }){
   const siteName = 'Studio Scarimbolo';
   const resolvedImage = image || '';
@@ -27,6 +30,9 @@ export default function Seo({
       {description ? <meta property="og:description" content={description} /> : null}
       {resolvedImage ? <meta property="og:image" content={resolvedImage} /> : null}
       {isSecureImage ? <meta property="og:image:secure_url" content={resolvedImage} /> : null}
+      {resolvedImage && imageWidth ? <meta property="og:image:width" content={String(imageWidth)} /> : null}
+      {resolvedImage && imageHeight ? <meta property="og:image:height" content={String(imageHeight)} /> : null}
+      {resolvedImage && imageType ? <meta property="og:image:type" content={imageType} /> : null}
 
       <meta name="twitter:card" content="summary_large_image" />
       {title ? <meta name="twitter:title" content={title} /> : null}

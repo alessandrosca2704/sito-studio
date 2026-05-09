@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import './NewsPage.css';
 import useNews from '../hooks/useNews';
@@ -16,16 +16,20 @@ export default function NewsPage(){
   const { items: deadlines } = useScadenze(lang);
   const [visibleCount, setVisibleCount] = React.useState(3);
   const [visibleDeadCount, setVisibleDeadCount] = React.useState(3);
-  React.useEffect(()=>{ setVisibleCount(3); }, [lang]);
+  React.useEffect(()=>{
+    setVisibleCount(3);
+    setVisibleDeadCount(3);
+  }, [lang]);
   const canLoadMore = visibleCount < posts.length;
+  const canLoadMoreDead = visibleDeadCount < deadlines.length;
   const loadMore = () => setVisibleCount(v => Math.min(v + 3, posts.length));
   const loadMoreDead = () => setVisibleDeadCount(d => Math.min(d + 3, deadlines.length));
   const BASE_URL = 'https://www.studioscarimbolo.it';
   const ensureAbsolute = (url = '') => {
-  if (!url) return '';
-  if (/^https?:\/\//i.test(url)) return url;
-  return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
-};
+    if (!url) return '';
+    if (/^https?:\/\//i.test(url)) return url;
+    return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+  };
   const fallback = `${BASE_URL}/assets/logo-facebook.png`;
   const resolveImage = (img = '') => ensureAbsolute(img) || fallback;
 
@@ -48,7 +52,7 @@ export default function NewsPage(){
             </article>
           ))}
         </div>
-        {canLoadMore && (
+        {canLoadMoreDead && (
           <div className="news-loadmore">
             <button className="loadmore-btn" onClick={loadMoreDead} aria-label="Carica altri">
               <IconMore/>
