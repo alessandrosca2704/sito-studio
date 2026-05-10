@@ -11,7 +11,8 @@ import useScadenze from '../hooks/useScadenze';
 export default function NewsPage(){
   const { dict } = useI18n();
   const lang = (typeof window!=='undefined' && document.documentElement.lang)||'it';
-  const { ref, visible } = useReveal();
+  const { ref: deadlinesRef, visible: deadlinesVisible } = useReveal();
+  const { ref: newsRef, visible: newsVisible } = useReveal();
   const { items: posts } = useNews(lang);
   const { items: deadlines } = useScadenze(lang);
   const [visibleCount, setVisibleCount] = React.useState(3);
@@ -42,7 +43,7 @@ export default function NewsPage(){
     <h1 className="text-brand news-header" style={{textAlign:'center',color:"white"}}>{dict.news.title}</h1>
 
     <section className="section">
-       <div className={`container reveal ${visible?'is-visible':''}`}ref={ref}>
+       <div className={`container reveal ${deadlinesVisible?'is-visible':''}`} ref={deadlinesRef}>
         <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.scadenze.subtitle}</h2>
         <div className=" deadline news-page-grid">
           {deadlines.slice(0, visibleDeadCount).map(p=> (
@@ -64,7 +65,7 @@ export default function NewsPage(){
           </div>
         )}
       </div>
-      <div className={`container reveal ${visible?'is-visible':''}`}ref={ref}>
+      <div className={`container reveal ${newsVisible?'is-visible':''}`} ref={newsRef}>
         <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.news.subtitle}</h2>
         <div className="news-page-grid">
           {posts.slice(0, visibleCount).map(p=> (
