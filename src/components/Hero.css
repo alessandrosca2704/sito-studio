@@ -9,12 +9,17 @@
 .hero__cta { margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap; }
 
 @media (max-width: 768px) {
-  .hero { padding: 100px 0 72px; }
+  .hero { padding: 82px 0 48px; }
+  .hero__title { font-size: 40px; max-width: 11ch; }
+  .hero__subtitle { font-size: 16px; line-height: 1.55; max-width: 34ch; }
   .hero__cta { justify-content:flex-start; }
 }
 
 @media (max-width: 540px) {
-  .hero { padding: 96px 0 64px; }
-  .hero__cta { flex-direction:column; align-items:flex-start; }
+  .hero { padding: 72px 0 40px; }
+  .hero .eyebrow { font-size: 11px; }
+  .hero__title { font-size: 36px; }
+  .hero__cta { flex-direction:column; align-items:stretch; max-width: 280px; }
+  .hero__cta .btn { justify-content:center; }
 }
 

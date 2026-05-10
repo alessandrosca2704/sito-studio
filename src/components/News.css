@@ -6,5 +6,13 @@
 .news-archive { display:flex; justify-content:center; margin-top: 16px; }
 .archive-link { display:inline-block; background:#f5f7fb; padding: 10px 16px; border-radius: 999px; color: var(--text); border:1px solid var(--border); }
 @media (max-width: 900px){ .news-grid { grid-template-columns: repeat(2, 1fr);} }
-@media (max-width: 640px){ .news-grid { grid-template-columns: 1fr;} }
-
+@media (max-width: 640px){
+  .news { padding-top: 24px; padding-bottom: 24px; }
+  .news h2 { font-size: 30px; }
+  .news-grid { grid-template-columns: 1fr; }
+  .news-body { padding: 14px; }
+  .news-body h3 { font-size: 22px; }
+  .news-body p { font-size: 15px; line-height: 1.5; }
+  .news-body .btn { justify-content: center; }
+  .archive-link { width: 100%; text-align: center; }
+}

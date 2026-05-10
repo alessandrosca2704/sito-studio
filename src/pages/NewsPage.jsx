@@ -8,6 +8,14 @@ import React from 'react';
 import { IconMore } from '../components/icons/Icons';
 import useScadenze from '../hooks/useScadenze';
 
+const MOBILE_QUERY = '(max-width: 640px)';
+
+const isMobileViewport = () => (
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia(MOBILE_QUERY).matches
+);
+
 export default function NewsPage(){
   const { dict } = useI18n();
   const lang = (typeof window!=='undefined' && document.documentElement.lang)||'it';
@@ -15,16 +23,33 @@ export default function NewsPage(){
   const { ref: newsRef, visible: newsVisible } = useReveal();
   const { items: posts } = useNews(lang);
   const { items: deadlines } = useScadenze(lang);
-  const [visibleCount, setVisibleCount] = React.useState(3);
-  const [visibleDeadCount, setVisibleDeadCount] = React.useState(3);
+  const [isMobileList, setIsMobileList] = React.useState(isMobileViewport);
+  const initialVisibleCount = isMobileList ? 1 : 3;
+  const [visibleCount, setVisibleCount] = React.useState(initialVisibleCount);
+  const [visibleDeadCount, setVisibleDeadCount] = React.useState(initialVisibleCount);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+    const media = window.matchMedia(MOBILE_QUERY);
+    const handleChange = () => setIsMobileList(media.matches);
+    handleChange();
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', handleChange);
+      return () => media.removeEventListener('change', handleChange);
+    }
+    media.addListener(handleChange);
+    return () => media.removeListener(handleChange);
+  }, []);
+
   React.useEffect(()=>{
-    setVisibleCount(3);
-    setVisibleDeadCount(3);
-  }, [lang]);
+    setVisibleCount(initialVisibleCount);
+    setVisibleDeadCount(initialVisibleCount);
+  }, [lang, initialVisibleCount]);
+
   const canLoadMore = visibleCount < posts.length;
   const canLoadMoreDead = visibleDeadCount < deadlines.length;
-  const loadMore = () => setVisibleCount(v => Math.min(v + 3, posts.length));
-  const loadMoreDead = () => setVisibleDeadCount(d => Math.min(d + 3, deadlines.length));
+  const loadMore = () => setVisibleCount(v => Math.min(v + initialVisibleCount, posts.length));
+  const loadMoreDead = () => setVisibleDeadCount(d => Math.min(d + initialVisibleCount, deadlines.length));
   const BASE_URL = 'https://www.studioscarimbolo.it';
   const ensureAbsolute = (url = '') => {
     if (!url) return '';

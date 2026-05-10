@@ -3,3 +3,10 @@
   padding: 12px; border: 1px solid var(--border); border-radius: 8px; font: inherit;
 }
 
+@media (max-width: 640px){
+  #contatti.section { padding-top: 24px; padding-bottom: 24px; }
+  #contatti .section__head { margin-bottom: 16px; }
+  #contatti .section__head h2 { font-size: 28px; }
+  #contatti .map-embed { height: 190px; }
+  .form-grid .btn { justify-content: center; }
+}

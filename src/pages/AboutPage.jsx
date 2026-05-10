@@ -58,6 +58,9 @@ export default function AboutPage(){
   const { lang } = useI18n();
   const { ref, visible } = useReveal();
   const content = copy[lang] || copy.it;
+  const focusLead = React.isValidElement(content.focusLead)
+    ? content.focusLead
+    : <p>{content.focusLead}</p>;
 
   return (
     <>
@@ -90,7 +93,7 @@ export default function AboutPage(){
 
           <div className="about-focus__text">
             <span className="eyebrow"><IconBars size={32} />&nbsp; {content.focusTitle}</span>
-            <p>{content.focusLead}</p>
+            <div className="about-focus__lead">{focusLead}</div>
             <ul>
               {content.focusBullets.map((item, idx) => (
                 <li key={idx}>{item}</li>

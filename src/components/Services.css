@@ -42,7 +42,22 @@
 }
 
 @media (max-width: 640px) {
+  #servizi.section { padding-top: 24px; padding-bottom: 24px; }
+  #servizi .section__head { margin-bottom: 16px; }
+  #servizi .section__head h2 { font-size: 28px; }
+  .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); border-radius: 14px; }
+  .service-tile { min-height: 112px; padding: 18px 10px; gap: 8px; border-left: 1px solid var(--border); border-top: 1px solid var(--border); }
+  .service-tile:nth-child(2n+1) { border-left: none; }
+  .service-tile:nth-child(-n+2) { border-top: none; }
+  .service-icon svg { width: 38px; height: 38px; }
+  .service-title { font-size: 13px; line-height: 1.25; }
+  .services-more { margin-top: 16px; }
+  .services-more .btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 340px) {
   .services-grid { grid-template-columns: 1fr; }
   .service-tile { border-left: none; }
-  .service-tile:not(:first-child) { border-top: 1px solid var(--border); }
+  .service-tile:nth-child(-n+2) { border-top: 1px solid var(--border); }
+  .service-tile:first-child { border-top: none; }
 }
