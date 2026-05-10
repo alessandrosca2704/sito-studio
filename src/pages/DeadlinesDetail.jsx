@@ -10,8 +10,12 @@ const BASE_URL = 'https://www.studioscarimbolo.it';
 
 const ensureAbsolute = (url = '') => {
   if (!url) return '';
-  if (/^https?:\/\//i.test(url)) return url;
-  return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+  try {
+    return new URL(url, BASE_URL).href;
+  } catch {
+    if (/^https?:\/\//i.test(url)) return url;
+    return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+  }
 };
 
 const getImageType = (url = '') => {

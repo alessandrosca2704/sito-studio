@@ -90,8 +90,12 @@ function safeFileSegment(segment) {
 
 function absoluteUrl(url) {
   if (!url) return '';
-  if (/^https?:\/\//i.test(url)) return url;
-  return `${SITE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+  try {
+    return new URL(url, SITE_URL).href;
+  } catch {
+    if (/^https?:\/\//i.test(url)) return url;
+    return `${SITE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+  }
 }
 
 function imageType(imageUrl) {
