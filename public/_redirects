@@ -2,5 +2,7 @@
 /admin/ /index.html 200!
 /admin/config.yml /admin/config.yml 200!
 /admin/CMS/config.yml /admin/config.yml 200!
+/admin/cms/config.yml /admin/config.yml 200!
 /admin/CMS/* /admin/CMS/index.html 200
+/admin/cms/* /admin/CMS/index.html 200
 /*  /index.html  200
