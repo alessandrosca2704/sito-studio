@@ -336,7 +336,7 @@ export default function AdminPage(){
 
   return (
     <section className="section admin">
-      <div className="container" style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: 10}}>
+      <div className="container admin__topbar">
             <div style={{display:'flex', alignItems:'center', gap:12}}>
               <h2 style={{margin:0}}>Admin</h2>
               <select value={dataset} onChange={e=>setDataset(e.target.value)} className="admin__dataset-select">
@@ -345,6 +345,7 @@ export default function AdminPage(){
                 ))}
               </select>
             </div>
+        <a className="btn btn-brand admin__cms-link" href="/admin/CMS/">CMS</a>
         <button className="btn" onClick={()=>{ logout(); window.location.href = '/login'; }}>Logout</button>
       </div>
       <div className="container admin__layout">

@@ -1,21 +1,7 @@
+import servicesContent from './content/services.json';
+
 export function getServices(lang= 'it'){
-  const it = [
-    { slug:'contabilita-bilancio', title:'Servizi Contabili e di Bilancio', summary:'Contabilità ordinaria e semplificata, bilanci e situazioni.', content:'<p>Gestione completa della contabilità, redazione bilanci civilistici e fiscali, adempimenti periodici, riconciliazioni e reportistica.</p>' },
-    { slug:'fiscali-tributari', title:'Servizi Fiscali e Tributari', summary:'Pianificazione fiscale, dichiarativi e compliance.', content:'<p>Pianificazione e ottimizzazione fiscale, gestione dichiarazioni, pratiche con Agenzia delle Entrate, interpelli e contenzioso.</p>' },
-    { slug:'societari', title:'Servizi Societari', summary:'Operazioni societarie e governance.', content:'<p>Costituzioni, modifiche statutarie, operazioni straordinarie, segreteria societaria e adempimenti con il Registro delle Imprese.</p>' },
-    { slug:'ausiliari', title:'Servizi Ausiliari', summary:'Adempimenti connessi e servizi accessori.', content:'<p>Gestione pratiche camerali, comunicazioni e servizi amministrativi di supporto all’attività aziendale.</p>' },
-    { slug:'gare-appalto', title:'Assistenza e Ricerca Gare Appalto', summary:'Supporto per partecipazione a gare.', content:'<p>Ricerca opportunità, predisposizione documentazione e affiancamento lungo tutto il processo di gara.</p>' },
-    { slug:'siti', title:'Realizzazione Siti Web', summary:'Sviluppiamo siti veloci, responsive e ottimizzati per la SEO, pensati per convertire visitatori in clienti e raccontare al meglio il tuo brand.', content:'<p>Sviluppiamo siti veloci, responsive e ottimizzati per la SEO, pensati per convertire visitatori in clienti e raccontare al meglio il tuo brand.</p>' },
-  ];
-  const en = [
-    { slug:'contabilita-bilancio', title:'Accounting & Financial Statements', summary:'Bookkeeping, financial statements and reports.', content:'<p>Full bookkeeping, statutory and tax financial statements, periodic filings, reconciliations and reporting.</p>' },
-    { slug:'fiscali-tributari', title:'Tax & Tributary Services', summary:'Tax planning, filings and compliance.', content:'<p>Tax planning and optimization, returns filing, dealings with the Revenue Agency, rulings and disputes.</p>' },
-    { slug:'societari', title:'Corporate Services', summary:'Corporate operations and governance.', content:'<p>Incorporations, bylaw changes, extraordinary corporate operations, corporate secretarial and chamber filings.</p>' },
-    { slug:'ausiliari', title:'Auxiliary Services', summary:'Related compliance and accessory services.', content:'<p>Chamber practices management, communications and administrative support services.</p>' },
-    { slug:'gare-appalto', title:'Tender Support', summary:'Support for public tenders participation.', content:'<p>Opportunity scouting, documentation preparation and assistance throughout the tender process.</p>' },
-    { slug:'siti', title:'Website Developing', summary:'We build fast, responsive, and SEO-optimized websites designed to convert visitors into customers and effectively showcase your brand.', content:'<p>We build fast, responsive, and SEO-optimized websites designed to convert visitors into customers and effectively showcase your brand.</p>' },
-  ];
-  return lang==='en' ? en : it;
+  return servicesContent[lang] || servicesContent.it || [];
 }
 
 const SUPPORTED_LANGS = ['it','en'];

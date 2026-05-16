@@ -1,16 +1,19 @@
-.admin__layout { display:grid; grid-template-columns: 1.5fr 2fr; gap: 24px; min-height:fit-content;}
-.admin__list { border:1px solid var(--border); border-radius:12px; overflow:auto; background:#fff; display: table; }
-.admin__listhead { display:flex; align-items:center; justify-content:space-between; padding:16px; border-bottom:1px solid var(--border); }
-.admin__actions { display:flex; gap:8px; }
+.admin__topbar { display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; gap:12px; margin-bottom:10px; }
+.admin__topbar > .btn:last-child { justify-self:end; }
+.admin__cms-link { justify-self:center; min-width:120px; text-align:center; }
+.admin__layout { --admin-panel-height: clamp(900px, calc(100vh - 250px), 3000px); display:grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 2fr); gap: 24px; align-items:stretch; height:var(--admin-panel-height); max-height:3000px; overflow:hidden;}
+.admin__list { min-width:0; height:100%; max-height:100%; min-height:0; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:#fff; display:flex; flex-direction:column; }
+.admin__listhead { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px; border-bottom:1px solid var(--border); }
+.admin__actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
 .admin__dataset-select { padding:6px 10px; border:1px solid var(--border); border-radius:6px; font:inherit; background:#fff; }
-.admin__items { list-style:none; margin:0; padding:0; max-height: 520px; overflow:auto; }
-.admin__items li { display:grid; grid-template-columns: 1fr auto auto; gap:8px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border); }
+.admin__items { flex:1; min-height:0; list-style:none; margin:0; padding:0; overflow-y:auto; overflow-x:hidden; }
+.admin__items li { display:grid; grid-template-columns: minmax(0, 1fr) minmax(120px, 220px) auto; gap:8px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border); }
 .admin__items li.active { background:#f5f7fb; }
-.admin__items .title { cursor:pointer; }
-.admin__items .slug { color:var(--muted); font-size:12px; }
+.admin__items .title { min-width:0; cursor:pointer; overflow-wrap:anywhere; }
+.admin__items .slug { min-width:0; color:var(--muted); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .admin__items .link { background:transparent; border:none; color:#b91c1c; cursor:pointer; }
 
-.admin__form { border:1px solid var(--border); border-radius:12px; padding:16px; background:#fff; }
+.admin__form { min-width:0; height:100%; max-height:100%; min-height:0; border:1px solid var(--border); border-radius:12px; padding:16px; background:#fff; overflow-y:auto; overflow-x:hidden; }
 .form-admin { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .form-admin label { display:flex; flex-direction:column; gap:6px; }
 .form-admin label.full { grid-column: 1 / -1; }
@@ -18,7 +21,16 @@
 .admin__formactions { margin-top: 12px; }
 .admin__note { color: var(--muted); font-size: 12px; margin-top: 8px; }
 
-@media (max-width: 900px){ .admin__layout { grid-template-columns: 1fr; } }
+@media (max-width: 900px){
+  .admin__topbar { grid-template-columns: 1fr; }
+  .admin__topbar > .btn:last-child,
+  .admin__cms-link { justify-self:stretch; }
+  .admin__layout { --admin-panel-height:auto; height:auto; max-height:none; overflow:visible; grid-template-columns: 1fr; }
+  .admin__listhead { align-items:flex-start; flex-direction:column; }
+  .admin__actions { justify-content:flex-start; }
+  .admin__items li { grid-template-columns: minmax(0, 1fr) auto; }
+  .admin__items .slug { grid-column: 1 / -1; }
+}
 
 .panel { margin-top: 18px; border:1px solid var(--border); border-radius:12px; background:#fff; }
 .panel__head { padding: 12px 14px; border-bottom:1px solid var(--border); }
@@ -38,7 +50,8 @@
 .cfg-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px; }
 .cfg-grid label { display:flex; flex-direction:column; gap:6px; }
 .cfg-grid label.full { grid-column: 1 / -1; }
-.editor{min-height: 1000px;}
+.editor{min-height: 0;}
+.quill-editor .ql-container { min-height: 620px; }
 .cfg-grid input { padding:10px; border:1px solid var(--border); border-radius:8px; font: inherit; }
 .cfg-grid .hint { color: var(--muted); font-size: 12px; }
 .panel__actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding: 0 14px 14px; }

@@ -1,0 +1,36 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: site_content
+    label: Contenuti sito
+    files:
+      - name: services
+        label: Servizi
+        file: src/content/services.json
+        format: json
+        fields:
+          - label: Servizi IT
+            name: it
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Slug, name: slug, widget: string }
+              - { label: Titolo, name: title, widget: string }
+              - { label: Sommario, name: summary, widget: text }
+              - { label: Contenuto HTML, name: content, widget: text }
+          - label: Servizi EN
+            name: en
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Slug, name: slug, widget: string }
+              - { label: Titolo, name: title, widget: string }
+              - { label: Sommario, name: summary, widget: text }
+              - { label: Contenuto HTML, name: content, widget: text }
