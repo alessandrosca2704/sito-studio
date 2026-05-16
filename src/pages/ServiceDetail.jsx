@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import { getServices } from '../data';
+import { formatContent } from '../content/formatContent';
 import './ServiceDetail.css';
 
 export default function ServiceDetail(){
@@ -20,7 +21,7 @@ export default function ServiceDetail(){
           <h1 className="text-brand">{item.title}</h1>
           <p className="detail__summary">{item.summary}</p>
         </div>
-        <div className="detail__content" dangerouslySetInnerHTML={{__html: item.content}} />
+        <div className="detail__content" dangerouslySetInnerHTML={{__html: formatContent(item.content)}} />
         <div style={{marginTop:16}}><Link to="/servizi" className="btn">← {dict.services.more}</Link></div>
       </div>
     </section>

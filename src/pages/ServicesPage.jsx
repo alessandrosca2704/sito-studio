@@ -2,6 +2,7 @@ import { useI18n } from '../i18n';
 import './ServicesPage.css';
 import { IconChart, IconTarget, IconBars, IconScale, IconLaptop } from '../components/icons/Icons';
 import { getServices } from '../data';
+import { formatContent } from '../content/formatContent';
 import useReveal from '../hooks/useReveal';
 import { Link } from 'react-router-dom';
 
@@ -32,7 +33,7 @@ export default function ServicesPage(){
                 <div className="svc__text">
                   <div className="svc__icon"><Icon size={56} /></div>
                   <h2>{s.title}</h2>
-                  <div className="svc__content" dangerouslySetInnerHTML={{__html: s.content}} />
+                  <div className="svc__content" dangerouslySetInnerHTML={{__html: formatContent(s.content)}} />
                 </div>
                 <div className="svc__image">
                   <img src={imgUrl} alt={s.title} onError={(e)=>{e.currentTarget.style.display='none';}}/>
