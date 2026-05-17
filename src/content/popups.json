@@ -1,0 +1,18 @@
+{
+  "popups": [
+    {
+      "id": "feste-natalizie",
+      "enabled": true,
+      "title": "Buone feste!",
+      "text": "",
+      "image": "/assets/Buon_Natale.png",
+      "startDay": "20/12",
+      "endDay": "06/01",
+      "buttonLabel": "Chiudi",
+      "effects": [
+        "snow",
+        "christmas_tree"
+      ]
+    }
+  ]
+}

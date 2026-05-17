@@ -72,38 +72,38 @@ collections:
           - { label: Testi news, name: news, widget: object, fields: [{ label: Titolo, name: title, widget: string }, { label: Sottotitolo, name: subtitle, widget: text }, { label: Leggi tutto, name: readMore, widget: string }, { label: Archivio, name: archive, widget: string }, { label: Not found title, name: notFoundTitle, widget: string }, { label: Not found back, name: notFoundBack, widget: string }, { label: Label condivisione, name: shareLabel, widget: string }] }
           - { label: Testi scadenze, name: scadenze, widget: object, fields: [{ label: Sottotitolo, name: subtitle, widget: text }, { label: Leggi tutto, name: readMore, widget: string }, { label: Archivio, name: archive, widget: string }, { label: Not found title, name: notFoundTitle, widget: string }, { label: Not found back, name: notFoundBack, widget: string }] }
           - { label: Immagini /news, name: assets, widget: object, fields: [{ label: Sfondo testata, name: headerBackground, widget: image, required: false }, { label: Immagine fallback, name: fallbackImage, widget: image, required: false }] }
-  - name: path_news_detail
-    label: "studioscarimbolo.it/news/{slug}"
-    description: "Articoli news. Scegli Italiano o Inglese, poi modifica gli articoli di quella lingua."
-    files:
-      - name: news_posts_it
-        label: "Italiano"
-        file: public/assets/news.it.json
-        format: json
-        fields:
-          - { label: News, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
-      - name: news_posts_en
-        label: "Inglese"
-        file: public/assets/news.en.json
-        format: json
-        fields:
-          - { label: News, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
-  - name: path_deadline_detail
-    label: "studioscarimbolo.it/scadenze/{slug}"
-    description: "Scadenze. Scegli Italiano o Inglese, poi modifica le scadenze di quella lingua."
-    files:
-      - name: deadline_posts_it
-        label: "Italiano"
-        file: public/assets/scadenze.it.json
-        format: json
-        fields:
-          - { label: Scadenze, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
-      - name: deadline_posts_en
-        label: "Inglese"
-        file: public/assets/scadenze.en.json
-        format: json
-        fields:
-          - { label: Scadenze, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  # - name: path_news_detail
+  #   label: "studioscarimbolo.it/news/{slug}"
+  #   description: "Articoli news. Scegli Italiano o Inglese, poi modifica gli articoli di quella lingua."
+  #   files:
+  #     - name: news_posts_it
+  #       label: "Italiano"
+  #       file: public/assets/news.it.json
+  #       format: json
+  #       fields:
+  #         - { label: News, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  #     - name: news_posts_en
+  #       label: "Inglese"
+  #       file: public/assets/news.en.json
+  #       format: json
+  #       fields:
+  #         - { label: News, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  # - name: path_deadline_detail
+  #   label: "studioscarimbolo.it/scadenze/{slug}"
+  #   description: "Scadenze. Scegli Italiano o Inglese, poi modifica le scadenze di quella lingua."
+  #   files:
+  #     - name: deadline_posts_it
+  #       label: "Italiano"
+  #       file: public/assets/scadenze.it.json
+  #       format: json
+  #       fields:
+  #         - { label: Scadenze, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  #     - name: deadline_posts_en
+  #       label: "Inglese"
+  #       file: public/assets/scadenze.en.json
+  #       format: json
+  #       fields:
+  #         - { label: Scadenze, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
   - name: path_about
     label: "studioscarimbolo.it/chi-siamo"
     description: "Pagina Chi siamo. Scegli la lingua da modificare."
@@ -182,6 +182,46 @@ collections:
           - { label: Titolo, name: title, widget: string }
           - { label: Immagine testata, name: heroBackground, widget: image, required: false }
           - { label: Nota CMS, name: bodyNote, widget: text }
+
+  - name: popup_notices
+    label: "Popup e avvisi"
+    description: "Gestione popup temporanei: festività, comunicazioni e avvisi in homepage."
+    files:
+      - name: popups
+        label: "Popup e avvisi"
+        file: src/content/popups.json
+        format: json
+        fields:
+          - label: Popup
+            name: popups
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: ID tecnico, name: id, widget: string, hint: "Usa un valore semplice e unico, es. feste-natalizie." }
+              - { label: Attivo, name: enabled, widget: boolean, default: true }
+              - { label: Titolo, name: title, widget: string }
+              - { label: Testo, name: text, widget: text, required: false }
+              - { label: Immagine, name: image, widget: image, required: false }
+              - { label: Giorno inizio, name: startDay, widget: string, pattern: ["^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])$", "Usa il formato GG/MM, es. 20/12"], hint: "Il popup appare ogni anno da questo giorno incluso. Formato: GG/MM." }
+              - { label: Giorno fine, name: endDay, widget: string, pattern: ["^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])$", "Usa il formato GG/MM, es. 06/01"], hint: "Il popup appare ogni anno fino a questo giorno incluso. Funziona anche se attraversa Capodanno." }
+              - { label: Testo bottone chiusura, name: buttonLabel, widget: string, default: "Chiudi" }
+              - label: Effetti visivi
+                name: effects
+                widget: select
+                multiple: true
+                required: false
+                options:
+                  - { label: Neve, value: snow }
+                  - { label: Scintille, value: sparkle }
+                  - { label: Coriandoli, value: confetti }
+                  - { label: Bagliore dorato, value: golden_glow }
+                  - { label: Luci festive, value: festive_lights }
+                  - { label: Stelle cadenti, value: falling_stars }
+                  - { label: Cuori, value: hearts }
+                  - { label: Palloncini, value: balloons }
+                  - { label: Foglie autunnali, value: autumn_leaves }
+                  - { label: Entrata zoom, value: zoom_in }
+                  - { label: Albero natalizio dopo chiusura, value: christmas_tree }
 
   - name: site_settings
     label: "Impostazioni generali condivise"

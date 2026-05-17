@@ -169,6 +169,7 @@
   function livePath(collectionName, entry) {
     switch (collectionName) {
       case 'path_home':
+      case 'popup_notices':
         return '/';
       case 'path_services':
         return '/servizi';
@@ -232,7 +233,7 @@
     CMS.registerPreviewTemplate(name, LivePreview(collectionName, label, lang));
   }
 
-  CMS.registerPreviewStyle('/admin/CMS/live-preview.css?v=20260516-3');
+  CMS.registerPreviewStyle('/admin/CMS/live-preview.css?v=20260517-1');
   registerPreview('path_home', 'path_home', 'studioscarimbolo.it/', 'it');
   registerPreview('home_it', 'path_home', 'studioscarimbolo.it/', 'it');
   registerPreview('home_en', 'path_home', 'studioscarimbolo.it/', 'en');
@@ -257,4 +258,6 @@
   registerPreview('path_privacy', 'path_privacy', 'studioscarimbolo.it/privacy', 'it');
   registerPreview('privacy_it', 'path_privacy', 'studioscarimbolo.it/privacy', 'it');
   registerPreview('privacy_en', 'path_privacy', 'studioscarimbolo.it/privacy', 'en');
+  registerPreview('popup_notices', 'popup_notices', 'Popup e avvisi', 'it');
+  registerPreview('popups', 'popup_notices', 'Popup e avvisi', 'it');
 })();

@@ -183,6 +183,46 @@ collections:
           - { label: Immagine testata, name: heroBackground, widget: image, required: false }
           - { label: Nota CMS, name: bodyNote, widget: text }
 
+  - name: popup_notices
+    label: "Popup e avvisi"
+    description: "Gestione popup temporanei: festività, comunicazioni e avvisi in homepage."
+    files:
+      - name: popups
+        label: "Popup e avvisi"
+        file: src/content/popups.json
+        format: json
+        fields:
+          - label: Popup
+            name: popups
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: ID tecnico, name: id, widget: string, hint: "Usa un valore semplice e unico, es. feste-natalizie." }
+              - { label: Attivo, name: enabled, widget: boolean, default: true }
+              - { label: Titolo, name: title, widget: string }
+              - { label: Testo, name: text, widget: text, required: false }
+              - { label: Immagine, name: image, widget: image, required: false }
+              - { label: Giorno inizio, name: startDay, widget: string, pattern: ["^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])$", "Usa il formato GG/MM, es. 20/12"], hint: "Il popup appare ogni anno da questo giorno incluso. Formato: GG/MM." }
+              - { label: Giorno fine, name: endDay, widget: string, pattern: ["^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])$", "Usa il formato GG/MM, es. 06/01"], hint: "Il popup appare ogni anno fino a questo giorno incluso. Funziona anche se attraversa Capodanno." }
+              - { label: Testo bottone chiusura, name: buttonLabel, widget: string, default: "Chiudi" }
+              - label: Effetti visivi
+                name: effects
+                widget: select
+                multiple: true
+                required: false
+                options:
+                  - { label: Neve, value: snow }
+                  - { label: Scintille, value: sparkle }
+                  - { label: Coriandoli, value: confetti }
+                  - { label: Bagliore dorato, value: golden_glow }
+                  - { label: Luci festive, value: festive_lights }
+                  - { label: Stelle cadenti, value: falling_stars }
+                  - { label: Cuori, value: hearts }
+                  - { label: Palloncini, value: balloons }
+                  - { label: Foglie autunnali, value: autumn_leaves }
+                  - { label: Entrata zoom, value: zoom_in }
+                  - { label: Albero natalizio dopo chiusura, value: christmas_tree }
+
   - name: site_settings
     label: "Impostazioni generali condivise"
     description: "Brand, contatti, social e SEO condivisi tra le lingue."

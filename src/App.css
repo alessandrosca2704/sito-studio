@@ -27,9 +27,152 @@
   pointer-events: none;
 }
 
-.mm-popup--visible .mm-popup__overlay::before {
+.mm-popup__overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body[data-popup-effects~="snow"] .mm-popup--visible .mm-popup__overlay::before {
   opacity: 0.6;
   animation: popup-snow 7s linear infinite;
+}
+
+body[data-popup-effects~="sparkle"] .mm-popup--visible .mm-popup__overlay::before {
+  background-image:
+    radial-gradient(circle at 18% 24%, rgba(255, 255, 255, 0.95) 0 1px, transparent 3px),
+    radial-gradient(circle at 72% 18%, rgba(255, 225, 132, 0.95) 0 2px, transparent 4px),
+    radial-gradient(circle at 42% 66%, rgba(255, 255, 255, 0.9) 0 1px, transparent 3px),
+    radial-gradient(circle at 88% 74%, rgba(255, 228, 150, 0.9) 0 2px, transparent 4px);
+  background-size: 130px 130px, 170px 170px, 210px 210px, 260px 260px;
+  opacity: 0.7;
+  animation: popup-sparkle-drift 5s linear infinite, popup-twinkle 1.4s ease-in-out infinite alternate;
+}
+
+body[data-popup-effects~="sparkle"] .mm-popup--visible .mm-popup__overlay::after {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(255, 219, 111, 0.9) 0 2px, transparent 4px);
+  background-size: 90px 90px, 150px 150px;
+  opacity: 0.45;
+  filter: drop-shadow(0 0 8px rgba(255, 230, 150, 0.75));
+  animation: popup-sparkle-rise 4.2s linear infinite;
+}
+
+body[data-popup-effects~="confetti"] .mm-popup--visible .mm-popup__overlay::before {
+  background-image:
+    radial-gradient(ellipse at center, rgba(37, 99, 235, 0.8) 0 3px, transparent 4px),
+    radial-gradient(ellipse at center, rgba(239, 68, 68, 0.8) 0 3px, transparent 4px),
+    radial-gradient(ellipse at center, rgba(250, 204, 21, 0.85) 0 3px, transparent 4px),
+    radial-gradient(ellipse at center, rgba(34, 197, 94, 0.78) 0 3px, transparent 4px);
+  background-size: 96px 130px, 142px 170px, 118px 150px, 180px 210px;
+  opacity: 0.55;
+  animation: popup-confetti 7.5s linear infinite;
+}
+
+body[data-popup-effects~="confetti"] .mm-popup--visible .mm-popup__overlay::after {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.75) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 30%, rgba(244, 63, 94, 0.72) 0 2px, transparent 3px),
+    radial-gradient(circle at 45% 70%, rgba(250, 204, 21, 0.78) 0 2px, transparent 3px);
+  background-size: 76px 98px, 132px 148px, 160px 180px;
+  opacity: 0.5;
+  animation: popup-confetti-sway 5.6s ease-in-out infinite;
+}
+
+body[data-popup-effects~="golden_glow"] .mm-popup--visible .mm-popup__box {
+  box-shadow: 0 34px 90px rgba(180, 128, 25, 0.28), 0 0 0 1px rgba(245, 196, 90, 0.42);
+}
+
+body[data-popup-effects~="festive_lights"] .mm-popup--visible .mm-popup__overlay::after {
+  background-image:
+    radial-gradient(circle at 10% 5%, #ef4444 0 5px, transparent 6px),
+    radial-gradient(circle at 25% 6%, #22c55e 0 5px, transparent 6px),
+    radial-gradient(circle at 40% 5%, #facc15 0 5px, transparent 6px),
+    radial-gradient(circle at 55% 6%, #3b82f6 0 5px, transparent 6px),
+    radial-gradient(circle at 70% 5%, #ef4444 0 5px, transparent 6px),
+    radial-gradient(circle at 85% 6%, #22c55e 0 5px, transparent 6px);
+  background-repeat: repeat-x;
+  background-size: 420px 70px;
+  opacity: 0.75;
+  animation: popup-lights 1.6s ease-in-out infinite alternate;
+}
+
+body[data-popup-effects~="falling_stars"] .mm-popup--visible .mm-popup__overlay::before {
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.95) 0 2px, transparent 4px),
+    radial-gradient(circle at 70% 30%, rgba(255, 234, 150, 0.9) 0 2px, transparent 4px),
+    radial-gradient(circle at 42% 72%, rgba(255, 255, 255, 0.85) 0 1px, transparent 3px);
+  background-size: 170px 170px, 230px 230px, 310px 310px;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 9px rgba(255, 240, 180, 0.75));
+  animation: popup-starfield 3.8s ease-in-out infinite alternate;
+}
+
+body[data-popup-effects~="falling_stars"] .mm-popup--visible .mm-popup__overlay::after {
+  background-image:
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.95) 0 3px, transparent 5px),
+    radial-gradient(ellipse at center, rgba(255, 225, 130, 0.82) 0 2px, transparent 4px);
+  background-size: 210px 260px, 280px 340px;
+  opacity: 0.45;
+  animation: popup-stars-fall 5.2s linear infinite;
+}
+
+body[data-popup-effects~="hearts"] .mm-popup--visible .mm-popup__overlay::after {
+  content: "♥";
+  color: rgba(244, 114, 182, 0.72);
+  font-size: 22px;
+  text-shadow:
+    110px 120px rgba(244, 114, 182, 0.55),
+    280px 70px rgba(251, 113, 133, 0.55),
+    480px 150px rgba(244, 114, 182, 0.5),
+    720px 90px rgba(251, 113, 133, 0.5),
+    920px 180px rgba(244, 114, 182, 0.48);
+  opacity: 0.7;
+  animation: popup-float-up 6s ease-in-out infinite;
+}
+
+body[data-popup-effects~="balloons"] .mm-popup--visible .mm-popup__overlay::after {
+  background-image:
+    radial-gradient(ellipse at center, rgba(37, 99, 235, 0.45) 0 12px, transparent 13px),
+    radial-gradient(ellipse at center, rgba(239, 68, 68, 0.42) 0 12px, transparent 13px),
+    radial-gradient(ellipse at center, rgba(250, 204, 21, 0.45) 0 12px, transparent 13px);
+  background-size: 220px 260px, 260px 300px, 300px 340px;
+  opacity: 0.5;
+  animation: popup-float-up 9s linear infinite;
+}
+
+body[data-popup-effects~="autumn_leaves"] .mm-popup--visible .mm-popup__overlay::before {
+  background-image:
+    radial-gradient(ellipse at 48% 42%, rgba(188, 82, 18, 0.75) 0 6px, transparent 7px),
+    radial-gradient(ellipse at 52% 55%, rgba(234, 147, 44, 0.68) 0 7px, transparent 8px),
+    radial-gradient(ellipse at 44% 48%, rgba(126, 58, 18, 0.55) 0 4px, transparent 5px);
+  background-size: 150px 190px, 220px 260px, 310px 340px;
+  opacity: 0.48;
+  filter: blur(0.2px);
+  animation: popup-leaves 9s ease-in-out infinite;
+}
+
+body[data-popup-effects~="autumn_leaves"] .mm-popup--visible .mm-popup__overlay::after {
+  content: "🍂";
+  color: rgba(180, 83, 9, 0.72);
+  font-size: 21px;
+  line-height: 1;
+  text-shadow:
+    120px 90px rgba(217, 119, 6, 0.62),
+    260px 180px rgba(146, 64, 14, 0.56),
+    430px 120px rgba(234, 88, 12, 0.52),
+    610px 240px rgba(180, 83, 9, 0.54),
+    820px 150px rgba(217, 119, 6, 0.58),
+    1040px 260px rgba(146, 64, 14, 0.48);
+  opacity: 0.78;
+  animation: popup-real-leaves 8.5s ease-in-out infinite;
+}
+
+body[data-popup-effects~="zoom_in"] .mm-popup--visible .mm-popup__box {
+  animation: popup-zoom-in 520ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .mm-popup__box {
@@ -112,6 +255,15 @@
   padding: 16px 24px 24px;
   background: #fbfcff;
   border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.mm-popup__box__footer__right-space {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
 .mm-popup__btn {
@@ -148,6 +300,74 @@
   }
   to {
     background-position: 0 220px, 0 300px, 0 360px, 0 420px;
+  }
+}
+
+@keyframes popup-twinkle {
+  from { opacity: 0.25; filter: brightness(0.9) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5)); }
+  to { opacity: 0.85; filter: brightness(1.45) drop-shadow(0 0 10px rgba(255, 230, 150, 0.9)); }
+}
+
+@keyframes popup-sparkle-drift {
+  from { background-position: 0 0, 30px -40px, -20px 20px, 80px -60px; }
+  to { background-position: 70px 130px, -40px 140px, 60px 210px, -20px 260px; }
+}
+
+@keyframes popup-sparkle-rise {
+  from { transform: translateY(80px) scale(0.98); }
+  to { transform: translateY(-90px) scale(1.04); }
+}
+
+@keyframes popup-confetti {
+  from { background-position: 0 -160px, 40px -120px, -20px -180px, 80px -220px; }
+  to { background-position: 35px 340px, -45px 360px, 40px 320px, -60px 430px; }
+}
+
+@keyframes popup-confetti-sway {
+  0%, 100% { transform: translateX(-10px); }
+  50% { transform: translateX(14px); }
+}
+
+@keyframes popup-lights {
+  from { filter: brightness(0.8); }
+  to { filter: brightness(1.35); }
+}
+
+@keyframes popup-starfield {
+  from { opacity: 0.35; transform: scale(0.99); }
+  to { opacity: 0.8; transform: scale(1.01); }
+}
+
+@keyframes popup-stars-fall {
+  from { background-position: -40px -220px, 120px -280px; }
+  to { background-position: 90px 360px, -80px 420px; }
+}
+
+@keyframes popup-float-up {
+  from { transform: translateY(120px); }
+  to { transform: translateY(-120px); }
+}
+
+@keyframes popup-leaves {
+  from { background-position: 0 -180px, 80px -220px, 140px -260px; transform: rotate(0deg); }
+  50% { transform: rotate(2deg) translateX(18px); }
+  to { background-position: 90px 360px, -60px 420px, 180px 460px; transform: rotate(-2deg); }
+}
+
+@keyframes popup-real-leaves {
+  from { transform: translateY(-80px) translateX(-18px) rotate(-12deg); }
+  50% { transform: translateY(120px) translateX(28px) rotate(16deg); }
+  to { transform: translateY(300px) translateX(-12px) rotate(36deg); }
+}
+
+@keyframes popup-zoom-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 

@@ -30,24 +30,46 @@ import Popup from 'react-popup';
 import 'react-popup/style.css';
 import './App.css';
 import siteSettings from './content/siteSettings.json';
+import popupContent from './content/popups.json';
+import { getCmsPreviewData } from './content/cmsPreview';
 
-const isHolidayPopupWindow = (date) => {
-  const year = date.getFullYear();
-  const startThisYear = new Date(year, 11, 20, 0, 0, 0, 0);
-  const endNextYear = new Date(year + 1, 0, 6, 23, 59, 59, 999);
-  const startPrevYear = new Date(year - 1, 11, 20, 0, 0, 0, 0);
-  const endThisYear = new Date(year, 0, 6, 23, 59, 59, 999);
+const parseMonthDay = (value) => {
+  if (!value || typeof value !== 'string') return null;
+  const normalized = value.trim();
+  const fullDateMatch = normalized.match(/^\d{4}-(\d{2})-(\d{2})$/);
+  const dayMonthMatch = normalized.match(/^(\d{2})\/(\d{2})$/);
+  const day = fullDateMatch ? Number(fullDateMatch[2]) : dayMonthMatch ? Number(dayMonthMatch[1]) : null;
+  const month = fullDateMatch ? Number(fullDateMatch[1]) : dayMonthMatch ? Number(dayMonthMatch[2]) : null;
+  if (!day || !month || day < 1 || day > 31 || month < 1 || month > 12) return null;
+  return month * 100 + day;
+};
 
-  return (
-    (date >= startThisYear && date <= endNextYear) ||
-    (date >= startPrevYear && date <= endThisYear)
-  );
+const popupIsActive = (popup, date = new Date()) => {
+  if (!popup?.enabled) return false;
+  const start = parseMonthDay(popup.startDay || popup.startDate);
+  const end = parseMonthDay(popup.endDay || popup.endDate);
+  const today = (date.getMonth() + 1) * 100 + date.getDate();
+  if (start && end && start > end) {
+    return today >= start || today <= end;
+  }
+  if (start && today < start) return false;
+  if (end && today > end) return false;
+  return true;
+};
+
+const popupHasEffect = (popup, effect) => {
+  return Array.isArray(popup?.effects) && popup.effects.includes(effect);
 };
 
 export default function App(){
   const location = useLocation();
   const popupShownRef = useRef(false);
-  const isHolidayWindow = isHolidayPopupWindow(new Date());
+  const previewPopupContent = getCmsPreviewData('popup_notices', 'it', popupContent);
+  const popupList = Array.isArray(previewPopupContent?.popups) ? previewPopupContent.popups : [];
+  const isPopupPreview = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('cms-preview') === 'popup_notices';
+  const activePopup = isPopupPreview
+    ? popupList.find((popup) => popup?.enabled) || popupList[0]
+    : popupList.find((popup) => popupIsActive(popup));
   const [showTree, setShowTree] = useState(false);
   const homeSeo = siteSettings.seo.home;
 
@@ -55,38 +77,44 @@ export default function App(){
     if (location.pathname !== '/') {
       return;
     }
-    if (!isHolidayWindow) {
+    if (!activePopup) {
       return;
     }
-    if (popupShownRef.current) {
+    if (popupShownRef.current === activePopup.id) {
       return;
     }
 
-    popupShownRef.current = true;
+    popupShownRef.current = activePopup.id;
     setShowTree(false);
+    document.body.dataset.popupEffects = (activePopup.effects || []).join(' ');
     Popup.create({
-      title: 'Buone feste!',
+      title: activePopup.title,
       content: (
-        <div className='popupcontainer'>
-          <img src={siteSettings.assets.holidayPopupImage} alt="Buone feste" />
+        <div className="popupcontainer">
+          {activePopup.image && <img src={activePopup.image} alt={activePopup.title} />}
+          {activePopup.text && <p>{activePopup.text}</p>}
         </div>
       ),
       buttons: {
-        right: ['ok']
+        right: [{
+          text: activePopup.buttonLabel || 'Chiudi',
+          action: (store) => store.close()
+        }]
       }
     });
-  }, [location.pathname, isHolidayWindow]);
+  }, [location.pathname, activePopup]);
 
   useEffect(() => {
     const handleClose = () => {
-      if (isHolidayWindow && location.pathname === '/') {
+      document.body.dataset.popupEffects = '';
+      if (activePopup && popupHasEffect(activePopup, 'christmas_tree') && location.pathname === '/') {
         setShowTree(true);
       }
     };
 
     Popup.addCloseListener(handleClose);
     return () => Popup.removeCloseListener(handleClose);
-  }, [isHolidayWindow, location.pathname]);
+  }, [activePopup, location.pathname]);
 
   return (
     <I18nProvider>
@@ -121,7 +149,7 @@ export default function App(){
       <SocialStrip />
       <ChatAssistant />
       <Popup defaultOk="Chiudi" />
-      {isHolidayWindow && location.pathname === '/' && showTree && (
+      {activePopup && popupHasEffect(activePopup, 'christmas_tree') && location.pathname === '/' && showTree && (
         <XmasTree lightColors={[
           "#ff0000", // Red
           "#00ff00", // Green
