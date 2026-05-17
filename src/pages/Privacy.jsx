@@ -1,13 +1,18 @@
 import React from 'react';
 import './Privacy.css';
 import { color } from 'framer-motion';
+import { useI18n } from '../i18n';
+import privacyContent from '../content/privacy';
+import { getCmsPreviewData } from '../content/cmsPreview';
 
 export default function Privacy(){
+  const { lang } = useI18n();
+  const content = getCmsPreviewData('path_privacy', lang, privacyContent[lang] || privacyContent.it);
   const [failed, setFailed] = React.useState(false);
   return (
     <div>
-        <div className="privacy__head">
-          <h1 className="text-brand" style={{color:"white"}}>Privacy Policy</h1>
+        <div className="privacy__head" style={{ backgroundImage: `url(${content.heroBackground})` }}>
+          <h1 className="text-brand" style={{color:"white"}}>{content.title}</h1>
         </div>
       
       <div className="container">

@@ -1,0 +1,148 @@
+{
+  "it": {
+    "heroTitle": "Aree di Attività",
+    "blocks": [
+      {
+        "id": "ristrutturazioni-aziendali",
+        "title": "Ristrutturazioni Aziendali",
+        "highlight": "Ristrutturazioni",
+        "image": "/assets/ristrutturazione.jpg",
+        "paragraphs": [
+          "L'azienda con problemi di perdite viene studiata da un punto di vista esterno in tutte le sue caratteristiche. Il nostro team si occuperà di fare un'analisi della redditività di tutte le attività produttive e delle tendenze del mercato in cui l'impresa si muove."
+        ],
+        "bullets": [
+          "Ridisegnare l'azienda, tagliando i rami meno produttivi e cercando di salvare i rami più produttivi.",
+          "Proporre un piano di riduzione dei costi strettissimo.",
+          "Predisporre un piano strategico concreto su come generare vendite, fatturato e utili per rispettare gli obiettivi finanziari."
+        ]
+      },
+      {
+        "id": "consulenza-finanziaria",
+        "title": "Consulenza Finanziaria",
+        "highlight": "Consulenza",
+        "image": "/assets/finanziaria.jpg",
+        "paragraphs": [
+          "Lo studio avrà come priorità quella di incontrare il cliente per individuare aspettative ed esigenze di investimento, di protezione del risparmio, di miglioramento della situazione finanziaria presente o futura.",
+          "Svolge quindi un'analisi approfondita della situazione personale, fiscale ed economica del cliente e fissa gli obiettivi a breve e a lungo termine.",
+          "Finalizzerà la costruzione di un rapporto personale con il cliente, improntato alla trasparenza, per permettere di conoscerne a fondo la situazione e gli obiettivi finanziari, e di formulare la soluzione più idonea nell'interesse del cliente."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "realizzazione-siti-web",
+        "title": "Realizzazione siti web",
+        "highlight": "Consulenza",
+        "image": "/assets/siti.png",
+        "paragraphs": [
+          "Sviluppiamo siti veloci, responsive e ottimizzati per la SEO, pensati per convertire visitatori in clienti e raccontare al meglio il tuo brand."
+        ],
+        "bullets": [
+          "Design su misura: interfacce moderne e accessibili, progettate sui tuoi obiettivi e sulla tua identità visiva.",
+          "Prestazioni e SEO: codice leggero, caricamento rapido, struttura semantica e best practice SEO on-page.",
+          "Mobile-first: layout adattivi che funzionano perfettamente su smartphone, tablet e desktop.",
+          "Gestione autonoma: CMS intuitivo per aggiornare testi, immagini e pagine in autonomia.",
+          "Sicurezza e GDPR: HTTPS, backup automatici, cookie banner e moduli conformi al GDPR."
+        ]
+      },
+      {
+        "id": "consulenza-fiscale-tributaria",
+        "title": "Consulenza Fiscale e Tributaria",
+        "highlight": "Consulenza",
+        "image": "/assets/fiscale_tributaria.jpg",
+        "paragraphs": [
+          "Un'attività fondamentale, il management dello studio con l'ausilio dei suoi collaboratori e professionisti qualificati, rivolto sia alle aziende sia ai privati cittadini.",
+          "Affianchiamo i clienti nella gestione dei rapporti con l'Amministrazione Finanziaria dello Stato, degli Enti locali offrendo una consulenza guidata per gli obblighi tributari a enti, società, imprese, privati, con attenzione su tutti gli aspetti della tassazione."
+        ],
+        "bullets": [
+          "Dichiarazione dei Redditi per persone fisiche, giuridiche, società, ONLUS, enti non commerciali.",
+          "Dichiarazioni sostituti d'imposta, TASI, IMU e liquidazioni IVA periodiche.",
+          "Apertura Partita IVA e calcolo di saldi e acconti."
+        ]
+      },
+      {
+        "id": "finanza-aziendale",
+        "title": "Finanza Aziendale",
+        "highlight": "Finanza",
+        "image": "/assets/aziendale.jpg",
+        "paragraphs": [
+          "Lo studio si occuperà di studiare le migliori decisioni in ambito aziendale atte a garantire, all'azienda stessa, un bilancio attivo.",
+          "Occupandosi della corporate finance, mette in pratica tecniche e strumenti per migliorare il valore dell'impresa e assicurare un rendimento del capitale superiore al costo del capitale, evitando i rischi finanziari.",
+          "Le decisioni vengono prese sulla base dei fondi disponibili e delle attività sulle quali investire; l'obiettivo finale è stabilire un buon equilibrio aumentando il rendimento, abbassando i costi e riducendo i rischi."
+        ],
+        "bullets": []
+      }
+    ],
+    "heroBackground": "/assets/attivita_bg.jpg"
+  },
+  "en": {
+    "heroTitle": "Areas of Activity",
+    "blocks": [
+      {
+        "id": "ristrutturazioni-aziendali",
+        "title": "Corporate Restructuring",
+        "highlight": "Restructuring",
+        "image": "/assets/ristrutturazione.jpg",
+        "paragraphs": [
+          "External analysis for companies facing losses: profitability, operations and market trends."
+        ],
+        "bullets": [
+          "Redesign the company, removing low-productivity areas and strengthening the best ones.",
+          "Strict cost-reduction plan.",
+          "Concrete strategy to generate sales, revenue and profit."
+        ]
+      },
+      {
+        "id": "consulenza-finanziaria",
+        "title": "Financial Advisory",
+        "highlight": "Advisory",
+        "image": "/assets/finanziaria.jpg",
+        "paragraphs": [
+          "We meet clients to understand investment goals, risk protection and financial improvement needs.",
+          "We analyse personal, tax and economic situations and set short- and long-term goals.",
+          "We build a transparent relationship to propose the most suitable solution."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "realizzazione-siti-web",
+        "title": "Web-Site Developing",
+        "highlight": "Web Developing",
+        "image": "/assets/siti.png",
+        "paragraphs": [
+          "We build fast, responsive, and SEO-optimized websites designed to convert visitors into customers and effectively showcase your brand."
+        ],
+        "bullets": [
+          "Custom design tailored to goals and brand identity.",
+          "Performance and SEO with lightweight, semantic code.",
+          "Mobile-first responsive layouts.",
+          "Self-management through an intuitive CMS.",
+          "Security and GDPR-oriented setup."
+        ]
+      },
+      {
+        "id": "consulenza-fiscale-tributaria",
+        "title": "Tax Advisory",
+        "highlight": "Advisory",
+        "image": "/assets/fiscale_tributaria.jpg",
+        "paragraphs": [
+          "Support for companies and individuals in dealing with the Tax Administration and ensuring compliance.",
+          "Direct and indirect taxes, returns, VAT settlements, VAT number opening and tax calculations."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "finanza-aziendale",
+        "title": "Corporate Finance",
+        "highlight": "Finance",
+        "image": "/assets/aziendale.jpg",
+        "paragraphs": [
+          "We study corporate decisions to secure a healthy, profitable balance sheet.",
+          "We apply corporate finance techniques and tools to improve company value and achieve returns above the cost of capital while managing risks.",
+          "Decisions balance available funds and investable assets to raise returns while reducing costs and risks."
+        ],
+        "bullets": []
+      }
+    ],
+    "heroBackground": "/assets/attivita_bg.jpg"
+  }
+}

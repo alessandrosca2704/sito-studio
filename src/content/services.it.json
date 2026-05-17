@@ -1,5 +1,5 @@
 {
-  "it": [
+  "items": [
     {
       "slug": "contabilita-bilancio",
       "title": "Servizi Contabili e di Bilancio",
@@ -40,50 +40,6 @@
       "title": "Realizzazione Siti Web",
       "summary": "Sviluppiamo siti veloci, responsive e ottimizzati per la SEO, pensati per convertire visitatori in clienti e raccontare al meglio il tuo brand.",
       "content": "Sviluppiamo siti veloci, responsive e ottimizzati per la SEO, pensati per convertire visitatori in clienti e raccontare al meglio il tuo brand.",
-      "image": "/assets/siti.png"
-    }
-  ],
-  "en": [
-    {
-      "slug": "contabilita-bilancio",
-      "title": "Accounting & Financial Statements",
-      "summary": "Bookkeeping, financial statements and reports.",
-      "content": "Full bookkeeping, statutory and tax financial statements, periodic filings, reconciliations and reporting.",
-      "image": "/assets/contabilita-bilancio.png"
-    },
-    {
-      "slug": "fiscali-tributari",
-      "title": "Tax & Tributary Services",
-      "summary": "Tax planning, filings and compliance.",
-      "content": "Tax planning and optimization, returns filing, dealings with the Revenue Agency, rulings and disputes.",
-      "image": "/assets/fiscali-tributari.png"
-    },
-    {
-      "slug": "societari",
-      "title": "Corporate Services",
-      "summary": "Corporate operations and governance.",
-      "content": "Incorporations, bylaw changes, extraordinary corporate operations, corporate secretarial and chamber filings.",
-      "image": "/assets/societari.png"
-    },
-    {
-      "slug": "ausiliari",
-      "title": "Auxiliary Services",
-      "summary": "Related compliance and accessory services.",
-      "content": "Chamber practices management, communications and administrative support services.",
-      "image": "/assets/ausiliari.png"
-    },
-    {
-      "slug": "gare-appalto",
-      "title": "Tender Support",
-      "summary": "Support for public tenders participation.",
-      "content": "Opportunity scouting, documentation preparation and assistance throughout the tender process.",
-      "image": "/assets/gare-appalto.png"
-    },
-    {
-      "slug": "siti",
-      "title": "Website Developing",
-      "summary": "We build fast, responsive, and SEO-optimized websites designed to convert visitors into customers and effectively showcase your brand.",
-      "content": "We build fast, responsive, and SEO-optimized websites designed to convert visitors into customers and effectively showcase your brand.",
       "image": "/assets/siti.png"
     }
   ]

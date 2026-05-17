@@ -1,13 +1,19 @@
 import './Hero.css';
 import { useI18n } from '../i18n';
 import useReveal from '../hooks/useReveal';
+import siteSettings from '../content/siteSettings.json';
 
 export default function Hero(){
   const { dict } = useI18n();
   const { ref, visible } = useReveal();
   return (
     <section className="hero">
-      <div className="hero__bg" />
+      <div
+        className="hero__bg"
+        style={{
+          background: `linear-gradient(180deg, ${siteSettings.colors.heroOverlayStart}, ${siteSettings.colors.heroOverlayEnd}), url(${dict.hero.backgroundImage || siteSettings.assets.heroBackground}) center/cover no-repeat`
+        }}
+      />
       <div className="container">
         <div ref={ref} className={`reveal ${visible?'is-visible':''}`}>
           <div className="eyebrow">{dict.hero.eyebrow}</div>

@@ -24,7 +24,7 @@ export default function ServicesPage(){
 
       {list.map((s, i)=>{
         const Icon = iconByIndex[i % iconByIndex.length];
-        const imgUrl = `${process.env.PUBLIC_URL}/assets/${s.slug}.png`;
+        const imgUrl = s.image || `${process.env.PUBLIC_URL}/assets/${s.slug}.png`;
         const reversed = i % 2 === 1;
         return (
           <section id={s.slug} className="svc section" key={s.slug}>
@@ -45,7 +45,7 @@ export default function ServicesPage(){
           
         );
       })}
-      <Link to="/aree-di-attivita" style={{display:'flex',justifyContent:"center"}}><button className='btn btn-brand' style={{ fontSize:'18px'}}>Scopri di più sulle nostre Aree di Attività</button></Link>
+      <Link to="/aree-di-attivita" style={{display:'flex',justifyContent:"center"}}><button className='btn btn-brand' style={{ fontSize:'18px'}}>{dict.services.activitiesCta}</button></Link>
 
       </div>
     </>

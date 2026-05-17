@@ -29,6 +29,7 @@ import XmasTree from 'react-xmas-tree/react';
 import Popup from 'react-popup';
 import 'react-popup/style.css';
 import './App.css';
+import siteSettings from './content/siteSettings.json';
 
 const isHolidayPopupWindow = (date) => {
   const year = date.getFullYear();
@@ -48,13 +49,7 @@ export default function App(){
   const popupShownRef = useRef(false);
   const isHolidayWindow = isHolidayPopupWindow(new Date());
   const [showTree, setShowTree] = useState(false);
-  const homeSeo = {
-    title: 'Studio Scarimbolo | Consulenza fiscale e aziendale a Bari',
-    description: 'Studio professionale di consulenza fiscale, societaria e aziendale a Bari. Assistenza a imprese e professionisti.',
-    url: 'https://www.studioscarimbolo.it/',
-    image: 'https://www.studioscarimbolo.it/assets/home_about.jpg',
-    type: 'website'
-  };
+  const homeSeo = siteSettings.seo.home;
 
   useEffect(() => {
     if (location.pathname !== '/') {
@@ -73,7 +68,7 @@ export default function App(){
       title: 'Buone feste!',
       content: (
         <div className='popupcontainer'>
-          <img src="/assets/Buon_Natale.png" alt="Buone feste" />
+          <img src={siteSettings.assets.holidayPopupImage} alt="Buone feste" />
         </div>
       ),
       buttons: {

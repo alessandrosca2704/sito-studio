@@ -1,0 +1,22 @@
+{
+  "news": {
+    "title": "Scadenze e News",
+    "subtitle": "Novità e appuntamenti dal mondo della finanza, contabilità, normativa e molto altro.",
+    "readMore": "Leggi tutto",
+    "archive": "Archivio news",
+    "notFoundTitle": "Articolo non trovato",
+    "notFoundBack": "Torna alle news",
+    "shareLabel": "Condividi la news sui Social!"
+  },
+  "scadenze": {
+    "subtitle": "Un colpo d'occhio sugli obblighi fiscali del mese.",
+    "readMore": "Leggi tutto",
+    "archive": "Archivio scadenze",
+    "notFoundTitle": "Scadenza non trovata",
+    "notFoundBack": "Torna alle news"
+  },
+  "assets": {
+    "headerBackground": "/assets/hero_news_bg.gif",
+    "fallbackImage": "/assets/logo-facebook.png"
+  }
+}

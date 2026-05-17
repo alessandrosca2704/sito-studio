@@ -5,8 +5,8 @@ const DEFAULT_SITE_URL = 'https://www.studioscarimbolo.it';
 const DEFAULT_LIMIT = 10;
 
 const DATASETS = [
-  { file: 'news.json', basePath: '/news', label: 'news' },
-  { file: 'scadenze.json', basePath: '/scadenze', label: 'scadenze' },
+  { files: { it: 'news.it.json', en: 'news.en.json' }, basePath: '/news', label: 'news' },
+  { files: { it: 'scadenze.it.json', en: 'scadenze.en.json' }, basePath: '/scadenze', label: 'scadenze' },
 ];
 
 function siteUrl() {
@@ -63,6 +63,15 @@ async function loadDataset(file, baseUrl) {
   return fetchDataset(file, baseUrl);
 }
 
+async function loadLocalizedDataset(files, baseUrl) {
+  const data = {};
+  for (const lang of ['it', 'en']) {
+    const localized = await loadDataset(files[lang], baseUrl);
+    data[lang] = Array.isArray(localized?.items) ? localized.items : [];
+  }
+  return data;
+}
+
 async function scrapeUrl(url, token) {
   const endpoint = new URL('https://graph.facebook.com/');
   endpoint.searchParams.set('id', url);
@@ -90,7 +99,7 @@ exports.handler = async () => {
 
   for (const dataset of DATASETS) {
     try {
-      const data = await loadDataset(dataset.file, baseUrl);
+      const data = await loadLocalizedDataset(dataset.files, baseUrl);
       urls.push(...articleUrls(data, dataset.basePath, limit, baseUrl));
     } catch (err) {
       console.error(`[deploy-succeeded] Unable to load ${dataset.label}:`, err.message || err);

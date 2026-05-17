@@ -1,0 +1,29 @@
+{
+  "heroTitle": "Lo Studio",
+  "introTitle": "Dal 1995 competenza e serietà nella gestione della tua azienda",
+  "introParagraphs": [
+    "Lo studio Scarimbolo, grazie alla pluriennale esperienza nel campo della consulenza aziendale, è in grado di offrire soluzioni adatte alle esigenze del mercato accompagnando, senza indugio e in modo proattivo, la crescita di ciascuna azienda.",
+    "Il nostro obiettivo primario è fornire assistenza attenta e costante attraverso una rete di professionisti qualificati."
+  ],
+  "focusTitle": "La nostra forza, investire nelle nuove generazioni",
+  "focusLead": "Professionisti, piccole e medie imprese trovano nello studio un interlocutore competente capace di assisterli in ogni aspetto fiscale, finanziario e del lavoro. Gli elevati standard di cortesia, efficienza e tempestività costituiscono gli elementi di successo dello Studio e assicurano ai Clienti tranquillità a costi contenuti.",
+  "focusBullets": [
+    "Ridisegniamo i processi aziendali preservando e potenziando i reparti più produttivi",
+    "Impostiamo piani di riduzione dei costi mirati e sostenibili",
+    "Sviluppiamo strategie concrete per generare valore, fatturato e utili"
+  ],
+  "teamTitle": "I nostri professionisti",
+  "teamName": "Vincenzo Scarimbolo",
+  "teamRole": "Commercialista e Revisore dei conti",
+  "teamBio": [
+    "Iscritto all'Ordine dei Dottori Commercialisti e degli Esperti Contabili di Bari, al MEF nel registro dei revisori legali e all'Albo dei Delegati e dei Curatori fallimentari.",
+    "Delegato e Custode in procedure esecutive del Tribunale di Bari, Coadiutore in procedure concorsuali e professionista esperto in operazioni straordinarie d'impresa, fusioni, trasformazioni e liquidazioni."
+  ],
+  "badgeCaption": "Ordine dei Dottori Commercialisti di Bari",
+  "images": {
+    "heroBackground": "/assets/about_bg.jpg",
+    "focusBackground": "/assets/about1.jpg",
+    "teamPhoto": "/assets/foto_home_vincenzo.jpg",
+    "teamBadge": "/assets/ordine_comm.png"
+  }
+}

@@ -25,13 +25,13 @@ const staticPages = [
 const datasets = [
   {
     kind: 'news',
-    file: 'news.json',
+    files: { it: 'news.it.json', en: 'news.en.json' },
     basePath: '/news',
     defaultTitle: 'News | Studio Scarimbolo',
   },
   {
     kind: 'scadenze',
-    file: 'scadenze.json',
+    files: { it: 'scadenze.it.json', en: 'scadenze.en.json' },
     basePath: '/scadenze',
     defaultTitle: 'Scadenze | Studio Scarimbolo',
   },
@@ -249,10 +249,10 @@ function main() {
   let pageCount = 0;
 
   datasets.forEach((dataset) => {
-    const dataPath = path.join(publicAssetsDir, dataset.file);
-    const data = readJson(dataPath);
     ['it', 'en'].forEach((lang) => {
-      const items = Array.isArray(data[lang]) ? data[lang] : [];
+      const dataPath = path.join(publicAssetsDir, dataset.files[lang]);
+      const data = readJson(dataPath);
+      const items = Array.isArray(data.items) ? data.items : [];
       items.forEach((item) => {
         const entry = writeArticlePage(indexHtml, dataset, item, lang);
         if (entry) {

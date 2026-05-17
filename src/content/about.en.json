@@ -1,0 +1,29 @@
+{
+  "heroTitle": "Our Firm",
+  "introTitle": "Since 1995 expertise and reliability for your company",
+  "introParagraphs": [
+    "Scarimbolo Studio offers tailored solutions thanks to long-standing experience in business advisory, proactively supporting the growth of every client.",
+    "Our primary goal is to provide attentive, ongoing assistance through a network of highly qualified professionals."
+  ],
+  "focusTitle": "Our strength: investing in new generations",
+  "focusLead": "Professionals, small and medium-sized enterprises find a competent partner guiding them through fiscal, financial and labour matters.",
+  "focusBullets": [
+    "We redesign corporate processes while enhancing the most productive areas",
+    "We implement targeted, sustainable cost-reduction plans",
+    "We craft concrete strategies to generate value, revenue and profit"
+  ],
+  "teamTitle": "Our professionals",
+  "teamName": "Vincenzo Scarimbolo",
+  "teamRole": "Chartered accountant and statutory auditor",
+  "teamBio": [
+    "Member of the Bari Order of Chartered Accountants, registered auditor with the Ministry of Economy and Finance, and listed as delegated professional and receiver for insolvency proceedings.",
+    "Court-appointed specialist in extraordinary corporate transactions, mergers, transformations and liquidations."
+  ],
+  "badgeCaption": "Italian Chartered Accountants Association",
+  "images": {
+    "heroBackground": "/assets/about_bg.jpg",
+    "focusBackground": "/assets/about1.jpg",
+    "teamPhoto": "/assets/foto_home_vincenzo.jpg",
+    "teamBadge": "/assets/ordine_comm.png"
+  }
+}

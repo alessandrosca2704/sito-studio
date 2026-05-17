@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useI18n } from '../i18n';
 import './NewsPage.css';
 import useNews from '../hooks/useNews';
 import Sole24hPanel from '../components/Sole24hPanel';
@@ -7,6 +6,8 @@ import useReveal from '../hooks/useReveal';
 import React from 'react';
 import { IconMore } from '../components/icons/Icons';
 import useScadenze from '../hooks/useScadenze';
+import newsPageContent from '../content/newsPage';
+import { getCmsPreviewData } from '../content/cmsPreview';
 
 const MOBILE_QUERY = '(max-width: 640px)';
 
@@ -17,8 +18,8 @@ const isMobileViewport = () => (
 );
 
 export default function NewsPage(){
-  const { dict } = useI18n();
   const lang = (typeof window!=='undefined' && document.documentElement.lang)||'it';
+  const newsPage = getCmsPreviewData('path_news', lang, newsPageContent[lang] || newsPageContent.it);
   const { ref: deadlinesRef, visible: deadlinesVisible } = useReveal();
   const { ref: newsRef, visible: newsVisible } = useReveal();
   const { items: posts } = useNews(lang);
@@ -60,16 +61,16 @@ export default function NewsPage(){
       return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
     }
   };
-  const fallback = `${BASE_URL}/assets/logo-facebook.png`;
+  const fallback = `${BASE_URL}${newsPage.assets.fallbackImage}`;
   const resolveImage = (img = '') => ensureAbsolute(img) || fallback;
 
   return (
     <>
-    <h1 className="text-brand news-header" style={{textAlign:'center',color:"white"}}>{dict.news.title}</h1>
+    <h1 className="text-brand news-header" style={{textAlign:'center',color:"white", backgroundImage:`url(${newsPage.assets.headerBackground})`}}>{newsPage.news.title}</h1>
 
     <section className="section">
        <div className={`container reveal ${deadlinesVisible?'is-visible':''}`} ref={deadlinesRef}>
-        <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.scadenze.subtitle}</h2>
+        <h2 style={{textAlign:'center', marginBottom: 24}}>{newsPage.scadenze.subtitle}</h2>
         <div className=" deadline news-page-grid">
           {deadlines.slice(0, visibleDeadCount).map(p=> (
             <article className="news-page-card" key={p.slug}>
@@ -77,7 +78,7 @@ export default function NewsPage(){
               <div className="news-page-body">
                 <h3><Link to={`/scadenze/${p.slug}`}>{p.title}</Link></h3>
                 <p>{p.excerpt}</p>
-                <Link to={`/scadenze/${p.slug}`} className="btn btn-brand">{dict.scadenze.readMore}</Link>
+                <Link to={`/scadenze/${p.slug}`} className="btn btn-brand">{newsPage.scadenze.readMore}</Link>
               </div>
             </article>
           ))}
@@ -91,7 +92,7 @@ export default function NewsPage(){
         )}
       </div>
       <div className={`container reveal ${newsVisible?'is-visible':''}`} ref={newsRef}>
-        <h2 style={{textAlign:'center', marginBottom: 24}}>{dict.news.subtitle}</h2>
+        <h2 style={{textAlign:'center', marginBottom: 24}}>{newsPage.news.subtitle}</h2>
         <div className="news-page-grid">
           {posts.slice(0, visibleCount).map(p=> (
             <article className="news-page-card" key={p.slug}>
@@ -99,7 +100,7 @@ export default function NewsPage(){
               <div className="news-page-body">
                 <h3><Link to={`/news/${p.slug}`}>{p.title}</Link></h3>
                 <p>{p.excerpt}</p>
-                <Link to={`/news/${p.slug}`} className="btn btn-brand">{dict.news.readMore}</Link>
+                <Link to={`/news/${p.slug}`} className="btn btn-brand">{newsPage.news.readMore}</Link>
               </div>
             </article>
           ))}

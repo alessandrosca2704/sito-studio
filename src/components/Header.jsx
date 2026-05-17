@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useI18n } from '../i18n';
+import siteSettings from '../content/siteSettings.json';
 
 export default function Header() {
   const { dict, lang, setLang } = useI18n();
@@ -66,8 +67,8 @@ export default function Header() {
     <header className="site-header">
       <div className="container site-header__inner">
         <Link to="/" className="brand" onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })}>
-          <img src="/assets/logo.png" alt="Studio Scarimbolo" />
-          <h1  className="h-h1" style={{}}>Studio Scarimbolo</h1>
+          <img src={siteSettings.brand.logo} alt={siteSettings.brand.name} />
+          <h1  className="h-h1" style={{}}>{siteSettings.brand.name}</h1>
         </Link>
         <nav className="nav-desktop" aria-label="Main navigation">
           {links.map((item) => (

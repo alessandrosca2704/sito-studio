@@ -1,0 +1,53 @@
+{
+  "brand": {
+    "name": "Studio Scarimbolo",
+    "logo": "/assets/logo.png"
+  },
+  "contact": {
+    "email": "info@studioscarimbolo.it",
+    "phone": "+39 (00) 373 73 86 170",
+    "mailtoSubject": "Richiesta di contatto dal sito",
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6011.42687436686!2d16.849821674486236!3d41.11894911260538!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1347e8ee170f27ff%3A0xdef5805116d0ef!2sSTUDIO%20SCARIMBOLO!5e0!3m2!1sit!2sit!4v1762780682869!5m2!1sit!2sit"
+  },
+  "social": {
+    "intro": "Dai uno sguardo ai nostri profili social",
+    "directContactLabel": "Contatto diretto",
+    "facebookUrl": "https://www.facebook.com/studioscarimbolo/",
+    "linkedinUrl": "https://www.linkedin.com/in/studio-scarimbolo-a60947276/"
+  },
+  "credits": {
+    "label": "Sito realizzato da Alessandro Scarimbolo",
+    "url": "https://www.alessandroscarimbolo.it"
+  },
+  "seo": {
+    "home": {
+      "title": "Studio Scarimbolo | Consulenza fiscale e aziendale a Bari",
+      "description": "Studio professionale di consulenza fiscale, societaria e aziendale a Bari. Assistenza a imprese e professionisti.",
+      "url": "https://www.studioscarimbolo.it/",
+      "image": "https://www.studioscarimbolo.it/assets/home_about.jpg",
+      "type": "website"
+    }
+  },
+  "assets": {
+    "heroBackground": "/assets/home_image2.jpg",
+    "welcomeImage": "/assets/foto_home_vincenzo.jpg",
+    "welcomeIcon": "/assets/shake.png",
+    "aboutHomeImage": "/assets/home_about.jpg",
+    "aboutHeroBackground": "/assets/about_bg.jpg",
+    "aboutFocusBackground": "/assets/about1.jpg",
+    "teamPhoto": "/assets/foto_home_vincenzo.jpg",
+    "teamBadge": "/assets/ordine_comm.png",
+    "activitiesHeroBackground": "/assets/attivita_bg.jpg",
+    "holidayPopupImage": "/assets/Buon_Natale.png"
+  },
+  "colors": {
+    "heroOverlayStart": "rgba(0, 0, 0, 0.35)",
+    "heroOverlayEnd": "rgba(0,0,0,.55)",
+    "aboutHeroOverlayStart": "rgba(0,0,0,.45)",
+    "aboutHeroOverlayEnd": "rgba(0,0,0,.55)",
+    "activitiesHeroOverlayStart": "rgba(0,0,0,.45)",
+    "activitiesHeroOverlayEnd": "rgba(0,0,0,.45)",
+    "aboutFocusAccentStart": "#2563EB",
+    "aboutFocusAccentEnd": "#1D4ED8"
+  }
+}

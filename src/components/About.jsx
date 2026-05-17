@@ -2,6 +2,7 @@ import './About.css';
 import { useI18n } from '../i18n';
 import useReveal from '../hooks/useReveal';
 import { Link } from 'react-router-dom';
+import siteSettings from '../content/siteSettings.json';
 
 export default function About(){
   const { dict } = useI18n();
@@ -14,15 +15,12 @@ export default function About(){
           <h2>{dict.about.title}</h2>
           <p>{dict.about.p1}</p>
           <p>{dict.about.p2}</p>
-          <Link to="/chi-siamo" href="#"><button className='btn btn-about'>Scopri di più sullo studio</button></Link>
+          <Link to="/chi-siamo" href="#"><button className='btn btn-about'>{dict.about.cta}</button></Link>
         </div>
         <div>
-          <img alt="Studio" src="/assets/home_about.jpg" />
+          <img alt="Studio" src={dict.about.image || siteSettings.assets.aboutHomeImage} />
         </div>
       </div>
-      
     </section>
-
   );
 }
-

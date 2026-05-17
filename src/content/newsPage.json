@@ -1,0 +1,46 @@
+{
+  "it": {
+    "news": {
+      "title": "Scadenze e News",
+      "subtitle": "Novità e appuntamenti dal mondo della finanza, contabilità, normativa e molto altro.",
+      "readMore": "Leggi tutto",
+      "archive": "Archivio news",
+      "notFoundTitle": "Articolo non trovato",
+      "notFoundBack": "Torna alle news",
+      "shareLabel": "Condividi la news sui Social!"
+    },
+    "scadenze": {
+      "subtitle": "Un colpo d'occhio sugli obblighi fiscali del mese.",
+      "readMore": "Leggi tutto",
+      "archive": "Archivio scadenze",
+      "notFoundTitle": "Scadenza non trovata",
+      "notFoundBack": "Torna alle news"
+    },
+    "assets": {
+      "headerBackground": "/assets/hero_news_bg.gif",
+      "fallbackImage": "/assets/logo-facebook.png"
+    }
+  },
+  "en": {
+    "news": {
+      "title": "Events & News",
+      "subtitle": "Updates from finance, accounting, regulations and more.",
+      "readMore": "Read more",
+      "archive": "News archive",
+      "notFoundTitle": "Article not found",
+      "notFoundBack": "Back to news",
+      "shareLabel": "Share this news on social media!"
+    },
+    "scadenze": {
+      "subtitle": "A quick overview of this month's tax obligations.",
+      "readMore": "Read more",
+      "archive": "Deadlines archive",
+      "notFoundTitle": "Deadline not found",
+      "notFoundBack": "Back to news"
+    },
+    "assets": {
+      "headerBackground": "/assets/hero_news_bg.gif",
+      "fallbackImage": "/assets/logo-facebook.png"
+    }
+  }
+}

@@ -25,8 +25,17 @@ const DATASETS = {
     reset: resetNews,
     exportName: (lang) => `news_${lang}.json`,
     commitPath: 'public/assets/news.json',
-    commitMessage: 'chore: update news.json via /admin',
-    buildPayload: () => ({ it: getNews('it'), en: getNews('en') })
+    commitPaths: {
+      it: 'public/assets/news.it.json',
+      en: 'public/assets/news.en.json',
+      legacy: 'public/assets/news.json'
+    },
+    commitMessage: 'chore: update news via /admin',
+    buildPayload: () => ({ it: getNews('it'), en: getNews('en') }),
+    buildLocalizedPayload: (payload) => ({
+      it: { items: payload.it || [] },
+      en: { items: payload.en || [] }
+    })
   },
   deadlines: {
     label: 'Scadenze',
@@ -37,8 +46,17 @@ const DATASETS = {
     reset: resetScadenze,
     exportName: (lang) => `scadenze_${lang}.json`,
     commitPath: 'public/assets/scadenze.json',
-    commitMessage: 'chore: update scadenze.json via /admin',
-    buildPayload: () => ({ it: getScadenze('it'), en: getScadenze('en') })
+    commitPaths: {
+      it: 'public/assets/scadenze.it.json',
+      en: 'public/assets/scadenze.en.json',
+      legacy: 'public/assets/scadenze.json'
+    },
+    commitMessage: 'chore: update scadenze via /admin',
+    buildPayload: () => ({ it: getScadenze('it'), en: getScadenze('en') }),
+    buildLocalizedPayload: (payload) => ({
+      it: { items: payload.it || [] },
+      en: { items: payload.en || [] }
+    })
   }
 };
 
@@ -302,8 +320,11 @@ export default function AdminPage(){
       keys.forEach((key) => {
         const cfg = DATASETS[key];
         if (!cfg) throw new Error(`Unknown dataset ${key}`);
-        const content = JSON.stringify(cfg.buildPayload(), null, 2);
-        files.push({ path: cfg.commitPath, content });
+        const payload = cfg.buildPayload();
+        const localized = cfg.buildLocalizedPayload(payload);
+        files.push({ path: cfg.commitPaths.it, content: JSON.stringify(localized.it, null, 2) });
+        files.push({ path: cfg.commitPaths.en, content: JSON.stringify(localized.en, null, 2) });
+        files.push({ path: cfg.commitPaths.legacy, content: JSON.stringify(payload, null, 2) });
         const pending = pendingUploads[key] || {};
         Object.entries(pending).forEach(([path, data]) => {
           files.push({ path, content: data.content, encoding: data.encoding || 'base64' });

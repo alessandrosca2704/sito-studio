@@ -1,0 +1,12 @@
+{
+  "it": {
+    "title": "Privacy Policy",
+    "heroBackground": "/assets/privacy-bg.jpg",
+    "bodyNote": "Il testo completo della privacy policy resta gestito nel componente Privacy per evitare modifiche accidentali a contenuti legali estesi. Da CMS puoi modificare titolo e immagine di testata."
+  },
+  "en": {
+    "title": "Privacy Policy",
+    "heroBackground": "/assets/privacy-bg.jpg",
+    "bodyNote": "The full privacy policy remains managed in the Privacy component to avoid accidental changes to extended legal content. From the CMS you can edit the title and header image."
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "servizi": "Services",
+    "lavori": "News & Deadlines",
+    "aree": "Areas of Activity",
+    "chi": "About",
+    "contatti": "Contact"
+  },
+  "hero": {
+    "eyebrow": "Professional firm",
+    "title": "Solutions for your company",
+    "subtitle": "We support growth, efficiency and operational peace with strategic consulting, tax and administrative services that are clear and transparent.",
+    "cta1": "Request a consult",
+    "cta2": "View services",
+    "backgroundImage": "/assets/home_image2.jpg"
+  },
+  "services": {
+    "eyebrow": "Services & Consulting.",
+    "title": "Trust the experts of business management",
+    "more": "See all services",
+    "activitiesCta": "Discover more about our Areas of Activity"
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "A reliable partner, close to your business.",
+    "p1": "Consultative approach, clear language, responsibility for results. We work alongside entrepreneurs and professionals to build solid processes and informed decisions.",
+    "p2": "We operate with a network of specialists covering tax, corporate, labor and financial areas.",
+    "cta": "Learn more about the firm",
+    "image": "/assets/home_about.jpg"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Tell us about your needs",
+    "msg": "Write to us and we'll reply within 1 business day.",
+    "name": "Full name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "sending": "Sending...",
+    "success": "Message sent successfully. We will contact you shortly.",
+    "fallback": "Unable to send from the site, opening your email client..."
+  },
+  "welcome": {
+    "since": "Since 1995 our expertise at your service",
+    "heading": "Welcome",
+    "intro1": "Thanks to long-standing experience in business advisory, our firm provides solutions tailored to each market's needs, proactively supporting growth through a network of qualified professionals.",
+    "intro2": "Our primary goal is to deliver the best and most attentive assistance.",
+    "more": "+ INFO",
+    "image": "/assets/foto_home_vincenzo.jpg",
+    "icon": "/assets/shake.png"
+  },
+  "news": {
+    "title": "Events & News",
+    "subtitle": "Updates from finance, accounting, regulations and more.",
+    "readMore": "Read more",
+    "archive": "News archive"
+  },
+  "scadenze": {
+    "subtitle": "A quick overview of this month's tax obligations.",
+    "readMore": "Read more",
+    "archive": "Deadlines archive"
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "cookie": "Cookie",
+    "copyPrefix": "©",
+    "copySuffix": "Studio. VAT 00000000000"
+  }
+}

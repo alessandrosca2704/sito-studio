@@ -8,43 +8,192 @@ media_folder: public/images/uploads
 public_folder: /images/uploads
 
 collections:
-  - name: site_content
-    label: Contenuti sito
+  - name: path_home
+    label: "studioscarimbolo.it/"
+    description: "Homepage: scegli Italiano o Inglese e modifica solo quella lingua."
     files:
-      - name: services
-        label: Servizi
-        file: src/content/services.json
+      - name: home_it
+        label: "Italiano"
+        file: src/content/home.it.json
         format: json
         fields:
-          - label: Servizi IT
-            name: it
-            widget: list
-            summary: "{{fields.title}}"
-            fields:
-              - { label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }
-              - { label: Titolo, name: title, widget: string }
-              - { label: Testo breve, name: summary, widget: text }
-              - label: Descrizione
-                name: content
-                widget: markdown
-                minimal: true
-                modes: ["rich_text"]
-                buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"]
-                editor_components: []
-                hint: "Usa l'editor visuale. Non inserire codice HTML."
-          - label: Servizi EN
-            name: en
-            widget: list
-            summary: "{{fields.title}}"
-            fields:
-              - { label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }
-              - { label: Titolo, name: title, widget: string }
-              - { label: Testo breve, name: summary, widget: text }
-              - label: Descrizione
-                name: content
-                widget: markdown
-                minimal: true
-                modes: ["rich_text"]
-                buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"]
-                editor_components: []
-                hint: "Usa l'editor visuale. Non inserire codice HTML."
+          - { label: Navigazione, name: nav, widget: object, fields: [{ label: Servizi, name: servizi, widget: string }, { label: News e scadenze, name: lavori, widget: string }, { label: Aree di attivit?, name: aree, widget: string }, { label: Chi siamo, name: chi, widget: string }, { label: Contatti, name: contatti, widget: string }] }
+          - { label: Hero /, name: hero, widget: object, fields: [{ label: Eyebrow, name: eyebrow, widget: string }, { label: Titolo, name: title, widget: string }, { label: Sottotitolo, name: subtitle, widget: text }, { label: CTA contatti, name: cta1, widget: string }, { label: CTA servizi, name: cta2, widget: string }, { label: Immagine sfondo hero, name: backgroundImage, widget: image, required: false }] }
+          - { label: Sezione benvenuto /, name: welcome, widget: object, fields: [{ label: Sopratitolo, name: since, widget: string }, { label: Titolo, name: heading, widget: string }, { label: Testo 1, name: intro1, widget: text }, { label: Testo 2, name: intro2, widget: text }, { label: Link, name: more, widget: string }, { label: Immagine, name: image, widget: image, required: false }, { label: Icona, name: icon, widget: image, required: false }] }
+          - { label: Sezione servizi /, name: services, widget: object, fields: [{ label: Eyebrow, name: eyebrow, widget: string }, { label: Titolo, name: title, widget: string }, { label: Bottone servizi, name: more, widget: string }, { label: Bottone aree attivit?, name: activitiesCta, widget: string }] }
+          - { label: Sezione chi siamo /, name: about, widget: object, fields: [{ label: Eyebrow, name: eyebrow, widget: string }, { label: Titolo, name: title, widget: string }, { label: Paragrafo 1, name: p1, widget: text }, { label: Paragrafo 2, name: p2, widget: text }, { label: Bottone, name: cta, widget: string }, { label: Immagine, name: image, widget: image, required: false }] }
+          - { label: Sezione contatti, name: contact, widget: object, fields: [{ label: Eyebrow, name: eyebrow, widget: string }, { label: Titolo, name: title, widget: string }, { label: Messaggio, name: msg, widget: text }, { label: Placeholder nome, name: name, widget: string }, { label: Placeholder email, name: email, widget: string }, { label: Placeholder messaggio, name: message, widget: string }, { label: Bottone invio, name: submit, widget: string }, { label: Label email, name: emailLabel, widget: string }, { label: Label telefono, name: phoneLabel, widget: string }, { label: Stato invio, name: sending, widget: string }, { label: Stato successo, name: success, widget: string }, { label: Stato fallback, name: fallback, widget: string }] }
+          - { label: Footer, name: footer, widget: object, fields: [{ label: Privacy, name: privacy, widget: string }, { label: Cookie, name: cookie, widget: string }, { label: Prefisso copyright, name: copyPrefix, widget: string }, { label: Testo copyright, name: copySuffix, widget: text }] }
+      - name: home_en
+        label: "Inglese"
+        file: src/content/home.en.json
+        format: json
+        fields:
+          - { label: Navigazione, name: nav, widget: object, fields: [{ label: Servizi, name: servizi, widget: string }, { label: News e scadenze, name: lavori, widget: string }, { label: Aree di attivit?, name: aree, widget: string }, { label: Chi siamo, name: chi, widget: string }, { label: Contatti, name: contatti, widget: string }] }
+          - { label: Hero /, name: hero, widget: object, fields: [{ label: Eyebrow, name: eyebrow, widget: string }, { label: Titolo, name: title, widget: string }, { label: Sottotitolo, name: subtitle, widget: text }, { label: CTA contatti, name: cta1, widget: string }, { label: CTA servizi, name: cta2, widget: string }, { label: Immagine sfondo hero, name: backgroundImage, widget: image, required: false }] }
+          - { label: Sezione benvenuto /, name: welcome, widget: object, fields: [{ label: Sopratitolo, name: since, widget: string }, { label: Titolo, name: heading, widget: string }, { label: Testo 1, name: intro1, widget: text }, { label: Testo 2, name: intro2, widget: text }, { label: Link, name: more, widget: string }, { label: Immagine, name: image, widget: image, required: false }, { label: Icona, name: icon, widget: image, required: false }] }
+          - { label: Sezione servizi /, name: services, widget: object, fields: [{ label: Eyebrow, name: eyebrow, widget: string }, { label: Titolo, name: title, widget: string }, { label: Bottone servizi, name: more, widget: string }, { label: Bottone aree attivit?, name: activitiesCta, widget: string }] }
+          - { label: Sezione chi siamo /, name: about, widget: object, fields: [{ label: Eyebrow, name: eyebrow, widget: string }, { label: Titolo, name: title, widget: string }, { label: Paragrafo 1, name: p1, widget: text }, { label: Paragrafo 2, name: p2, widget: text }, { label: Bottone, name: cta, widget: string }, { label: Immagine, name: image, widget: image, required: false }] }
+          - { label: Sezione contatti, name: contact, widget: object, fields: [{ label: Eyebrow, name: eyebrow, widget: string }, { label: Titolo, name: title, widget: string }, { label: Messaggio, name: msg, widget: text }, { label: Placeholder nome, name: name, widget: string }, { label: Placeholder email, name: email, widget: string }, { label: Placeholder messaggio, name: message, widget: string }, { label: Bottone invio, name: submit, widget: string }, { label: Label email, name: emailLabel, widget: string }, { label: Label telefono, name: phoneLabel, widget: string }, { label: Stato invio, name: sending, widget: string }, { label: Stato successo, name: success, widget: string }, { label: Stato fallback, name: fallback, widget: string }] }
+          - { label: Footer, name: footer, widget: object, fields: [{ label: Privacy, name: privacy, widget: string }, { label: Cookie, name: cookie, widget: string }, { label: Prefisso copyright, name: copyPrefix, widget: string }, { label: Testo copyright, name: copySuffix, widget: text }] }
+  - name: path_services
+    label: "studioscarimbolo.it/servizi"
+    description: "Pagina servizi e dettaglio /servizi/{slug}. Scegli la lingua da modificare."
+    files:
+      - name: services_it
+        label: "Italiano"
+        file: src/content/services.it.json
+        format: json
+        fields:
+          - { label: Servizi, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Immagine servizio, name: image, widget: image, required: false }, { label: Testo breve, name: summary, widget: text }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+      - name: services_en
+        label: "Inglese"
+        file: src/content/services.en.json
+        format: json
+        fields:
+          - { label: Servizi, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Immagine servizio, name: image, widget: image, required: false }, { label: Testo breve, name: summary, widget: text }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  - name: path_news
+    label: "studioscarimbolo.it/news"
+    description: "Pagina elenco news/scadenze. Scegli la lingua da modificare."
+    files:
+      - name: news_page_it
+        label: "Italiano"
+        file: src/content/newsPage.it.json
+        format: json
+        fields:
+          - { label: Testi news, name: news, widget: object, fields: [{ label: Titolo, name: title, widget: string }, { label: Sottotitolo, name: subtitle, widget: text }, { label: Leggi tutto, name: readMore, widget: string }, { label: Archivio, name: archive, widget: string }, { label: Not found title, name: notFoundTitle, widget: string }, { label: Not found back, name: notFoundBack, widget: string }, { label: Label condivisione, name: shareLabel, widget: string }] }
+          - { label: Testi scadenze, name: scadenze, widget: object, fields: [{ label: Sottotitolo, name: subtitle, widget: text }, { label: Leggi tutto, name: readMore, widget: string }, { label: Archivio, name: archive, widget: string }, { label: Not found title, name: notFoundTitle, widget: string }, { label: Not found back, name: notFoundBack, widget: string }] }
+          - { label: Immagini /news, name: assets, widget: object, fields: [{ label: Sfondo testata, name: headerBackground, widget: image, required: false }, { label: Immagine fallback, name: fallbackImage, widget: image, required: false }] }
+      - name: news_page_en
+        label: "Inglese"
+        file: src/content/newsPage.en.json
+        format: json
+        fields:
+          - { label: Testi news, name: news, widget: object, fields: [{ label: Titolo, name: title, widget: string }, { label: Sottotitolo, name: subtitle, widget: text }, { label: Leggi tutto, name: readMore, widget: string }, { label: Archivio, name: archive, widget: string }, { label: Not found title, name: notFoundTitle, widget: string }, { label: Not found back, name: notFoundBack, widget: string }, { label: Label condivisione, name: shareLabel, widget: string }] }
+          - { label: Testi scadenze, name: scadenze, widget: object, fields: [{ label: Sottotitolo, name: subtitle, widget: text }, { label: Leggi tutto, name: readMore, widget: string }, { label: Archivio, name: archive, widget: string }, { label: Not found title, name: notFoundTitle, widget: string }, { label: Not found back, name: notFoundBack, widget: string }] }
+          - { label: Immagini /news, name: assets, widget: object, fields: [{ label: Sfondo testata, name: headerBackground, widget: image, required: false }, { label: Immagine fallback, name: fallbackImage, widget: image, required: false }] }
+  # - name: path_news_detail
+  #   label: "studioscarimbolo.it/news/{slug}"
+  #   description: "Articoli news. Scegli Italiano o Inglese, poi modifica gli articoli di quella lingua."
+  #   files:
+  #     - name: news_posts_it
+  #       label: "Italiano"
+  #       file: public/assets/news.it.json
+  #       format: json
+  #       fields:
+  #         - { label: News, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  #     - name: news_posts_en
+  #       label: "Inglese"
+  #       file: public/assets/news.en.json
+  #       format: json
+  #       fields:
+  #         - { label: News, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  # - name: path_deadline_detail
+  #   label: "studioscarimbolo.it/scadenze/{slug}"
+  #   description: "Scadenze. Scegli Italiano o Inglese, poi modifica le scadenze di quella lingua."
+  #   files:
+  #     - name: deadline_posts_it
+  #       label: "Italiano"
+  #       file: public/assets/scadenze.it.json
+  #       format: json
+  #       fields:
+  #         - { label: Scadenze, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  #     - name: deadline_posts_en
+  #       label: "Inglese"
+  #       file: public/assets/scadenze.en.json
+  #       format: json
+  #       fields:
+  #         - { label: Scadenze, name: items, widget: list, summary: "{{fields.title}}", fields: [{ label: Slug URL, name: slug, widget: string, hint: "Modificare solo se deve cambiare anche l'indirizzo della pagina." }, { label: Titolo, name: title, widget: string }, { label: Estratto, name: excerpt, widget: text }, { label: Immagine, name: image, widget: image, required: false }, { label: Contenuto, name: content, widget: markdown, minimal: true, modes: ["rich_text"], buttons: ["bold", "italic", "bulleted-list", "numbered-list", "link"], editor_components: [], hint: "Usa l'editor visuale. Non inserire codice HTML." }] }
+  - name: path_about
+    label: "studioscarimbolo.it/chi-siamo"
+    description: "Pagina Chi siamo. Scegli la lingua da modificare."
+    files:
+      - name: about_it
+        label: "Italiano"
+        file: src/content/about.it.json
+        format: json
+        fields:
+          - { label: Titolo hero, name: heroTitle, widget: string }
+          - { label: Immagini /chi-siamo, name: images, widget: object, fields: [{ label: Sfondo hero, name: heroBackground, widget: image, required: false }, { label: Sfondo focus, name: focusBackground, widget: image, required: false }, { label: Foto team, name: teamPhoto, widget: image, required: false }, { label: Badge team, name: teamBadge, widget: image, required: false }] }
+          - { label: Titolo intro, name: introTitle, widget: string }
+          - { label: Paragrafi intro, name: introParagraphs, widget: list, field: { label: Paragrafo, name: paragraph, widget: text } }
+          - { label: Titolo focus, name: focusTitle, widget: string }
+          - { label: Testo focus, name: focusLead, widget: text }
+          - { label: Punti focus, name: focusBullets, widget: list, field: { label: Punto, name: item, widget: string } }
+          - { label: Titolo team, name: teamTitle, widget: string }
+          - { label: Nome, name: teamName, widget: string }
+          - { label: Ruolo, name: teamRole, widget: string }
+          - { label: Bio, name: teamBio, widget: list, field: { label: Paragrafo, name: paragraph, widget: text } }
+          - { label: Didascalia badge, name: badgeCaption, widget: string }
+      - name: about_en
+        label: "Inglese"
+        file: src/content/about.en.json
+        format: json
+        fields:
+          - { label: Titolo hero, name: heroTitle, widget: string }
+          - { label: Immagini /chi-siamo, name: images, widget: object, fields: [{ label: Sfondo hero, name: heroBackground, widget: image, required: false }, { label: Sfondo focus, name: focusBackground, widget: image, required: false }, { label: Foto team, name: teamPhoto, widget: image, required: false }, { label: Badge team, name: teamBadge, widget: image, required: false }] }
+          - { label: Titolo intro, name: introTitle, widget: string }
+          - { label: Paragrafi intro, name: introParagraphs, widget: list, field: { label: Paragrafo, name: paragraph, widget: text } }
+          - { label: Titolo focus, name: focusTitle, widget: string }
+          - { label: Testo focus, name: focusLead, widget: text }
+          - { label: Punti focus, name: focusBullets, widget: list, field: { label: Punto, name: item, widget: string } }
+          - { label: Titolo team, name: teamTitle, widget: string }
+          - { label: Nome, name: teamName, widget: string }
+          - { label: Ruolo, name: teamRole, widget: string }
+          - { label: Bio, name: teamBio, widget: list, field: { label: Paragrafo, name: paragraph, widget: text } }
+          - { label: Didascalia badge, name: badgeCaption, widget: string }
+  - name: path_activities
+    label: "studioscarimbolo.it/aree-di-attivit?"
+    description: "Pagina Aree di attivit?. Scegli la lingua da modificare."
+    files:
+      - name: activities_it
+        label: "Italiano"
+        file: src/content/activities.it.json
+        format: json
+        fields:
+          - { label: Titolo hero, name: heroTitle, widget: string }
+          - { label: Immagine testata /aree-di-attivit?, name: heroBackground, widget: image, required: false }
+          - { label: Blocchi, name: blocks, widget: list, summary: "{{fields.title}}", fields: [{ label: ID sezione, name: id, widget: string }, { label: Titolo, name: title, widget: string }, { label: Parola evidenziata, name: highlight, widget: string }, { label: Immagine sottosezione, name: image, widget: image, required: false }, { label: Paragrafi, name: paragraphs, widget: list, field: { label: Paragrafo, name: paragraph, widget: text } }, { label: Punti elenco, name: bullets, widget: list, required: false, field: { label: Punto, name: item, widget: text } }] }
+      - name: activities_en
+        label: "Inglese"
+        file: src/content/activities.en.json
+        format: json
+        fields:
+          - { label: Titolo hero, name: heroTitle, widget: string }
+          - { label: Immagine testata /aree-di-attivit?, name: heroBackground, widget: image, required: false }
+          - { label: Blocchi, name: blocks, widget: list, summary: "{{fields.title}}", fields: [{ label: ID sezione, name: id, widget: string }, { label: Titolo, name: title, widget: string }, { label: Parola evidenziata, name: highlight, widget: string }, { label: Immagine sottosezione, name: image, widget: image, required: false }, { label: Paragrafi, name: paragraphs, widget: list, field: { label: Paragrafo, name: paragraph, widget: text } }, { label: Punti elenco, name: bullets, widget: list, required: false, field: { label: Punto, name: item, widget: text } }] }
+  - name: path_privacy
+    label: "studioscarimbolo.it/privacy"
+    description: "Pagina Privacy. Scegli la lingua da modificare."
+    files:
+      - name: privacy_it
+        label: "Italiano"
+        file: src/content/privacy.it.json
+        format: json
+        fields:
+          - { label: Titolo, name: title, widget: string }
+          - { label: Immagine testata, name: heroBackground, widget: image, required: false }
+          - { label: Nota CMS, name: bodyNote, widget: text }
+      - name: privacy_en
+        label: "Inglese"
+        file: src/content/privacy.en.json
+        format: json
+        fields:
+          - { label: Titolo, name: title, widget: string }
+          - { label: Immagine testata, name: heroBackground, widget: image, required: false }
+          - { label: Nota CMS, name: bodyNote, widget: text }
+
+  - name: site_settings
+    label: "Impostazioni generali condivise"
+    description: "Brand, contatti, social e SEO condivisi tra le lingue."
+    files:
+      - name: settings
+        label: "Impostazioni generali"
+        file: src/content/siteSettings.json
+        format: json
+        fields:
+          - { label: Brand, name: brand, widget: object, fields: [{ label: Nome, name: name, widget: string }, { label: Logo, name: logo, widget: image, required: false }] }
+          - { label: Contatti, name: contact, widget: object, fields: [{ label: Email, name: email, widget: string }, { label: Telefono, name: phone, widget: string }, { label: Oggetto email, name: mailtoSubject, widget: string }, { label: URL mappa Google, name: mapEmbedUrl, widget: text }] }
+          - { label: Social, name: social, widget: object, fields: [{ label: Testo fascia social, name: intro, widget: string }, { label: Label contatto diretto, name: directContactLabel, widget: string }, { label: Facebook URL, name: facebookUrl, widget: string }, { label: LinkedIn URL, name: linkedinUrl, widget: string }] }
+          - { label: Credits, name: credits, widget: object, fields: [{ label: Testo, name: label, widget: string }, { label: URL, name: url, widget: string }] }
+          - { label: SEO Home, name: seo, widget: object, fields: [{ label: Home, name: home, widget: object, fields: [{ label: Title, name: title, widget: string }, { label: Description, name: description, widget: text }, { label: URL, name: url, widget: string }, { label: Immagine, name: image, widget: image, required: false }, { label: Tipo, name: type, widget: string }] }] }

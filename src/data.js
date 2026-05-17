@@ -1,7 +1,9 @@
-import servicesContent from './content/services.json';
+import servicesContent from './content/services';
+import { getCmsPreviewItems } from './content/cmsPreview';
 
 export function getServices(lang= 'it'){
-  return servicesContent[lang] || servicesContent.it || [];
+  const items = servicesContent[lang] || servicesContent.it || [];
+  return getCmsPreviewItems('path_services', lang, items);
 }
 
 const SUPPORTED_LANGS = ['it','en'];
@@ -17,14 +19,16 @@ const DATASETS = {
     remote: (lang) => `news_remote_${lang}`,
     last: 'news_remote_last',
     event: 'news-updated',
-    file: 'news.json'
+    file: (lang) => `news.${lang}.json`,
+    legacyFile: 'news.json'
   },
   deadlines: {
     override: (lang) => `scadenze_${lang}`,
     remote: (lang) => `scadenze_remote_${lang}`,
     last: 'scadenze_remote_last',
     event: 'deadlines-updated',
-    file: 'scadenze.json'
+    file: (lang) => `scadenze.${lang}.json`,
+    legacyFile: 'scadenze.json'
   }
 };
 
@@ -93,6 +97,14 @@ function resetItems(kind, lang){
 
 function getItems(kind, lang='it'){
   ensureFreshVersion();
+  if (kind === 'news') {
+    const preview = getCmsPreviewItems('path_news_detail', lang, null);
+    if (preview) return preview;
+  }
+  if (kind === 'deadlines') {
+    const preview = getCmsPreviewItems('path_deadline_detail', lang, null);
+    if (preview) return preview;
+  }
   const override = loadOverride(kind, lang);
   if (override) return override;
   if (typeof window !== 'undefined') {
@@ -116,15 +128,29 @@ async function ensureDatasetLoaded(kind){
   const now = Date.now();
   if (now - last < CACHE_DURATION) return;
   try {
-    const res = await fetch(`${process.env.PUBLIC_URL}/assets/${cfg.file}`, { cache: 'no-store' });
-    if (!res.ok) throw new Error('fetch failed');
-    const json = await res.json();
-    if (json?.it) localStorage.setItem(cfg.remote('it'), JSON.stringify(json.it));
-    if (json?.en) localStorage.setItem(cfg.remote('en'), JSON.stringify(json.en));
+    const loaded = await Promise.all(SUPPORTED_LANGS.map(async (lang) => {
+      const res = await fetch(`${process.env.PUBLIC_URL}/assets/${cfg.file(lang)}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('fetch failed');
+      const json = await res.json();
+      return [lang, Array.isArray(json?.items) ? json.items : []];
+    }));
+    loaded.forEach(([lang, items]) => {
+      localStorage.setItem(cfg.remote(lang), JSON.stringify(items));
+    });
     localStorage.setItem(cfg.last, String(now));
     try { window.dispatchEvent(new Event(cfg.event)); } catch {}
   } catch (e) {
-    // ignore; will rely on existing cache/overrides
+    try {
+      const res = await fetch(`${process.env.PUBLIC_URL}/assets/${cfg.legacyFile}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('fetch failed');
+      const json = await res.json();
+      if (json?.it) localStorage.setItem(cfg.remote('it'), JSON.stringify(json.it));
+      if (json?.en) localStorage.setItem(cfg.remote('en'), JSON.stringify(json.en));
+      localStorage.setItem(cfg.last, String(now));
+      try { window.dispatchEvent(new Event(cfg.event)); } catch {}
+    } catch {
+      // ignore; will rely on existing cache/overrides
+    }
   }
 }
 

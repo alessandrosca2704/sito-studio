@@ -1,0 +1,71 @@
+{
+  "heroTitle": "Areas of Activity",
+  "blocks": [
+    {
+      "id": "ristrutturazioni-aziendali",
+      "title": "Corporate Restructuring",
+      "highlight": "Restructuring",
+      "image": "/assets/ristrutturazione.jpg",
+      "paragraphs": [
+        "External analysis for companies facing losses: profitability, operations and market trends."
+      ],
+      "bullets": [
+        "Redesign the company, removing low-productivity areas and strengthening the best ones.",
+        "Strict cost-reduction plan.",
+        "Concrete strategy to generate sales, revenue and profit."
+      ]
+    },
+    {
+      "id": "consulenza-finanziaria",
+      "title": "Financial Advisory",
+      "highlight": "Advisory",
+      "image": "/assets/finanziaria.jpg",
+      "paragraphs": [
+        "We meet clients to understand investment goals, risk protection and financial improvement needs.",
+        "We analyse personal, tax and economic situations and set short- and long-term goals.",
+        "We build a transparent relationship to propose the most suitable solution."
+      ],
+      "bullets": []
+    },
+    {
+      "id": "realizzazione-siti-web",
+      "title": "Web-Site Developing",
+      "highlight": "Web Developing",
+      "image": "/assets/siti.png",
+      "paragraphs": [
+        "We build fast, responsive, and SEO-optimized websites designed to convert visitors into customers and effectively showcase your brand."
+      ],
+      "bullets": [
+        "Custom design tailored to goals and brand identity.",
+        "Performance and SEO with lightweight, semantic code.",
+        "Mobile-first responsive layouts.",
+        "Self-management through an intuitive CMS.",
+        "Security and GDPR-oriented setup."
+      ]
+    },
+    {
+      "id": "consulenza-fiscale-tributaria",
+      "title": "Tax Advisory",
+      "highlight": "Advisory",
+      "image": "/assets/fiscale_tributaria.jpg",
+      "paragraphs": [
+        "Support for companies and individuals in dealing with the Tax Administration and ensuring compliance.",
+        "Direct and indirect taxes, returns, VAT settlements, VAT number opening and tax calculations."
+      ],
+      "bullets": []
+    },
+    {
+      "id": "finanza-aziendale",
+      "title": "Corporate Finance",
+      "highlight": "Finance",
+      "image": "/assets/aziendale.jpg",
+      "paragraphs": [
+        "We study corporate decisions to secure a healthy, profitable balance sheet.",
+        "We apply corporate finance techniques and tools to improve company value and achieve returns above the cost of capital while managing risks.",
+        "Decisions balance available funds and investable assets to raise returns while reducing costs and risks."
+      ],
+      "bullets": []
+    }
+  ],
+  "heroBackground": "/assets/attivita_bg.jpg"
+}

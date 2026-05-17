@@ -1,0 +1,144 @@
+{
+  "it": {
+    "nav": {
+      "servizi": "Servizi",
+      "lavori": "News e Scadenze",
+      "aree": "Aree di Attività",
+      "chi": "Chi siamo",
+      "contatti": "Contatti"
+    },
+    "hero": {
+      "eyebrow": "Studio professionale",
+      "title": "Soluzioni per la tua azienda",
+      "subtitle": "Supportiamo crescita, efficienza e serenità operativa con consulenza strategica, servizi fiscali e amministrativi chiari e trasparenti.",
+      "cta1": "Richiedi consulenza",
+      "cta2": "Scopri i servizi",
+      "backgroundImage": "/assets/home_image2.jpg"
+    },
+    "services": {
+      "eyebrow": "Servizi e Consulenze.",
+      "title": "Affidati agli esperti della gestione aziendale",
+      "more": "Scopri tutti i nostri servizi",
+      "activitiesCta": "Scopri di più sulle nostre Aree di Attività"
+    },
+    "about": {
+      "eyebrow": "Chi siamo",
+      "title": "Un partner affidabile e vicino al business.",
+      "p1": "Approccio consulenziale, linguaggio chiaro, responsabilità nei risultati. Lavoriamo al fianco di imprenditori e professionisti per costruire processi solidi e decisioni informate.",
+      "p2": "Operiamo con una rete di specialisti per coprire ambiti fiscali, societari, giuslavoristici e finanziari.",
+      "cta": "Scopri di più sullo studio",
+      "image": "/assets/home_about.jpg"
+    },
+    "contact": {
+      "eyebrow": "Contatti",
+      "title": "Parliamo della tua esigenza",
+      "msg": "Scrivici e ti risponderemo entro 1 giorno lavorativo.",
+      "name": "Nome e Cognome",
+      "email": "Email",
+      "message": "Messaggio",
+      "submit": "Invia",
+      "emailLabel": "Email",
+      "phoneLabel": "Telefono",
+      "sending": "Invio in corso...",
+      "success": "Messaggio inviato correttamente. Ti ricontatteremo a breve.",
+      "fallback": "Impossibile inviare dal sito, apro il client email..."
+    },
+    "welcome": {
+      "since": "Dal 1995 la nostra competenza al servizio della tua azienda",
+      "heading": "Benvenuti",
+      "intro1": "Lo studio Scarimbolo, grazie alla pluriennale esperienza nel campo della consulenza aziendale, è in grado di offrire a qualunque business le soluzioni più adatte alle peculiari esigenze del mercato, accompagnando, senza indugio e proattivamente, la crescita di ciascuna azienda con l'ausilio di un completo network di seri professionisti altamente qualificati.",
+      "intro2": "Il nostro obiettivo primario è di fornire la migliore e la più attenta assistenza.",
+      "more": "+ INFO",
+      "image": "/assets/foto_home_vincenzo.jpg",
+      "icon": "/assets/shake.png"
+    },
+    "news": {
+      "title": "Scadenze e News",
+      "subtitle": "Novità e appuntamenti dal mondo della finanza, contabilità, normativa e molto altro.",
+      "readMore": "Leggi tutto",
+      "archive": "Archivio news"
+    },
+    "scadenze": {
+      "subtitle": "Un colpo d'occhio sugli obblighi fiscali del mese.",
+      "readMore": "Leggi tutto",
+      "archive": "Archivio scadenze"
+    },
+    "footer": {
+      "privacy": "Privacy",
+      "cookie": "Cookie",
+      "copyPrefix": "©",
+      "copySuffix": "Via Brigata Bari n° 5/A - 70123 Bari - Studio Scarimbolo P.IVA IT07742460723 "
+    }
+  },
+  "en": {
+    "nav": {
+      "servizi": "Services",
+      "lavori": "News & Deadlines",
+      "aree": "Areas of Activity",
+      "chi": "About",
+      "contatti": "Contact"
+    },
+    "hero": {
+      "eyebrow": "Professional firm",
+      "title": "Solutions for your company",
+      "subtitle": "We support growth, efficiency and operational peace with strategic consulting, tax and administrative services that are clear and transparent.",
+      "cta1": "Request a consult",
+      "cta2": "View services",
+      "backgroundImage": "/assets/home_image2.jpg"
+    },
+    "services": {
+      "eyebrow": "Services & Consulting.",
+      "title": "Trust the experts of business management",
+      "more": "See all services",
+      "activitiesCta": "Discover more about our Areas of Activity"
+    },
+    "about": {
+      "eyebrow": "About",
+      "title": "A reliable partner, close to your business.",
+      "p1": "Consultative approach, clear language, responsibility for results. We work alongside entrepreneurs and professionals to build solid processes and informed decisions.",
+      "p2": "We operate with a network of specialists covering tax, corporate, labor and financial areas.",
+      "cta": "Learn more about the firm",
+      "image": "/assets/home_about.jpg"
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "title": "Tell us about your needs",
+      "msg": "Write to us and we'll reply within 1 business day.",
+      "name": "Full name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "sending": "Sending...",
+      "success": "Message sent successfully. We will contact you shortly.",
+      "fallback": "Unable to send from the site, opening your email client..."
+    },
+    "welcome": {
+      "since": "Since 1995 our expertise at your service",
+      "heading": "Welcome",
+      "intro1": "Thanks to long-standing experience in business advisory, our firm provides solutions tailored to each market's needs, proactively supporting growth through a network of qualified professionals.",
+      "intro2": "Our primary goal is to deliver the best and most attentive assistance.",
+      "more": "+ INFO",
+      "image": "/assets/foto_home_vincenzo.jpg",
+      "icon": "/assets/shake.png"
+    },
+    "news": {
+      "title": "Events & News",
+      "subtitle": "Updates from finance, accounting, regulations and more.",
+      "readMore": "Read more",
+      "archive": "News archive"
+    },
+    "scadenze": {
+      "subtitle": "A quick overview of this month's tax obligations.",
+      "readMore": "Read more",
+      "archive": "Deadlines archive"
+    },
+    "footer": {
+      "privacy": "Privacy",
+      "cookie": "Cookie",
+      "copyPrefix": "©",
+      "copySuffix": "Studio. VAT 00000000000"
+    }
+  }
+}

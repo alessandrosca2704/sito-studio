@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "servizi": "Servizi",
+    "lavori": "News e Scadenze",
+    "aree": "Aree di Attività",
+    "chi": "Chi siamo",
+    "contatti": "Contatti"
+  },
+  "hero": {
+    "eyebrow": "Studio professionale",
+    "title": "Soluzioni per la tua azienda",
+    "subtitle": "Supportiamo crescita, efficienza e serenità operativa con consulenza strategica, servizi fiscali e amministrativi chiari e trasparenti.",
+    "cta1": "Richiedi consulenza",
+    "cta2": "Scopri i servizi",
+    "backgroundImage": "/assets/home_image2.jpg"
+  },
+  "services": {
+    "eyebrow": "Servizi e Consulenze.",
+    "title": "Affidati agli esperti della gestione aziendale",
+    "more": "Scopri tutti i nostri servizi",
+    "activitiesCta": "Scopri di più sulle nostre Aree di Attività"
+  },
+  "about": {
+    "eyebrow": "Chi siamo",
+    "title": "Un partner affidabile e vicino al business.",
+    "p1": "Approccio consulenziale, linguaggio chiaro, responsabilità nei risultati. Lavoriamo al fianco di imprenditori e professionisti per costruire processi solidi e decisioni informate.",
+    "p2": "Operiamo con una rete di specialisti per coprire ambiti fiscali, societari, giuslavoristici e finanziari.",
+    "cta": "Scopri di più sullo studio",
+    "image": "/assets/home_about.jpg"
+  },
+  "contact": {
+    "eyebrow": "Contatti",
+    "title": "Parliamo della tua esigenza",
+    "msg": "Scrivici e ti risponderemo entro 1 giorno lavorativo.",
+    "name": "Nome e Cognome",
+    "email": "Email",
+    "message": "Messaggio",
+    "submit": "Invia",
+    "emailLabel": "Email",
+    "phoneLabel": "Telefono",
+    "sending": "Invio in corso...",
+    "success": "Messaggio inviato correttamente. Ti ricontatteremo a breve.",
+    "fallback": "Impossibile inviare dal sito, apro il client email..."
+  },
+  "welcome": {
+    "since": "Dal 1995 la nostra competenza al servizio della tua azienda",
+    "heading": "Benvenuti",
+    "intro1": "Lo studio Scarimbolo, grazie alla pluriennale esperienza nel campo della consulenza aziendale, è in grado di offrire a qualunque business le soluzioni più adatte alle peculiari esigenze del mercato, accompagnando, senza indugio e proattivamente, la crescita di ciascuna azienda con l'ausilio di un completo network di seri professionisti altamente qualificati.",
+    "intro2": "Il nostro obiettivo primario è di fornire la migliore e la più attenta assistenza.",
+    "more": "+ INFO",
+    "image": "/assets/foto_home_vincenzo.jpg",
+    "icon": "/assets/shake.png"
+  },
+  "news": {
+    "title": "Scadenze e News",
+    "subtitle": "Novità e appuntamenti dal mondo della finanza, contabilità, normativa e molto altro.",
+    "readMore": "Leggi tutto",
+    "archive": "Archivio news"
+  },
+  "scadenze": {
+    "subtitle": "Un colpo d'occhio sugli obblighi fiscali del mese.",
+    "readMore": "Leggi tutto",
+    "archive": "Archivio scadenze"
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "cookie": "Cookie",
+    "copyPrefix": "©",
+    "copySuffix": "Via Brigata Bari n° 5/A - 70123 Bari - Studio Scarimbolo P.IVA IT07742460723 "
+  }
+}

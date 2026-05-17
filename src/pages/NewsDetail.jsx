@@ -1,10 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
-import { useI18n } from '../i18n';
 import './NewsDetail.css';
 import useNews from '../hooks/useNews';
 import { LinkedinShareButton } from 'react-share';
 import { IconFacebook, IconLinkedIn, IconWhatsapp } from '../components/icons/Icons';
 import Seo from '../components/Seo';
+import newsPageContent from '../content/newsPage';
+import { getCmsPreviewData } from '../content/cmsPreview';
 
 const BASE_URL = 'https://www.studioscarimbolo.it';
 
@@ -28,14 +29,16 @@ const getImageType = (url = '') => {
 
 export default function NewsDetail(){
   const { slug } = useParams();
-  const { dict } = useI18n();
   const lang = (typeof window!=='undefined' && document.documentElement.lang)||'it';
+  const newsPage = getCmsPreviewData('path_news', lang, newsPageContent[lang] || newsPageContent.it);
+  const newsCopy = newsPage.news;
+  const fallbackImage = newsPage.assets?.fallbackImage || newsPageContent.it.assets.fallbackImage;
   const { items } = useNews(lang);
   const post = items.find(p => p.slug === slug);
 
   const encodedSlug = encodeURIComponent(post?.slug || slug || '');
   const shareUrl = `${BASE_URL}/news/${encodedSlug}`;
-  const fallback = ensureAbsolute('/assets/logo-facebook.png');
+  const fallback = ensureAbsolute(fallbackImage);
   const imageAbs = ensureAbsolute(post?.image) || fallback;
   const imageType = getImageType(imageAbs);
   const raw = String(post?.excerpt || post?.content || post?.title || '')
@@ -107,8 +110,8 @@ export default function NewsDetail(){
       {!post ? (
         <section className="section">
           <div className="container">
-            <h2>Articolo non trovato</h2>
-            <Link to="/news" className="btn btn-brand">Torna alle news</Link>
+            <h2>{newsCopy.notFoundTitle}</h2>
+            <Link to="/news" className="btn btn-brand">{newsCopy.notFoundBack}</Link>
           </div>
         </section>
       ) : (
@@ -124,7 +127,7 @@ export default function NewsDetail(){
               <p className="lead">{post.excerpt}</p>
               <div className="news-detail__content" dangerouslySetInnerHTML={{__html: post.content || post.excerpt}} />
               <div className='share-grid'>
-                <span>Condividi la news sui Social!</span>
+                <span>{newsCopy.shareLabel}</span>
                 <button
                   className="share-button"
                   type="button"
@@ -150,7 +153,7 @@ export default function NewsDetail(){
                   <IconLinkedIn />
                 </LinkedinShareButton>
               </div>
-              <div style={{marginTop:16}}><Link to="/news" className="btn">&larr; {dict.news.archive}</Link></div>
+              <div style={{marginTop:16}}><Link to="/news" className="btn">&larr; {newsCopy.archive}</Link></div>
             </div>
           </div>
         </section>
