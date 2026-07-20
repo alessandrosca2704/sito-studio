@@ -3,6 +3,7 @@ import './AdminPage.css';
 import { getNews, saveNews, resetNews, getScadenze, saveScadenze, resetScadenze, ensureNewsLoaded, ensureScadenzeLoaded } from '../data';
 import { logout } from '../auth';
 import RichEditor from '../components/admin/RichEditor';
+import { clearPendingUploadsForDatasets, collectUploadFiles, createPendingUploadsState, upsertPendingUpload } from './adminPageUploadState';
 
 // Static GitHub config (edit here once)
 // Set these values to your repo and Netlify hook
@@ -78,13 +79,18 @@ export default function AdminPage(){
   const [current, setCurrent] = React.useState(emptyPost());
   const [editingIndex, setEditingIndex] = React.useState(-1);
   const [uploadInfo, setUploadInfo] = React.useState(null); // { base64, ext }
-  const [pendingUploads, setPendingUploads] = React.useState({ news: {}, deadlines: {} });
+  const [pendingUploads, setPendingUploads] = React.useState(createPendingUploadsState);
+  const pendingUploadsRef = React.useRef(pendingUploads);
   const [token, setToken] = React.useState(()=>localStorage.getItem('admin_github_token')||'');
   const [commitStatus, setCommitStatus] = React.useState('');
   const datasetCfg = DATASETS[dataset];
   const isNews = dataset === 'news';
   const formTitle = editingIndex === -1 ? (isNews ? 'Nuovo Articolo' : 'Nuova Scadenza') : (isNews ? "Modifica un'articolo" : 'Modifica una scadenza');
   const imageFolder = isNews ? 'news' : 'scadenze';
+
+  React.useEffect(() => {
+    pendingUploadsRef.current = pendingUploads;
+  }, [pendingUploads]);
 
   React.useEffect(()=>{
     let mounted = true;
@@ -164,13 +170,9 @@ export default function AdminPage(){
     if (!uploadInfo) return null;
     const imgPath = getImagePath(slugValue, ext);
     const repoPath = imgPath.startsWith('/') ? `public${imgPath}` : `public/${imgPath}`;
-    setPendingUploads(prev => ({
-      ...prev,
-      [dataset]: {
-        ...(prev[dataset] || {}),
-        [repoPath]: { content: uploadInfo.base64, encoding: 'base64' }
-      }
-    }));
+    const nextState = upsertPendingUpload(pendingUploadsRef.current, dataset, repoPath, uploadInfo.base64);
+    pendingUploadsRef.current = nextState;
+    setPendingUploads(nextState);
     setUploadInfo(null);
     return imgPath;
   };
@@ -325,21 +327,17 @@ export default function AdminPage(){
         files.push({ path: cfg.commitPaths.it, content: JSON.stringify(localized.it, null, 2) });
         files.push({ path: cfg.commitPaths.en, content: JSON.stringify(localized.en, null, 2) });
         files.push({ path: cfg.commitPaths.legacy, content: JSON.stringify(payload, null, 2) });
-        const pending = pendingUploads[key] || {};
-        Object.entries(pending).forEach(([path, data]) => {
-          files.push({ path, content: data.content, encoding: data.encoding || 'base64' });
-        });
       });
+
+      files.push(...collectUploadFiles(pendingUploadsRef.current, {}, keys));
 
       const message = keys.length === 1 ? DATASETS[keys[0]].commitMessage : MULTI_COMMIT_MESSAGE;
       await performCommit(files, message);
       setCommitStatus(`Commit done (${label}).`);
       // clear pending uploads for committed datasets
-      setPendingUploads(prev => {
-        const next = { ...prev };
-        keys.forEach(k => { next[k] = {}; });
-        return next;
-      });
+      const clearedState = clearPendingUploadsForDatasets(pendingUploadsRef.current, keys);
+      pendingUploadsRef.current = clearedState;
+      setPendingUploads(clearedState);
 
       if (GIT_CFG.deployHook){
         setCommitStatus(`Commit OK (${label}). Triggering Netlify...`);
