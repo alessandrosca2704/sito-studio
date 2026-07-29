@@ -1,4 +1,4 @@
-import { createPendingUploadsState, upsertPendingUpload, collectUploadFiles, clearPendingUploadsForDatasets } from '../adminPageUploadState';
+import { createPendingUploadsState, upsertPendingUpload, collectUploadFiles, clearPendingUploadsForDatasets, hasUnsavedDraftChanges, sanitizeSlug, validateImageUpload } from '../adminPageUploadState';
 
 describe('admin upload state', () => {
   it('preserves uploads for other datasets when adding a new one', () => {
@@ -33,5 +33,28 @@ describe('admin upload state', () => {
 
     expect(cleared.news).toEqual({});
     expect(cleared.deadlines['/public/assets/scadenze/two.jpg']).toEqual({ content: 'BBB', encoding: 'base64' });
+  });
+
+  it('detects unsaved draft changes and uploads', () => {
+    const items = [{ slug: 'one', title: 'One', image: '', excerpt: '', content: '' }];
+
+    expect(hasUnsavedDraftChanges(null, { slug: 'one', title: 'One', image: '', excerpt: '', content: '' }, items, 0)).toBe(false);
+    expect(hasUnsavedDraftChanges({ base64: 'AAA', ext: '.jpg' }, { slug: 'one', title: 'One', image: '', excerpt: '', content: '' }, items, 0)).toBe(true);
+    expect(hasUnsavedDraftChanges(null, { slug: 'one', title: 'Changed', image: '', excerpt: '', content: '' }, items, 0)).toBe(true);
+  });
+
+  it('normalizes slug from title including accented characters', () => {
+    expect(sanitizeSlug('Nuovo Articolo 2026!')).toBe('nuovoarticolo2026');
+    expect(sanitizeSlug('Caffè & Fiscale')).toBe('caffefiscale');
+  });
+
+  it('rejects invalid image uploads', () => {
+    const invalidType = { type: 'text/plain', size: 100 };
+    const invalidSize = { type: 'image/jpeg', size: 3 * 1024 * 1024 };
+    const validFile = { type: 'image/png', size: 100 };
+
+    expect(validateImageUpload(invalidType)).toBe('Seleziona un file immagine valido.');
+    expect(validateImageUpload(invalidSize)).toBe('Il file è troppo grande. Massimo 2 MB.');
+    expect(validateImageUpload(validFile)).toBeNull();
   });
 });

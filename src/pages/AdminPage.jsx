@@ -3,7 +3,7 @@ import './AdminPage.css';
 import { getNews, saveNews, resetNews, getScadenze, saveScadenze, resetScadenze, ensureNewsLoaded, ensureScadenzeLoaded } from '../data';
 import { logout } from '../auth';
 import RichEditor from '../components/admin/RichEditor';
-import { clearPendingUploadsForDatasets, collectUploadFiles, createPendingUploadsState, upsertPendingUpload } from './adminPageUploadState';
+import { clearPendingUploadsForDatasets, collectUploadFiles, createPendingUploadsState, hasUnsavedDraftChanges, sanitizeSlug, upsertPendingUpload, validateImageUpload } from './adminPageUploadState';
 
 // Static GitHub config (edit here once)
 // Set these values to your repo and Netlify hook
@@ -87,6 +87,10 @@ export default function AdminPage(){
   const isNews = dataset === 'news';
   const formTitle = editingIndex === -1 ? (isNews ? 'Nuovo Articolo' : 'Nuova Scadenza') : (isNews ? "Modifica un'articolo" : 'Modifica una scadenza');
   const imageFolder = isNews ? 'news' : 'scadenze';
+  const pendingDraft = hasUnsavedDraftChanges(uploadInfo, current, items, editingIndex);
+  const hasPendingUpload = Boolean(uploadInfo);
+  const statusBadgeText = hasPendingUpload ? 'Upload pronto' : pendingDraft ? 'Draft non salvato' : 'Pronto';
+  const statusBadgeTone = hasPendingUpload ? 'warning' : pendingDraft ? 'danger' : 'success';
 
   React.useEffect(() => {
     pendingUploadsRef.current = pendingUploads;
@@ -109,43 +113,42 @@ export default function AdminPage(){
     return () => { mounted = false; };
   }, [lang, dataset]);
 
-  const startNew = () => { setCurrent(emptyPost()); setEditingIndex(-1); setUploadInfo(null); };
-  const confirmImageBeforeChange = () => {
-    if (!uploadInfo) return true;
-    const ok = window.confirm("Hai caricato un'immagine non salvata. Vuoi salvare il post prima di cambiare?");
-    if (ok) {
-      save();
-    }
-    return false;
+  const confirmPendingChangesBeforeChange = (actionLabel) => {
+    if (!hasUnsavedDraftChanges(uploadInfo, current, items, editingIndex)) return true;
+    return window.confirm(`Hai modifiche non salvate. Vuoi davvero ${actionLabel} senza salvarle?`);
+  };
+  const startNew = (skipGuard = false) => {
+    if (!skipGuard && !confirmPendingChangesBeforeChange('creare un nuovo elemento senza salvare')) return;
+    setCurrent(emptyPost());
+    setEditingIndex(-1);
+    setUploadInfo(null);
   };
   const editItem = (i) => {
-    if (!confirmImageBeforeChange()) return;
+    if (!confirmPendingChangesBeforeChange('cambiare articolo senza salvare')) return;
     setEditingIndex(i);
     setCurrent(items[i]);
     setUploadInfo(null);
   };
   const updateField = (k,v) => setCurrent(prev => ({...prev, [k]: v}));
-  const sanitizeSlug = (value) => (
-    (value || '')
-      .toLowerCase()
-      .replace(/\s+/g, '')
-      .replace(/[^a-z0-9]/g, '')
-  );
   const handleTitleChange = (e) => {
     const title = e.target.value;
-    setCurrent(prev => {
-      const next = { ...prev, title };
-      if (editingIndex === -1 || !prev.slug) {
-        next.slug = sanitizeSlug(title);
-      }
-      return next;
-    });
+    setCurrent(prev => ({
+      ...prev,
+      title,
+      slug: sanitizeSlug(title)
+    }));
   };
   const getImagePath = (slugValue, ext) => `/assets/${imageFolder}/${slugValue}${ext}`;
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const validationError = validateImageUpload(file);
+    if (validationError) {
+      alert(validationError);
+      e.target.value = '';
+      return;
+    }
     const slugValue = (current.slug || '').trim();
     if (!slugValue) { alert('Per caricare un immagine inserisci prima lo slug'); e.target.value = ''; return; }
     const matchExt = file.name.match(/\.[a-zA-Z0-9]+$/);
@@ -178,9 +181,9 @@ export default function AdminPage(){
   };
 
   const save = () => {
-    if (!current.title || !current.slug) { alert('Title and slug are required'); return; }
-    const slugValue = current.slug;
-    let next = { ...current };
+    const slugValue = sanitizeSlug(current.title);
+    if (!current.title || !slugValue) { alert('Title and slug are required'); return null; }
+    let next = { ...current, slug: slugValue };
     if (uploadInfo) {
       const imgPath = pushPendingUpload(slugValue, uploadInfo.ext);
       if (imgPath) { next.image = imgPath; }
@@ -188,15 +191,16 @@ export default function AdminPage(){
     const arr = [...items];
     const existsIdx = arr.findIndex(p => p.slug === slugValue);
     if (editingIndex === -1) {
-      if (existsIdx !== -1) { alert('Slug already exists'); return; }
+      if (existsIdx !== -1) { alert('Slug already exists'); return null; }
       arr.unshift(next);
     } else {
-      if (existsIdx !== -1 && existsIdx !== editingIndex) { alert('Slug already exists'); return; }
+      if (existsIdx !== -1 && existsIdx !== editingIndex) { alert('Slug already exists'); return null; }
       arr[editingIndex] = next;
     }
     setItems(arr);
     datasetCfg.save(lang, arr);
-    startNew();
+    startNew(true);
+    return arr;
   };
 
   const remove = (i) => {
@@ -310,8 +314,22 @@ export default function AdminPage(){
     if (!token) { setCommitStatus('Token missing'); return; }
     const keys = Array.from(new Set((targetKeys || []).filter(Boolean)));
     if (!keys.length) { setCommitStatus('No datasets selected'); return; }
-    if (keys.includes(dataset)) {
-      datasetCfg.save(lang, items);
+
+    const shouldPersistCurrentDataset = keys.includes(dataset);
+    const hasDraft = shouldPersistCurrentDataset && hasUnsavedDraftChanges(uploadInfo, current, items, editingIndex);
+    let savedItems = items;
+    if (hasDraft) {
+      const shouldSave = window.confirm('Hai modifiche non salvate nel form corrente. Vuoi salvarle prima di fare il commit?');
+      if (shouldSave) {
+        savedItems = save() || items;
+      } else {
+        setCommitStatus('Commit annullato: ci sono modifiche non salvate nel form.');
+        return;
+      }
+    }
+
+    if (shouldPersistCurrentDataset) {
+      datasetCfg.save(lang, savedItems);
     }
 
     const label = describeTargets(keys);
@@ -358,7 +376,14 @@ export default function AdminPage(){
       <div className="container admin__topbar">
             <div style={{display:'flex', alignItems:'center', gap:12}}>
               <h2 style={{margin:0}}>Admin</h2>
-              <select value={dataset} onChange={e=>setDataset(e.target.value)} className="admin__dataset-select">
+              <select
+                value={dataset}
+                onChange={(e) => {
+                  if (!confirmPendingChangesBeforeChange('cambiare dataset senza salvare')) return;
+                  setDataset(e.target.value);
+                }}
+                className="admin__dataset-select"
+              >
                 {DATASET_OPTIONS.map(opt => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
                 ))}
@@ -373,7 +398,7 @@ export default function AdminPage(){
               <h2 style={{margin:0}}>{datasetCfg.label} ({lang.toUpperCase()})</h2>
 
             <div className="admin__actions">
-              <button className="btn" onClick={() => { if (confirmImageBeforeChange()) startNew(); }}>New</button>
+              <button className="btn" onClick={() => startNew()}>New</button>
               <button className="btn" onClick={exportJson}>Export</button>
               <label className="btn" style={{cursor:'pointer'}}>
                 Import
@@ -394,7 +419,12 @@ export default function AdminPage(){
         </div>
         <div className="admin__form">
           <h3>{formTitle}</h3>
+          <div className="admin__status-row full">
+            <span className={`admin__status-badge admin__status-badge--${statusBadgeTone}`}>{statusBadgeText}</span>
+            {pendingDraft && <span className="admin__status-help">Salva il record prima del commit per pubblicare correttamente il contenuto.</span>}
+          </div>
           <div className="form-admin">
+
             <label>
               <span>Titolo</span>
               <input value={current.title} onChange={handleTitleChange} />

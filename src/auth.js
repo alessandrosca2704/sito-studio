@@ -1,3 +1,5 @@
+import { getLocalMockPassword, shouldUseMockAdminAuth } from './adminTestMode';
+
 export function getTimeoutMs() {
   const def = 30 * 60 * 1000; // 30 minutes
   const mins = Number(process.env.REACT_APP_ADMIN_TIMEOUT_MIN);
@@ -21,6 +23,18 @@ export function isAuthed() {
 }
 
 export async function loginWithPassword(pw) {
+  if (shouldUseMockAdminAuth()) {
+    const expected = getLocalMockPassword();
+    const ok = Boolean(expected && pw === expected);
+    if (ok) {
+      try {
+        localStorage.setItem('admin_authed', '1');
+        localStorage.setItem('admin_expires_at', String(Date.now() + getTimeoutMs()));
+      } catch {}
+    }
+    return ok;
+  }
+
   try {
     const res = await fetch('/.netlify/functions/adminAuth', {
       method: 'POST',
