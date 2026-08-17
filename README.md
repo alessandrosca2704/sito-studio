@@ -17,7 +17,7 @@ The frontend is built with React 18 and React Router v6, while Netlify provides 
 - [Deployment to Netlify](#deployment-to-netlify)
 - [Content Management](#content-management)
 - [Admin Panel Usage](#admin-panel-usage)
-- [API and Backend](#api-and-backend)
+- [Netlify Functions](#netlify-functions)
 - [Multi-language Support](#multi-language-support)
 - [SEO and Performance](#seo-and-performance)
 - [Contributing](#contributing)
