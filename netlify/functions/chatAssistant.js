@@ -1,13 +1,32 @@
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
+const SYSTEM_PROMPT = `Sei un assistente digitale cordiale e professionale per Studio Scarimbolo. Rispondi in italiano, in massimo tre frasi, solo su servizi contabili, fiscali, societari, gare d'appalto, siti web, scadenze e contatti dello studio. Non fornire consulenza fiscale personalizzata. Se non conosci la risposta, invita l'utente a contattare lo studio.`;
+const attempts = new Map();
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_REQUESTS = 12;
+
+const json = (statusCode, body, headers = {}) => ({ statusCode, headers: { "content-type": "application/json", "cache-control": "no-store", ...headers }, body: JSON.stringify(body) });
+const sameOrigin = (event) => {
+  try {
+    const origin = event.headers?.origin;
+    const host = event.headers?.['x-forwarded-host'] || event.headers?.host;
+    return Boolean(origin && host && new URL(origin).host === host);
+  } catch { return false; }
+};
+const clientKey = (event) => String(event.headers?.['x-nf-client-connection-ip'] || event.headers?.['x-forwarded-for'] || 'unknown').split(',')[0].trim();
+function limited(key) {
+  const recent = (attempts.get(key) || []).filter((time) => Date.now() - time < WINDOW_MS);
+  if (recent.length >= MAX_REQUESTS) return true;
+  attempts.set(key, [...recent, Date.now()]);
+  return false;
+}
 
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ error: "Method Not Allowed" })
-    };
+    return json(405, { error: "Method Not Allowed" }, { allow: 'POST' });
   }
+  if (!sameOrigin(event)) return json(403, { error: 'Forbidden' });
+  if (limited(clientKey(event))) return json(429, { error: 'Too many requests' }, { 'retry-after': '600' });
+  if (Buffer.byteLength(event.body || '', 'utf8') > 12000) return json(413, { error: 'Payload too large' });
 
   const apiKey =
     process.env.OPENAI_API_KEY ||
@@ -34,7 +53,9 @@ export async function handler(event) {
     };
   }
 
-  const messages = Array.isArray(body.messages) ? body.messages : null;
+  const messages = Array.isArray(body.messages)
+    ? body.messages.slice(-8).filter((item) => ['user', 'assistant'].includes(item?.role) && typeof item?.content === 'string' && item.content.length <= 1000).map((item) => ({ role: item.role, content: item.content }))
+    : null;
 
   if (!messages?.length) {
     return {
@@ -52,9 +73,10 @@ export async function handler(event) {
         Authorization: `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "gpt-5.1",
+        model: process.env.OPENAI_CHAT_MODEL || "gpt-5.1",
         temperature: 0.6,
-        messages
+        max_completion_tokens: 250,
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages]
       })
     });
 

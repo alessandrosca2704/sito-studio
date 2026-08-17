@@ -7,17 +7,15 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "dompurify": "^3.4.13",
     "framer-motion": "^12.23.24",
-    "netlify": "^27.0.1",
-    "netlify-cli": "^23.9.5",
-    "quill": "^2.0.3",
+    "quill": "^2.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
     "react-mobile-share": "^2.2.3",
     "react-popup": "^0.11.2",
-    "react-quill": "^2.0.0",
-    "react-router-dom": "^6.26.1",
+    "react-router-dom": "^6.30.3",
     "react-share": "^5.2.2",
     "react-xmas-tree": "^1.1.1",
     "web-vitals": "^2.1.4"
@@ -47,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "netlify-cli": "^27.1.1",
     "react-scripts": "^5.0.1"
   }
 }

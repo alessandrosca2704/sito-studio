@@ -61,7 +61,7 @@ export function IconMore({ size=48, color='var(--brand)' }){
 export function IconLaptop({ size=48, color='var(--brand)' }){
   return (
     <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
-      <g stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <g stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="8" y="8" width="32" height="20" rx="3"/>
         <circle cx="24" cy="12" r="1" fill="#2563EB" stroke="none"/>
         <path d="M6 32h36l-3 6H9l-3-6z"/>

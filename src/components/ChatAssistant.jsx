@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './ChatAssistant.css';
 
-const SYSTEM_PROMPT = `Sei un assistente digitale cordiale e professionale per lo studio scarimbolo uno studio contabile cui aree di competenza e servizi offerti sono: Servizi Contabili e di Bilancio, Servizi Fiscali e Tributari, Servizi Societari, Servizi Ausiliari, Assistenza e Ricerca Gare Appalto, Realizzazione Siti Web, Rispondi in italiano con messaggi sintetici (massimo 3 frasi) e proponi eventuali passi successivi utili.
-Se non conosci la risposta, invita l'utente a contattare lo studio tramite il form principale.`;
-
 const INTRO_MESSAGE =
   "Ciao! Sono l'assistente digitale dello studio. Chiedimi pure informazioni su servizi, scadenze o come contattarci.";
 
@@ -59,7 +56,7 @@ export default function ChatAssistant() {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...nextMessages]
+          messages: nextMessages
         })
       });
 

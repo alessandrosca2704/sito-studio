@@ -1,70 +1,32 @@
 import { getLocalMockPassword, shouldUseMockAdminAuth } from './adminTestMode';
 
-export function getTimeoutMs() {
-  const def = 30 * 60 * 1000; // 30 minutes
-  const mins = Number(process.env.REACT_APP_ADMIN_TIMEOUT_MIN);
-  return mins > 0 ? mins * 60 * 1000 : def;
-}
-
-export function isAuthed() {
+export async function isAuthed() {
+  if (shouldUseMockAdminAuth()) return sessionStorage.getItem('mock_admin_authed') === '1';
   try {
-    const authed = localStorage.getItem('admin_authed') === '1';
-    if (!authed) return false;
-    const exp = Number(localStorage.getItem('admin_expires_at') || '0');
-    const now = Date.now();
-    if (!exp || now > exp) {
-      logout();
-      return false;
-    }
-    return true;
-  } catch {
-    return false;
-  }
+    const response = await fetch('/.netlify/functions/adminAuth', { method: 'GET', credentials: 'same-origin', cache: 'no-store' });
+    if (!response.ok) return false;
+    const data = await response.json();
+    return data.authenticated === true;
+  } catch { return false; }
 }
 
-export async function loginWithPassword(pw) {
+export async function loginWithPassword(password) {
   if (shouldUseMockAdminAuth()) {
-    const expected = getLocalMockPassword();
-    const ok = Boolean(expected && pw === expected);
-    if (ok) {
-      try {
-        localStorage.setItem('admin_authed', '1');
-        localStorage.setItem('admin_expires_at', String(Date.now() + getTimeoutMs()));
-      } catch {}
-    }
+    const ok = Boolean(getLocalMockPassword() && password === getLocalMockPassword());
+    if (ok) sessionStorage.setItem('mock_admin_authed', '1');
     return ok;
   }
-
   try {
-    const res = await fetch('/.netlify/functions/adminAuth', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ password: pw }),
+    const response = await fetch('/.netlify/functions/adminAuth', {
+      method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ password })
     });
-    const ok = res.ok;
-    if (ok) {
-      try {
-        localStorage.setItem('admin_authed', '1');
-        localStorage.setItem('admin_expires_at', String(Date.now() + getTimeoutMs()));
-      } catch {}
-    }
-    return ok;
-  } catch {
-    return false;
-  }
+    return response.ok;
+  } catch { return false; }
 }
 
-export function refreshExpiry() {
-  try {
-    if (localStorage.getItem('admin_authed') === '1') {
-      localStorage.setItem('admin_expires_at', String(Date.now() + getTimeoutMs()));
-    }
-  } catch {}
-}
-
-export function logout() {
-  try {
-    localStorage.removeItem('admin_authed');
-    localStorage.removeItem('admin_expires_at');
-  } catch {}
+export async function logout() {
+  sessionStorage.removeItem('mock_admin_authed');
+  if (shouldUseMockAdminAuth()) return;
+  try { await fetch('/.netlify/functions/adminAuth', { method: 'DELETE', credentials: 'same-origin' }); } catch {}
 }

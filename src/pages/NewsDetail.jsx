@@ -6,6 +6,7 @@ import { IconFacebook, IconLinkedIn, IconWhatsapp } from '../components/icons/Ic
 import Seo from '../components/Seo';
 import newsPageContent from '../content/newsPage';
 import { getCmsPreviewData } from '../content/cmsPreview';
+import { sanitizeHtml } from '../content/sanitizeHtml';
 
 const BASE_URL = 'https://www.studioscarimbolo.it';
 
@@ -125,7 +126,7 @@ export default function NewsDetail(){
               )}
               <h1 className="text-brand">{post.title}</h1>
               <p className="lead">{post.excerpt}</p>
-              <div className="news-detail__content" dangerouslySetInnerHTML={{__html: post.content || post.excerpt}} />
+              <div className="news-detail__content" dangerouslySetInnerHTML={{__html: sanitizeHtml(post.content || post.excerpt)}} />
               <div className='share-grid'>
                 <span>{newsCopy.shareLabel}</span>
                 <button

@@ -11,7 +11,9 @@ export default function Login(){
   const [loading, setLoading] = React.useState(false);
 
 React.useEffect(()=>{
-    if (isAuthed()) nav('/admin', { replace: true });
+    let active = true;
+    isAuthed().then((ok) => { if (active && ok) nav('/admin', { replace: true }); });
+    return () => { active = false; };
   }, [nav]);
 
   const submit = async (e) => {

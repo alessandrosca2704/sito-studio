@@ -20,6 +20,7 @@ The frontend is built with React 18 and React Router v6, while Netlify provides 
 - [Netlify Functions](#netlify-functions)
 - [Multi-language Support](#multi-language-support)
 - [SEO and Performance](#seo-and-performance)
+- [Pre-push and Deployment Checklist](#pre-push-and-deployment-checklist)
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
@@ -43,6 +44,7 @@ Visitors can explore consulting services, pricing, activity areas, team informat
 
 - **Italian and English content:** a lightweight React context exposes the active language and localized dictionary.
 - **Dynamic news and deadlines:** articles and fiscal deadlines are loaded from localized JSON datasets, cached locally, and displayed in list and detail routes.
+- **External professional news:** `/news` also displays separate Norme e Tributi and Economia feeds from the official Il Sole 24 ORE RSS endpoints through a cached Netlify REST API. No third-party page is embedded.
 - **Content management:** a protected custom admin panel manages news, deadlines, images, and GitHub commits; a CMS interface manages the wider site content.
 - **Chat assistant:** a client-facing assistant sends queries through a Netlify Function so the provider API key remains server-side.
 - **Services and pricing:** dedicated service listings and detail pages explain the studio's tax, accounting, corporate, and related professional offerings.
@@ -52,7 +54,8 @@ Visitors can explore consulting services, pricing, activity areas, team informat
 - **Responsive UI:** reusable components, mobile navigation, responsive layouts, reveal effects, and Framer Motion animations support desktop and mobile devices.
 - **SEO:** `react-helmet-async`, route-aware metadata, `robots.txt`, `sitemap.xml`, and generated article share pages improve discovery and social previews.
 - **PWA foundation:** `public/manifest.json` and installable-app icons are included. See [PWA status](#pwa-status) for the current service-worker status.
-- **Serverless backend:** Netlify Functions provide admin authentication, AI chat requests, and post-deployment social-preview refreshes.
+- **Serverless backend:** Netlify Functions provide signed admin sessions, allowlisted GitHub publishing, protected AI chat requests, cached RSS aggregation, and post-deployment social-preview refreshes.
+- **Security controls:** production admin state uses a signed HttpOnly cookie; CMS HTML is sanitized before rendering; global security headers and a Content Security Policy are configured in `netlify.toml`.
 
 ### Highlighted dependencies
 
@@ -61,7 +64,8 @@ Visitors can explore consulting services, pricing, activity areas, team informat
 | `react-router-dom` | Application routes and detail-page parameters |
 | `react-helmet-async` | Per-page title, description, canonical, and social metadata |
 | `framer-motion` | UI and page animations |
-| `react-quill` / `quill` | Rich-text editing in administrative interfaces |
+| `quill` | Rich-text editing in administrative interfaces |
+| `dompurify` | Sanitization of CMS-managed HTML before browser rendering |
 | `react-share` | Desktop social-sharing controls |
 | `react-mobile-share` | Native-style mobile sharing |
 | `netlify-cli` | Local Netlify development and deployment workflows |
@@ -101,7 +105,6 @@ Create an optional local environment file in the project root:
 
 ```dotenv
 REACT_APP_MOCK_ADMIN_PASSWORD=local-only-password
-REACT_APP_ADMIN_TIMEOUT_MIN=30
 ```
 
 Do not commit `.env` files or real credentials.
@@ -174,16 +177,27 @@ Important routes include `/`, `/servizi`, `/servizi/:slug`, `/news`, `/news/:slu
 | Variable | Scope | Required | Description |
 | --- | --- | --- | --- |
 | `ADMIN_PASSWORD` | Server | Production admin | Preferred password used by `adminAuth` |
+| `ADMIN_SESSION_SECRET` | Server | Production admin | Random secret of at least 32 characters used to sign HttpOnly admin sessions |
+| `GITHUB_TOKEN` | Server | Publishing | Fine-grained token limited to this repository with Contents read/write permission |
+| `GITHUB_REPO_OWNER` | Server | No | Publishing repository owner; defaults to `alessandrosca2704` |
+| `GITHUB_REPO_NAME` | Server | No | Publishing repository name; defaults to `sito-studio` |
+| `GITHUB_REPO_BRANCH` | Server | No | Publishing branch; defaults to `main` |
 | `OPENAI_API_KEY` | Server | Chat only | API key used by `chatAssistant`; keep server-side |
+| `OPENAI_CHAT_MODEL` | Server | No | Chat model override; defaults to `gpt-5.1` |
 | `REACT_APP_MOCK_ADMIN_PASSWORD` | Client/dev | No | Enables mock admin login only on local development hosts |
-| `REACT_APP_ADMIN_TIMEOUT_MIN` | Client | No | Admin session duration in minutes; defaults to 30 |
 | `REACT_APP_APP_VERSION` | Build | Automatic | Cache version; Netlify sets it to `$COMMIT_REF` |
 | `REACT_APP_VERSION` | Build | No | Fallback cache version when `REACT_APP_APP_VERSION` is absent |
 | `SITE_URL` | Function | No | Canonical site URL for deployment-time link refresh |
 | `FACEBOOK_ACCESS_TOKEN` | Function | No | Enables Meta/Facebook share-preview pre-scraping |
 | `FACEBOOK_SCRAPE_LIMIT` | Function | No | Maximum preview URLs processed; defaults to 10 |
 
-The functions also recognize legacy `VITE_*` and `REACT_APP_*` variants for admin and OpenAI credentials. In production, prefer `ADMIN_PASSWORD` and `OPENAI_API_KEY`: variables beginning with `REACT_APP_` can be embedded into the browser bundle when referenced by frontend code.
+Production credentials are server-only. Never use `VITE_*` or `REACT_APP_*` names for passwords, API keys, session secrets, or GitHub tokens because those prefixes may expose values in the browser bundle.
+
+Generate `ADMIN_SESSION_SECRET` locally, copy it directly into Netlify, and never commit the generated value:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
 
 Set production values in **Netlify → Site configuration → Environment variables**, then trigger a new deployment. Never store API keys or production passwords in source control.
 
@@ -222,7 +236,7 @@ The repository includes the required configuration:
 2. In Netlify, choose **Add new site → Import an existing project**.
 3. Select the repository and production branch (normally `main`).
 4. Confirm the build command and `build` publish directory; Netlify reads them from `netlify.toml`.
-5. Add `ADMIN_PASSWORD` and, when needed, `OPENAI_API_KEY` and `FACEBOOK_ACCESS_TOKEN`.
+5. Add `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, and `GITHUB_TOKEN`; add `OPENAI_API_KEY` and `FACEBOOK_ACCESS_TOKEN` only when those features are enabled.
 6. Deploy the site and test routes, the contact form, `/login`, and the chat assistant.
 
 The build uses Node 20, `npm --legacy-peer-deps`, and `CI=false`. SPA navigation is supported by `public/_redirects`.
@@ -298,12 +312,11 @@ npm run build
 3. Open `/admin` and select the dataset and language.
 4. Add or edit the slug, title, image, excerpt, and rich content.
 5. Save the browser draft and preview the result.
-6. To publish, provide a fine-grained GitHub personal access token with **Contents: Read and write** access to the configured repository.
-7. Verify the repository and branch displayed by the panel, then commit the localized JSON and pending image uploads.
+6. Verify the repository and branch displayed by the panel, then commit the localized JSON and pending image uploads.
 
-Draft data and the GitHub token are stored in the current browser's `localStorage`. Use the panel only on a trusted device, remove the token after publishing, and never paste a token into screenshots or support messages. Authentication expires after 30 minutes by default, but this client-side gate is not a replacement for Netlify/GitHub access controls.
+Draft content remains in the current browser, but authentication uses a signed, 30-minute, HttpOnly cookie. The GitHub token remains in Netlify's server-side environment and is never delivered to the browser. The publishing function verifies the session and accepts only the known news/deadline JSON files and their image folders.
 
-Repository publishing values are currently defined in `GIT_CFG` near the top of `src/pages/AdminPage.jsx`. Update the owner, repository, branch, committer identity, and optional Netlify deploy hook when forking the project.
+The publishing backend uses `GITHUB_REPO_OWNER`, `GITHUB_REPO_NAME`, and `GITHUB_REPO_BRANCH`; these server-side values are authoritative. `GIT_CFG` in `src/pages/AdminPage.jsx` supplies only the repository information displayed by the interface and should match the server configuration when the project is forked.
 
 ### JSON CMS
 
@@ -325,7 +338,26 @@ Netlify exposes functions under `/.netlify/functions/<function-name>`.
 }
 ```
 
-Returns HTTP `200` for a matching password and `401` otherwise. Only `POST` is accepted. The production password should be stored as `ADMIN_PASSWORD` on Netlify.
+On successful login, the response creates a signed `HttpOnly`, `Secure`, `SameSite=Strict` session cookie. `GET` checks the session and `DELETE` logs out. Production requires `ADMIN_PASSWORD` and a random `ADMIN_SESSION_SECRET` of at least 32 characters.
+
+### `adminPublish`
+
+`POST /.netlify/functions/adminPublish` accepts the files prepared by the custom editor. It requires a valid admin session, validates an exact path allowlist, and publishes with the server-only `GITHUB_TOKEN`.
+
+### `sole24News`
+
+`GET /.netlify/functions/sole24News` converts selected official Il Sole 24 ORE RSS feeds to JSON. It returns titles, categories, publication dates, and validated links to the original publisher; it does not reproduce complete articles.
+
+| Parameter | Values | Default |
+| --- | --- | --- |
+| `feed` | `norme-e-tributi`, `economia`, `primapagina` | `economia` |
+| `limit` | Integer from 1 to 20 | `10` |
+
+```text
+GET /.netlify/functions/sole24News?feed=norme-e-tributi&limit=6
+```
+
+The `/news` page loads Norme e Tributi and Economia independently and shows six entries from each. Responses are cached for five minutes with stale-while-revalidate support. If one feed is unavailable, the other remains usable. This official RSS integration avoids third-party iframes and their cookie-consent limitations.
 
 ### `chatAssistant`
 
@@ -347,7 +379,7 @@ The function validates the payload, forwards it to the configured AI model, and 
 }
 ```
 
-The assistant is informational. Its UI prompt directs uncertain queries to the studio, but tax advice and deadlines should always be confirmed by a qualified professional. Consider adding rate limiting, abuse protection, message-length limits, and monitoring before high-traffic production use.
+The assistant is informational. The server owns its system prompt and enforces origin, payload, conversation, output, and best-effort per-instance rate limits. Configure an OpenAI project budget and monitor usage as an additional production safeguard.
 
 ### `deploy-succeeded-background`
 
@@ -394,6 +426,27 @@ News and deadlines are loaded separately by `useNews(lang)` and `useScadenze(lan
 `public/manifest.json`, `logo192.png`, and `logo512.png` provide web app identity and install metadata. A service worker is **not currently registered** in `src/index.js`, so offline caching and update lifecycle behavior are not active yet.
 
 To provide full PWA behavior, add and test a service worker (for example with Workbox), register it only in production, define safe caching rules for frequently changing fiscal content, and document how users receive updates. Tax deadlines should not be served indefinitely from a stale offline cache.
+
+## Pre-push and Deployment Checklist
+
+Before pushing or publishing a release:
+
+1. Confirm that `.env` files, tokens, passwords, taxpayer information, and client data are not staged.
+2. Run the automated checks and production build:
+
+   ```bash
+   npm test -- --watchAll=false
+   npm run build
+   git diff --check
+   git status --short
+   ```
+
+3. Confirm that Netlify has `ADMIN_PASSWORD`, a random `ADMIN_SESSION_SECRET` of at least 32 characters, and a repository-scoped `GITHUB_TOKEN` with Contents read/write permission.
+4. Add `OPENAI_API_KEY` only when chat is enabled and configure an OpenAI project spending cap.
+5. Redeploy after changing any server-side environment variable.
+6. On the deployed site, verify login, refresh, logout, rejected unauthorized publishing, one real content publish, both external RSS sections, chat, contact forms, and mobile layout.
+
+Never place production credentials in variables prefixed with `REACT_APP_` or `VITE_`.
 
 ## Contributing
 
@@ -442,9 +495,17 @@ Confirm that `public/_redirects` is included in the deployed `build/` directory 
 
 ### Admin publish or GitHub test fails
 
-- Confirm the `GIT_CFG` owner, repository, and branch in `src/pages/AdminPage.jsx`.
-- Use a fine-grained token authorized for that repository with Contents read/write permission.
+- Confirm `GITHUB_REPO_OWNER`, `GITHUB_REPO_NAME`, and `GITHUB_REPO_BRANCH` in Netlify and keep the displayed `GIT_CFG` values consistent.
+- Confirm `GITHUB_TOKEN` is a server-side fine-grained token authorized only for that repository with Contents read/write permission.
+- Log out and back in if the signed 30-minute session has expired.
 - Check that the JSON path and pending image paths are valid and that the branch is not protected against direct commits.
+
+### External Sole 24 ORE news does not load
+
+- Use `netlify dev`, not only `npm start`, because the browser calls the `sole24News` Function.
+- After adding or changing a Function, restart `netlify dev` if its in-memory bundle appears stale.
+- Test `/.netlify/functions/sole24News?feed=norme-e-tributi&limit=2` and inspect the Function log.
+- A temporary upstream RSS failure returns HTTP `502`; the page keeps each feed's error state independent and provides a direct publisher link.
 
 ### Chat assistant reports “Server not configured”
 

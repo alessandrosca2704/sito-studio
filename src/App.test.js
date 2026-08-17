@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { MemoryRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+jest.mock('react-xmas-tree/react', () => () => null, { virtual: true });
+
+test('renders the studio application', () => {
+  render(<HelmetProvider><MemoryRouter><App /></MemoryRouter></HelmetProvider>);
+  expect(screen.getAllByText(/studio scarimbolo/i).length).toBeGreaterThan(0);
 });

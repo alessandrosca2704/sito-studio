@@ -81,7 +81,6 @@ export default function AdminPage(){
   const [uploadInfo, setUploadInfo] = React.useState(null); // { base64, ext }
   const [pendingUploads, setPendingUploads] = React.useState(createPendingUploadsState);
   const pendingUploadsRef = React.useRef(pendingUploads);
-  const [token, setToken] = React.useState(()=>localStorage.getItem('admin_github_token')||'');
   const [commitStatus, setCommitStatus] = React.useState('');
   const datasetCfg = DATASETS[dataset];
   const isNews = dataset === 'news';
@@ -246,72 +245,17 @@ export default function AdminPage(){
     return 'News + Scadenze';
   };
 
-  const testConnection = async (target = dataset) => {
-    if (!token) { setCommitStatus('Token missing'); return; }
-    const cfg = DATASETS[target];
-    if (!cfg) { setCommitStatus('Unknown dataset'); return; }
-    setCommitStatus(`Testing GitHub connection for ${cfg.commitPath}...`);
-    try {
-      const baseUrl = `https://api.github.com/repos/${GIT_CFG.owner}/${GIT_CFG.repo}/contents/${cfg.commitPath}?ref=${encodeURIComponent(GIT_CFG.branch)}`;
-      const res = await fetch(baseUrl, { headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}` }});
-      if (res.status === 404) { setCommitStatus(`Repo/branch OK. ${cfg.commitPath} will be created.`); return; }
-      if (!res.ok) { const t = await res.text(); throw new Error(`${res.status}: ${t}`); }
-      const j = await res.json();
-      setCommitStatus(`OK. ${cfg.commitPath} exists (sha: ${j.sha ? j.sha.slice(0,7) : 'n/a'})`);
-    } catch(err){ setCommitStatus('Test error: ' + (err.message || String(err))); }
-  };
-
   const performCommit = async (files, message) => {
     if (!files.length) throw new Error('No files to commit');
-    const baseApi = `https://api.github.com/repos/${GIT_CFG.owner}/${GIT_CFG.repo}`;
-    const authHeaders = {
-      'Accept': 'application/vnd.github+json',
-      'Authorization': `Bearer ${token}`
-    };
-    const jsonHeaders = {
-      ...authHeaders,
-      'Content-Type': 'application/json'
-    };
-    const refUrl = `${baseApi}/git/refs/heads/${GIT_CFG.branch}`;
-    const refRes = await fetch(refUrl, { headers: authHeaders });
-    if (!refRes.ok) { const t = await refRes.text(); throw new Error(`Unable to read branch ref: ${refRes.status} ${t}`); }
-    const refData = await refRes.json();
-    const baseCommitSha = refData?.object?.sha;
-    if (!baseCommitSha) throw new Error('Invalid branch reference received from GitHub');
-
-    const headCommitRes = await fetch(`${baseApi}/git/commits/${baseCommitSha}`, { headers: authHeaders });
-    if (!headCommitRes.ok) { const t = await headCommitRes.text(); throw new Error(`Unable to read head commit: ${headCommitRes.status} ${t}`); }
-    const headCommit = await headCommitRes.json();
-    const baseTreeSha = headCommit?.tree?.sha;
-    if (!baseTreeSha) throw new Error('Missing base tree information');
-
-    const treeEntries = [];
-    for (const file of files) {
-      const blobRes = await fetch(`${baseApi}/git/blobs`, { method: 'POST', headers: jsonHeaders, body: JSON.stringify({ content: file.content, encoding: file.encoding || 'utf-8' }) });
-      if (!blobRes.ok) { const t = await blobRes.text(); throw new Error(`Blob create failed for ${file.path}: ${blobRes.status} ${t}`); }
-      const blobData = await blobRes.json();
-      treeEntries.push({ path: file.path, mode: '100644', type: 'blob', sha: blobData.sha });
-    }
-
-    const treeRes = await fetch(`${baseApi}/git/trees`, { method: 'POST', headers: jsonHeaders, body: JSON.stringify({ base_tree: baseTreeSha, tree: treeEntries }) });
-    if (!treeRes.ok) { const t = await treeRes.text(); throw new Error(`Tree create failed: ${treeRes.status} ${t}`); }
-    const treeData = await treeRes.json();
-
-    const commitRes = await fetch(`${baseApi}/git/commits`, { method: 'POST', headers: jsonHeaders, body: JSON.stringify({
-      message,
-      tree: treeData.sha,
-      parents: [baseCommitSha],
-      committer: { name: GIT_CFG.userName, email: GIT_CFG.userEmail }
-    })});
-    if (!commitRes.ok) { const t = await commitRes.text(); throw new Error(`Commit create failed: ${commitRes.status} ${t}`); }
-    const commitData = await commitRes.json();
-
-    const updateRes = await fetch(refUrl, { method: 'PATCH', headers: jsonHeaders, body: JSON.stringify({ sha: commitData.sha }) });
-    if (!updateRes.ok) { const t = await updateRes.text(); throw new Error(`Ref update failed: ${updateRes.status} ${t}`); }
+    const response = await fetch('/.netlify/functions/adminPublish', {
+      method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files, message })
+    });
+    if (response.status === 401) { await logout(); window.location.href = '/login'; throw new Error('Session expired'); }
+    if (!response.ok) { const data = await response.json().catch(() => ({})); throw new Error(data.error || `Publish failed (${response.status})`); }
   };
 
   const commitDatasets = async (targetKeys) => {
-    if (!token) { setCommitStatus('Token missing'); return; }
     const keys = Array.from(new Set((targetKeys || []).filter(Boolean)));
     if (!keys.length) { setCommitStatus('No datasets selected'); return; }
 
@@ -390,7 +334,7 @@ export default function AdminPage(){
               </select>
             </div>
         <a className="btn btn-brand admin__cms-link" href="/admin/CMS/">CMS</a>
-        <button className="btn" onClick={()=>{ logout(); window.location.href = '/login'; }}>Logout</button>
+        <button className="btn" onClick={async()=>{ await logout(); window.location.href = '/login'; }}>Logout</button>
       </div>
       <div className="container admin__layout">
         <div className="admin__list">
@@ -464,14 +408,10 @@ export default function AdminPage(){
             <div><strong>File news:</strong> {DATASETS.news.commitPath}</div>
             <div><strong>File scadenze:</strong> {DATASETS.deadlines.commitPath}</div>
           </div>
-          <label className="full">
-            <span>GitHub Token (PAT)</span>
-            <input type="password" value={token} onChange={e=>setToken(e.target.value)} placeholder="Fine-grained PAT with Contents: Read/Write" />
-          </label>
+          <p className="full">Le credenziali GitHub sono conservate esclusivamente nelle variabili protette di Netlify.</p>
         </div>
         <div className="panel__actions">
           
-          <button className="btn" onClick={()=>testConnection(dataset)}>Test {datasetCfg.label}</button>
           <button className="btn" onClick={()=>commitDatasets(['news'])}>Commit news.json</button>
           <button className="btn" onClick={()=>commitDatasets(['deadlines'])}>Commit scadenze.json</button>
           <button className="btn btn-brand" onClick={()=>commitDatasets(['news','deadlines'])}>Commit news + scadenze</button>
