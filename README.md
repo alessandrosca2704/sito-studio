@@ -525,9 +525,11 @@ Confirm canonical metadata and generated share pages, then check `FACEBOOK_ACCES
 
 ## License
 
-No license file is currently included. The project should therefore be treated as proprietary/all rights reserved unless the repository owner adds an explicit license. Do not copy, redistribute, or reuse the code or studio content without permission.
+Copyright © 2026 Alessandro Scarimbolo. All rights reserved.
 
-If the project is intended for open-source use, add a `LICENSE` file and update this section with the selected license and copyright holder.
+This repository is publicly available for portfolio and demonstration purposes only. No license is granted to copy, modify, distribute, sublicense, sell, deploy, or otherwise reuse the source code, design, branding, written content, images, or other project assets without prior written permission from the copyright holder.
+
+Third-party trademarks, news titles, links, feeds, libraries, and other materials remain the property of their respective owners and are governed by their own licenses and terms. See [`LICENSE`](LICENSE) for the complete notice.
 
 ## Contact and Support
 
